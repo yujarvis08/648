@@ -16,7 +16,7 @@
 | Student Name | Student Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
 | member1      |               |                 |
-| member2      |apena9@mail.sfsu.edu|AlexHappyCode|
+| Alex Pena    |apena9@mail.sfsu.edu|AlexHappyCode|
 | member3      |               |                 |
 | member4      |               |                 |
 | member5      |               |                 |
