@@ -15,7 +15,7 @@
 
 | Student Name | Student Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
-| member1      |               |                 |
+| Roberto Herman | rhermanvaldivia@mail.sfsu.edu | mecosteas |
 | member2      |               |                 |
 | member3      |               |                 |
 | member4      |               |                 |
