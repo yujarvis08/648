@@ -15,7 +15,7 @@
 
 | Student Name | Student Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
-| member1      |               |                 |
+| Roberto Herman | rhermanvaldivia@mail.sfsu.edu | mecosteas |
 | Alex Pena    |apena9@mail.sfsu.edu|AlexHappyCode|
 | member3      |               |                 |
 | member4      |               |                 |
