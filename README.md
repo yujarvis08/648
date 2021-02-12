@@ -18,7 +18,7 @@
 | Roberto Herman | rhermanvaldivia@mail.sfsu.edu | mecosteas |
 | Alex Pena    |apena9@mail.sfsu.edu|AlexHappyCode|
 | Jarvis Yu    |jyu23@mail.sfsu.edu|yujarvis08   |
-| member4      |               |                 |
+| Amit Joshi      |   ajoshi2@mail.sfsu.edu            |  amitkhalsa25               |
 | member5      |               |                 |
 | member6      |               |                 |
 
