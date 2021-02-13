@@ -7,3 +7,10 @@ You are free to organize the contents of the folder as you see fit. But remember
 
 ## Please use the rest of the README.md to store important information for your team's application.
 
+***
+
+# First time run instructions
+- Make sure you have Node.js v14.15 installed
+- Open up two terminal tabs or windows
+- Terminal 1: Go into the server directory and `npm install`, then `npm run start:dev`
+- Terminal 2: Go into the client directory and `npm install`, then `npm start`
