@@ -1,0 +1,18 @@
+{
+  "name": "team03-app",
+  "version": "1.0.0",
+  "description": "Web app for Software Engineering class by Team 03",
+  "main": "server.js",
+  "scripts": {
+    "start:dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
