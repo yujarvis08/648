@@ -18,6 +18,7 @@ app.get('/ping', function (req, res) {
 
 if (process.env.NODE_ENV === "production") {
     app.get('/*', function (req, res) {
+        console.log('TRYING TO SERVE AT:', path.join(__dirname, 'build', 'index.html'));
         res.sendFile(path.join(__dirname, 'build', 'index.html'));
     });
 }
