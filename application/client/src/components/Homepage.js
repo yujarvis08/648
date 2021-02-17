@@ -7,7 +7,7 @@ import Roberto from "./AboutMe/Roberto";
 
 const Homepage = () => {
     return (
-        <Container>
+        <Container className="bg-white">
 
             <Row className="justify-content-around">
                 <p>Software Engineering Class SFSU</p>
