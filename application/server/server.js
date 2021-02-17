@@ -1,18 +1,26 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const { Console } = require('console');
 const app = express();
+const db = require('./db');
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, 'build')));
+}
 
 app.get('/ping', function (req, res) {
     return res.send('pong');
 });
 
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+if (process.env.NODE_ENV === "production") {
+    app.get('/*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    });
+}
 
 app.listen(process.env.PORT || 8080, () =>
-    console.log('EXPRESS SERVER CONNECTION SUCCESSFUL.'));
+    console.log(`>>> Express connection listening on port ${process.env.PORT}...`));
