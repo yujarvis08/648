@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Roberto from "./AboutMe/Roberto";
+import Jacob from "./AboutMe/Jacob";
 
 const Homepage = () => {
     return (
@@ -27,7 +28,7 @@ const Homepage = () => {
                     <p>Put your About Me component here</p>
                 </Tab>
                 <Tab eventKey="Jacob" title="Jacob">
-                    <p>Put your About Me component here</p>
+                    <Jacob />
                 </Tab>
                 <Tab eventKey="Jarvis" title="Jarvis">
                     <p>Put your About Me component here</p>
