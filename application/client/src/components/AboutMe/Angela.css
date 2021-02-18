@@ -1,0 +1,42 @@
+body {
+  /* padding: 20px 80px; */
+  background-color: rgb(202, 202, 202);
+}
+div {
+  padding-top: 50px;
+  padding-right: 30px;
+  padding-bottom: 50px;
+  padding-left: 80px;
+}
+h1 {
+  color: rgb(245, 3, 205);
+  text-align: center;
+  line-height: 1;
+  font-family: "Noto Sans KR", sans-serif;
+}
+h2 {
+  color: rgb(245, 3, 205);
+  text-align: center;
+  line-height: 1;
+  font-family: "Noto Sans KR", sans-serif;
+}
+h3 {
+  color: rgb(245, 3, 205);
+  text-align: center;
+  line-height: 1.5;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+p {
+  color: black;
+  text-align: center;
+  line-height: 1.5;
+  font-family: "Noto Sans KR", sans-serif;
+}
+footer {
+  text-align: left;
+  padding: 3px;
+  /* background-color: DarkSalmon; */
+  color: black;
+  font-family: "Noto Sans KR", sans-serif;
+}
