@@ -1,6 +1,6 @@
 {
   "name": "team03-app",
-  "version": "1.0.0",
+  "version": "1.1",
   "description": "Web app for Software Engineering class by Team 03",
   "main": "server.js",
   "scripts": {
