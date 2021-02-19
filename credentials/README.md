@@ -34,7 +34,8 @@
      - Use the command: `sudo mysql`
 
    - To access our DB tables:
-     - Connect to the DB using the command: `sudo mysql`
+     - Connect to the DB using the command: `mysql -u root -p`
+     - Enter password `SFSUteam03`
      - Then, in the mysql prompt: `use team3db;`
      - To list the available tables: `show tables;`
 
