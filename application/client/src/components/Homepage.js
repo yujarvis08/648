@@ -4,8 +4,13 @@ import Row from "react-bootstrap/Row";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Roberto from "./AboutMe/Roberto";
+
+import Alex from "./AboutMe/Alex";
+
+
 import Jarvis from "./AboutMe/Jarvis";
 import Angela from "./AboutMe/Angela";
+
 
 const Homepage = () => {
   return (
@@ -19,7 +24,7 @@ const Homepage = () => {
 
       <Tabs defaultActiveKey="Alex" id="uncontrolled-tab-example">
         <Tab eventKey="Alex" title="Alex">
-          <p>Put your About Me component here</p>
+          <Alex />
         </Tab>
         <Tab eventKey="Amit" title="Amit">
           <p>Put your About Me component here</p>
@@ -40,5 +45,6 @@ const Homepage = () => {
     </Container>
   );
 };
+
 
 export default Homepage;
