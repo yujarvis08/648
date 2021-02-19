@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Roberto from "./AboutMe/Roberto";
+import Amit from "./AboutMe/Amit";
 import Jacob from "./AboutMe/Jacob";
 import Alex from "./AboutMe/Alex";
 import Jarvis from "./AboutMe/Jarvis";
@@ -25,10 +26,13 @@ const Homepage = () => {
           <Alex />
         </Tab>
         <Tab eventKey="Amit" title="Amit">
-          <p>Put your About Me component here</p>
+
+          <Amit />
         </Tab>
+       
         <Tab eventKey="Angela" title="Angela">
           <Angela />
+
         </Tab>
         <Tab eventKey="Jacob" title="Jacob">
            <Jacob />
