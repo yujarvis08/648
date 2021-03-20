@@ -7,11 +7,19 @@ const restaurants = [
         desciption: "'Awesome burgers. Come get some!'",
         priceRating: 2,
         cuisine: "'American'",
-        ownerId: 11111,
-        addressId: 11112
+        ownerId: 1,
+        addressId: 1
     },
 ]
 
 restaurants.forEach(restaurant => {
     RestaurantModel.insertRestaurant(restaurant);
-});
+}
+
+// close mysql connection
+db.end(function(err) {
+  if (err) {
+    return console.log('error:' + err.message);
+  }
+  console.log('Close the database connection.');
+}););
