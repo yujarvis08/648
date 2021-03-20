@@ -11,6 +11,10 @@ const Main = () => {
                     <Homepage />
                 </Route>
 
+                <Route exact path="/ping">
+                    <h1>Pong</h1>
+                </Route>
+
             </Switch>
         </React.Fragment>
     );

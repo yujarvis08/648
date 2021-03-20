@@ -1,6 +1,8 @@
 const mysql = require('mysql');
+require('dotenv').config();
 
 const dbName = 'team3db';
+console.log('password:', process.env.DB_PASSWORD)
 
 const db = mysql.createConnection({
     host: 'localhost',
