@@ -39,15 +39,11 @@ test('Inserting DELIVERY DRIVER account into account table', async () => {
 });
 
 afterAll(() => {
-    // delete all accoutns and addresses from testdb
+    // delete all accounts and addresses from testdb
     let sql = `DELETE FROM account WHERE accountId > -1;`;
     db.query(sql, (err, result) => {
         if (err) throw err;
     });
 
-    sql = `DELETE FROM address WHERE addressId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    })
     db.end();
 })

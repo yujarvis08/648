@@ -9,7 +9,7 @@ exports.insertRestaurant = (restaurant) => {
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Inserted restaurant into DB.', result);
+            console.log('Inserted restaurant into DB. restaurantID:', result.insertId);
             return resolve(result);
         });
     });
@@ -22,7 +22,7 @@ exports.getAll = () => {
 
         db.query(sql, (err, result, fields) => {
             if (err) return reject(err);
-            console.log('Results from get all:', result);
+            console.log('Number of restaurants returned from getAll():', result.length);
             return resolve(result);
         });
     });

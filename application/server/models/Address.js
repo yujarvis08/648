@@ -9,7 +9,7 @@ exports.insertAddress = (address) => {
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Inserted address into DB. addressId:', result.insertedId);
+            console.log('Inserted address into DB. addressId:', result.insertId);
             return resolve(result);
         });
     });
