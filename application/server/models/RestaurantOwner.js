@@ -1,14 +1,14 @@
 const db = require('../db');
 
-const insertRestaurant = (restaurantOwner) => {
-    let sql = `INSERT INTO restaurantOwner(name, userId) `+
-			  `VALUES("${restaurantOwner.name}", ${restaurantOwner.userId})`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log('Inserted restaurantOwner into DB.', result);
+exports.insertOwner = (restaurantOwner) => {
+    return new Promise((resolve, reject) => {
+        let sql = `INSERT INTO restaurantOwner(name, accountId) ` +
+            `VALUES("${restaurantOwner.name}", ${restaurantOwner.accountId})`;
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            console.log('Inserted restaurantOwner into DB.', result.insertId);
+            return resolve(result)
+        });
     });
 }
 
-module.exports = {
-    insertRestaurant,
-};
