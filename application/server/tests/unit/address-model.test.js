@@ -27,6 +27,7 @@ test('Inserting address into address table', async () => {
 
 
 afterAll(() => {
+    // delete all addresses from testdb
     let sql = `DELETE FROM address WHERE addressId > -1;`;
     db.query(sql, (err, result) => {
         if (err) throw err;

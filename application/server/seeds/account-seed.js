@@ -30,18 +30,23 @@ seed(accounts);
 // create an account for each type of user
 // also creates a restaurant for the owner (no menu yet)
 async function seed(accounts) {
+
 	for (const account of accounts) {
+
 		let accountRes = await accountModel.insertAccount(account);
 
 		if (account.userType === 'customer') {
+
 			let customer = {
 				name: "Alex",
 				accountId: accountRes.insertId
 			}
+
 			await customerModel.insertCustomer(customer);
 
 			// insert restaurant owner (make restaurant too)
 		} else if (account.userType === 'restaurantOwner') {
+
 			let owner = {
 				name: "Tina",
 				accountId: accountRes.insertId
@@ -67,10 +72,12 @@ async function seed(accounts) {
 				ownerId: ownerRes.insertId,
 				addressId: addressRes.insertId,
 			}
+
 			await restaurantModel.insertRestaurant(restaurant);
 
 			// insert delivery driver (link to restaurant)
 		} else if (account.userType === 'deliveryDriver') {
+
 			let restaurants = await restaurantModel.getAll();
 			console.log('restaurants from getAll()', restaurants);
 
