@@ -9,27 +9,27 @@ const db = require('../db');
 
 // ! delivery driver must be created AFTER restaurant
 const accounts = [
-    {
-        userType: "customer",
-        email: "customer@mail.com",
-        password: "testpass",
-    },
-    {
-        userType: "restaurantOwner",
-        email: "owner@restaurant.com",
-        password: "testpass",
-    },
-    {
-        userType: "deliveryDriver",
-        email: "driver@mail.com",
-        password: "testpass",
-    },
+	{
+		userType: "customer",
+		email: "customer@mail.com",
+		password: "testpass",
+	},
+	{
+		userType: "restaurantOwner",
+		email: "owner@restaurant.com",
+		password: "testpass",
+	},
+	{
+		userType: "deliveryDriver",
+		email: "driver@mail.com",
+		password: "testpass",
+	},
 ]
 
-seed();
+seed(accounts);
 // create an account for each type of user
 // also creates a restaurant for the owner (no menu yet)
-async function seed() {
+async function seed(accounts) {
 	for (const account of accounts) {
 		let accountRes = await accountModel.insertAccount(account);
 

@@ -4,6 +4,8 @@
   "description": "Web app for Software Engineering class by Team 03",
   "main": "server.js",
   "scripts": {
+    "seed:users": "node ./seeds/account-seed.js",
+    "init:testdb": "node ./tests/createTestDB.js",
     "init:db": "node ./utils/createDB.js",
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production node server.js",

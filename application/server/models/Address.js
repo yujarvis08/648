@@ -7,7 +7,7 @@ exports.insertAddress = (address) => {
             + `"${address.state}", ${address.zipcode})`;
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Inserted address into DB.', result);
+            console.log('Inserted address into DB. addressId:', result.insertedId);
             return resolve(result);
         });
     });
