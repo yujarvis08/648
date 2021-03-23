@@ -74,7 +74,8 @@ test('Selecting all restaurants.', async () => {
 });
 
 afterAll(() => {
-    // delete all accounts (cascade also deletes restaurantOwner) from testdb
+    // delete all accounts 
+    // cascades to delete restaurantOwner, restaurant, menu, and menuitems)
     let sql = `DELETE FROM account WHERE accountId > -1;`;
     db.query(sql, (err, result) => {
         if (err) throw err;

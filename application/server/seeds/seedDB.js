@@ -1,3 +1,11 @@
+/**
+ * ! To seed properly, begin with an empty DB
+ * Seeds 7 different accounts: 1 customer, 5 owners, 1 driver
+ * Seeds 5 restaurants
+ * Seeds 5 addresses (1 for each restaurant)
+ * Seeds 5 menus (1 for each restaurant)
+ * Seeds 5 - 7 menu items in each menu
+ */
 const db = require('../db');
 
 const accounts = [
