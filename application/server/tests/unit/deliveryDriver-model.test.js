@@ -1,11 +1,23 @@
 require('dotenv').config();
-
-let menuModel;
-let restaurantOwnerModel;
+let driverModel;
 let restaurantModel;
+let restaurantOwnerModel;
 let accountModel;
-let db;
 
+// driver data
+const deliveryDriver = {
+    name: "John",
+    accountId: null,
+    restaurantId: null
+}
+
+const account = {
+    userType: "deliveryDriver",
+    email: "deliveryDriver@mail.com",
+    password: "testpass"
+}
+
+// restaurant data
 const restaurantOwnerAccount = {
     userType: "restaurantOwner",
     email: "restaurantOwner@mail.com",
@@ -27,34 +39,42 @@ const restaurant = {
 
 beforeAll(() => {
     process.env.DB_NAME = 'testdb';
-    menuModel = require('../../models/Menu');
-    restaurantOwnerModel = require('../../models/RestaurantOwner');
+    driverModel = require('../../models/DeliveryDriver');
     restaurantModel = require('../../models/Restaurant');
+    restaurantOwnerModel = require('../../models/RestaurantOwner');
     accountModel = require('../../models/Account');
     db = require('../../db');
 })
 
-test('Inserting a menu and linking it to its respective restaurant', async () => {
-    // step 1: create account
+test('Inserting a delivery driver', async () => {
+    // Create a restaurant
+    // step 1: create restaurant owner account
     let accountRes = await accountModel.insertAccount(restaurantOwnerAccount);
     restaurantOwner.accountId = accountRes.insertId;
     // step 2: create owner
     let ownerRes = await restaurantOwnerModel.insertOwner(restaurantOwner);
-    // step 3: create restaurant
     restaurant.ownerId = ownerRes.insertId;
+    // step 4: create restaurant
     let restaurantRes = await restaurantModel.insertRestaurant(restaurant);
-    // step 4: create menu
-    let menuRes = await menuModel.insertMenu(restaurantRes.insertId);
-    expect(menuRes.affectedRows).toBe(1);
+
+    // Insert driver
+    // Step 1: Get a restaurant ID
+    deliveryDriver.restaurantId = restaurantRes.insertId;
+    // Step 2: Create driver's account
+    accountRes = await accountModel.insertAccount(account);
+    deliveryDriver.accountId = accountRes.insertId;
+    // Step 3: Create driver
+    let driverRes = await driverModel.insertDriver(deliveryDriver);
+    expect(driverRes.affectedRows).toBe(1);
 });
 
 afterAll(() => {
     // delete all accounts 
-    // cascades to delete restaurantOwner, restaurant, menu, and menuItems)
+    // cascades to delete restaurantOwner, restaurant, menu, and menuitems)
     let sql = `DELETE FROM account WHERE accountId > -1;`;
     db.query(sql, (err, result) => {
         if (err) throw err;
-    })
+    });
 
     db.end();
 })
