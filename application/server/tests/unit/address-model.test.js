@@ -16,7 +16,6 @@ const address = {
 beforeAll(() => {
     process.env.DB_NAME = 'testdb';
     addressModel = require('../../models/Address');
-    db = require('../../db');
 })
 
 
@@ -27,6 +26,7 @@ test('Inserting address into address table', async () => {
 
 
 afterAll(() => {
+    db = require('../../db');
     // delete all addresses from testdb
     let sql = `DELETE FROM address WHERE addressId > -1;`;
     db.query(sql, (err, result) => {

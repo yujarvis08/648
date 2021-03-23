@@ -322,80 +322,128 @@ const cafeMenuItems = [
 ]
 
 // insert accounts
-let sql = `INSERT INTO account(userType, email, password) VALUES ?`;
-db.query(sql, [accounts], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted accounts...');
-});
+function insertAccounts(accounts) {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO account(userType, email, password) VALUES ?`;
+        db.query(sql, [accounts], (err, result) => {
+            if (err) return reject(err);
+            // console.log('Inserted accounts...');
+            resolve(result);
+        });
+
+    });
+}
 
 // insert restaurant owners
-sql = `INSERT INTO restaurantOwner(name, accountId) VALUES ?`;
-db.query(sql, [restaurantOwners], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted restaurant owners...');
-});
+function insertRestaurantOwners(restaurantOwners) {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO restaurantOwner(name, accountId) VALUES ?`;
+        db.query(sql, [restaurantOwners], (err, result) => {
+            if (err) return reject(err);
+            // console.log('Inserted restaurant owners...');
+            resolve(result);
+        });
+
+    });
+}
 
 // insert addresses
-sql = `INSERT INTO address(line1, line2, city, state, zipcode) VALUES ?`;
-db.query(sql, [addresses], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted addresses...')
-})
+function insertAddresses(addresses) {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO address(line1, line2, city, state, zipcode) VALUES ?`;
+        db.query(sql, [addresses], (err, result) => {
+            if (err) return reject(err);
+            // console.log('Inserted addresses...')
+            return resolve(result);
+        });
+
+    });
+}
 
 // insert restaurants
-sql = `INSERT INTO restaurant(ownerId, name, description, cuisine, priceRating, addressId) VALUES ?`;
-db.query(sql, [restaurants], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted restaurants...');
-});
+function insertRestaurants(restaurants) {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO restaurant(ownerId, name, description, cuisine, priceRating, addressId) VALUES ?`;
+        db.query(sql, [restaurants], (err, result) => {
+            if (err) return reject(err);
+            // console.log('Inserted restaurants...');
+            return resolve(result);
+        });
+
+    });
+}
 
 // insert menus
-sql = `INSERT INTO menu(restaurantId) VALUES ?`;
-db.query(sql, [[[1], [2], [3], [4], [5]]], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted menus...');
-});
+function insertMenus() {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO menu(restaurantId) VALUES ?`;
+        db.query(sql, [[[1], [2], [3], [4], [5]]], (err, result) => {
+            if (err) return reject(err);
+            // console.log('Inserted menus...');
+            return resolve(result);
+        });
+
+    });
+}
 
 // insert menu items
-sql = `INSERT INTO menuItem(menuId, name, description, price) VALUES ?`;
-db.query(sql, [americanMenuItems], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted menu items...');
-});
-db.query(sql, [mexicanMenuItems], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted menu items...');
-});
-db.query(sql, [italianMenuItems], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted menu items...');
-});
-db.query(sql, [icecreamMenuItems], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted menu items...');
-});
-db.query(sql, [cafeMenuItems], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted menu items...');
-});
+function insertMenuItems(menuItems) {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO menuItem(menuId, name, description, price) VALUES ?`;
+        db.query(sql, [menuItems], (err, result) => {
+            if (err) return reject(err);
+            // console.log('Inserted menu items...');
+            return resolve(result);
+        });
+
+    });
+}
 
 // insert delivery drivers
-sql = `INSERT INTO deliveryDriver(restaurantId, name, accountId) VALUES ?`;
-db.query(sql, [[[1, 'John', 7]]], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted driver (works at 1st restaurant)...');
-})
+function insertDeliveryDrivers() {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO deliveryDriver(restaurantId, name, accountId) VALUES ?`;
+        db.query(sql, [[[1, 'John', 7]]], (err, result) => {
+            if (err) return reject(err);
+            // console.log('Inserted driver (works at 1st restaurant)...');
+            return resolve(result);
+        });
+
+    });
+}
 
 // insert customers
-sql = `INSERT INTO customer(name, accountId) VALUES ?`;
-db.query(sql, [[['Yanela', 1]]], (err, result) => {
-    if (err) throw err;
-    console.log('Inserted customer...');
-})
+function insertCustomers() {
+    return new Promise((resolve, reject) => {
 
-db.end((err) => {
-    if (err) {
-        return console.log('error closing db connection:' + err.message);
-    }
-    console.log('Database connection closed.');
-});
+        let sql = `INSERT INTO customer(name, accountId) VALUES ?`;
+        db.query(sql, [[['Yanela', 1]]], (err, result) => {
+            if (err) return reject(err);
+            // console.log('Inserted customer...');
+            return resolve(result);
+        });
+
+    });
+}
+
+insertAccounts(accounts)
+    .then(insertRestaurantOwners(restaurantOwners))
+    .then(insertAddresses(addresses))
+    .then(insertRestaurants(restaurants))
+    .then(insertMenus())
+    .then(insertMenuItems(americanMenuItems))
+    .then(insertMenuItems(mexicanMenuItems))
+    .then(insertMenuItems(italianMenuItems))
+    .then(insertMenuItems(icecreamMenuItems))
+    .then(insertMenuItems(cafeMenuItems))
+    .then(insertDeliveryDrivers())
+    .then(insertCustomers())
+    .catch(err => console.log('Seeding error:', err));
+

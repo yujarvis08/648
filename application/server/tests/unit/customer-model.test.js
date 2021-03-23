@@ -20,7 +20,6 @@ beforeAll(() => {
     process.env.DB_NAME = 'testdb';
     accountModel = require('../../models/Account');
     customerModel = require('../../models/Customer');
-    db = require('../../db');
 })
 
 
@@ -33,6 +32,7 @@ test('Inserting customer into customer table', async () => {
 
 
 afterAll(() => {
+    db = require('../../db');
     // delete all accounts (cascade also deletes customers)
     let sql = `DELETE FROM account WHERE accountId > -1;`;
     db.query(sql, (err, result) => {

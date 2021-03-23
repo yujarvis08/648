@@ -9,6 +9,14 @@ const db = mysql.createConnection({
     database: dbName
 });
 
+// const db = mysql.createPool({
+//     connectionLimit: 50,
+//     host: 'localhost',
+//     user: 'root',
+//     password: process.env.DB_PASSWORD,
+//     database: dbName
+// });
+
 db.connect((err) => {
     if (err) {
         throw err;

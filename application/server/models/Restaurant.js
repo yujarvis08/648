@@ -20,7 +20,7 @@ exports.getAll = () => {
 
         let sql = `SELECT * from restaurant`;
 
-        db.query(sql, (err, result, fields) => {
+        db.query(sql, (err, result) => {
             if (err) return reject(err);
             console.log('Number of restaurants returned from getAll():', result.length);
             return resolve(result);

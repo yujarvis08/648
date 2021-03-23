@@ -43,7 +43,6 @@ beforeAll(() => {
     restaurantModel = require('../../models/Restaurant');
     restaurantOwnerModel = require('../../models/RestaurantOwner');
     accountModel = require('../../models/Account');
-    db = require('../../db');
 })
 
 test('Inserting a delivery driver', async () => {
@@ -69,6 +68,7 @@ test('Inserting a delivery driver', async () => {
 });
 
 afterAll(() => {
+    db = require('../../db');
     // delete all accounts 
     // cascades to delete restaurantOwner, restaurant, menu, and menuitems)
     let sql = `DELETE FROM account WHERE accountId > -1;`;

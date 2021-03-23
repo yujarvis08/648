@@ -19,7 +19,6 @@ const accounts = {
 beforeAll(() => {
     process.env.DB_NAME = 'testdb';
     accountModel = require('../../models/Account');
-    db = require('../../db');
 })
 
 // Inserting accounts
@@ -39,6 +38,7 @@ test('Inserting DELIVERY DRIVER account into account table', async () => {
 });
 
 afterAll(() => {
+    db = require('../../db');
     // delete all accounts and addresses from testdb
     let sql = `DELETE FROM account WHERE accountId > -1;`;
     db.query(sql, (err, result) => {
