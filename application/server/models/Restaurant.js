@@ -18,7 +18,7 @@ exports.insertRestaurant = (restaurant) => {
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
 
-        let sql = `SELECT * from restaurant`;
+        let sql = `SELECT * FROM restaurant`;
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
@@ -28,3 +28,20 @@ exports.getAll = () => {
     });
 }
 
+exports.getByName = (pattern) => {
+    return new Promise((resolve, reject) => {
+
+        let sql = `SELECT * FROM restaurant WHERE name LIKE '%${pattern}%'`;
+        // let sql = `SELECT r.restaurantId, r.ownerId, r.name, r.description, r.cuisine, r.priceRating, 
+        // a.line1, a.line2, a.city, a.state, a.zipcode 
+        // FROM restaurant r 
+        // LEFT JOIN address a ON r.addressId = a.addressId
+        // WHERE name LIKE '%${pattern}%'`;
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            console.log(`Restaurants matching pattern [${pattern}]:`, result);
+            return resolve(result);
+        });
+
+    });
+}

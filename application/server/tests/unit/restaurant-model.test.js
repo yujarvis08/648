@@ -72,6 +72,12 @@ test('Selecting all restaurants.', async () => {
     expect(restaurants.length).toBeGreaterThan(1);
 });
 
+// assumes there's already been a restaurant inserted before this test.
+test('Selecting restaurants matching a pattern.', async () => {
+    let restaurantRes = await restaurantModel.getByName('bob');
+    expect(restaurantRes[0].name).toBe("Bob's Burgers");
+});
+
 afterAll(() => {
     db = require('../../db');
     // delete all accounts 

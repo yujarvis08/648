@@ -14,3 +14,15 @@ exports.insertAddress = (address) => {
         });
     });
 };
+
+exports.getAddressById = (id) => {
+    return new Promise((resolve, reject) => {
+
+        let sql = `SELECT * FROM address WHERE addressId = ${id}`;
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+};

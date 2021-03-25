@@ -74,7 +74,7 @@ const restaurants = [
         1,
         "Bob''s Burgers",
         "Awesome burgers. Come get some!",
-        "'American'",
+        "American",
         2,
         1
     ],
@@ -82,7 +82,7 @@ const restaurants = [
         2,
         "Infinite Tacos",
         "Best tacos in the bay.",
-        "'Mexican'",
+        "Mexican",
         1,
         2
     ],
@@ -90,7 +90,7 @@ const restaurants = [
         3,
         "Pizzarino",
         "Delicious pizza and even better pasta. Yum!",
-        "'Italian'",
+        "Italian",
         3,
         3
     ],

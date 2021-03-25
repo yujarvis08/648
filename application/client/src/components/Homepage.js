@@ -1,37 +1,42 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Tabs from "react-bootstrap/Tabs";
-import Tab from "react-bootstrap/Tab";
-import Roberto from "./AboutMe/Roberto";
-import Amit from "./AboutMe/Amit";
-import Jacob from "./AboutMe/Jacob";
-import Alex from "./AboutMe/Alex";
-import Jarvis from "./AboutMe/Jarvis";
-import Angela from "./AboutMe/Angela";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
+
+// import Tabs from "react-bootstrap/Tabs";
+// import Tab from "react-bootstrap/Tab";
+// import Roberto from "./AboutMe/Roberto";
+// import Amit from "./AboutMe/Amit";
+// import Jacob from "./AboutMe/Jacob";
+// import Alex from "./AboutMe/Alex";
+// import Jarvis from "./AboutMe/Jarvis";
+// import Angela from "./AboutMe/Angela";
 
 
 const Homepage = () => {
 
-  fetch('/ping')
-    .then(response => response.json())
-    .then(data => console.log(data));
+  const [cuisines, setCuisines] = React.useState([]);
+  const [restaurants, setRestaurants] = React.useState([]);
 
-  const menuItem = {
-    name: 'spaghetti',
-    price: 11.25,
-    size: 'large'
-  }
+  React.useEffect(() => {
+    // get all restaurants
+    fetch('/api/search/restaurant')
+      .then(response => response.json())
+      .then(data => setRestaurants(data.restaurants))
+      .catch(console.log);
+    // get all cuisines
+    fetch('/api/search/restaurant/cuisines')
+      .then(response => response.json())
+      .then(data => setCuisines(data.cuisines))
+      .catch(console.log);
+  }, []);
 
-  fetch('/addMenuItem', {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(menuItem)
-  })
-    .then(response => response.json())
-    .then(data => console.log('menu item returned:', data))
+  console.log('Restaurants', restaurants);
 
   return (
     <Container className="bg-white">
@@ -42,7 +47,39 @@ const Homepage = () => {
         <p>Team 03</p>
       </Row>
 
-      <Tabs defaultActiveKey="Alex" id="uncontrolled-tab-example">
+      <Form>
+        <Form.Row className="align-items-center">
+
+          <Col lg="8" className="m-auto">
+            {/* Label for screen readers only */}
+            <Form.Label htmlFor="inlineFormInputGroup" srOnly>
+              Enter a restaurant's name
+            </Form.Label>
+
+            <InputGroup className="mb-2">
+              <DropdownButton
+                as={InputGroup.Prepend}
+                variant="outline-secondary"
+                title="Cuisines"
+                id="dropdown-cuisines"
+              >
+                {/* Cuisine dropdown item list */}
+                {cuisines.map((cuisine, index) => {
+                  return (<Dropdown.Item key={index}>{cuisine.cuisine}</Dropdown.Item>)
+                })}
+
+              </DropdownButton>
+
+              <FormControl id="inlineFormInputGroup" placeholder="Enter a restaurant's name" />
+            </InputGroup>
+          </Col>
+
+        </Form.Row>
+      </Form>
+
+
+
+      {/* <Tabs defaultActiveKey="Alex" id="uncontrolled-tab-example">
         <Tab eventKey="Alex" title="Alex">
           <Alex />
         </Tab>
@@ -64,7 +101,7 @@ const Homepage = () => {
         <Tab eventKey="Roberto" title="Roberto">
           <Roberto />
         </Tab>
-      </Tabs>
+      </Tabs> */}
     </Container>
   );
 };
