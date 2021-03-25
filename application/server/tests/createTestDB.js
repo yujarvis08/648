@@ -49,6 +49,8 @@ queryArray.forEach(query => {
     }
 });
 
-console.log('Database created and tables initiated...');
-db.end();
-console.log('>>> Disconnected from database.');
+db.end((err, result) => {
+    if (err) throw err;
+    console.log('>>> Database created and tables initiated (empty)...');
+    console.log('>>> Disconnected from database!');
+});

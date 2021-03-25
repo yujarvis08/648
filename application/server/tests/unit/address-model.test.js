@@ -25,12 +25,11 @@ test('Inserting address into address table', async () => {
 });
 
 
-afterAll(() => {
+afterAll(async () => {
     db = require('../../db');
     // delete all addresses from testdb
-    let sql = `DELETE FROM address WHERE addressId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    })
+    addressModel = require('../../models/Address');
+    await addressModel.deleteAll();
+
     db.end();
 })

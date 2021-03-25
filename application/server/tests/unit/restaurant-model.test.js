@@ -23,10 +23,10 @@ const address = {
     zipcode: 99999
 }
 const restaurant = {
-    name: "'Bob''s Burgers'",
-    desciption: "'Awesome burgers. Come get some!'",
-    priceRating: 2,
-    cuisine: "'American'",
+    name: "Bob's Burgers",
+    desciption: "Awesome burgers. Come get some!",
+    priceRating: "$$",
+    cuisine: "American",
     ownerId: null,
     addressId: null
 }
@@ -78,19 +78,16 @@ test('Selecting restaurants matching a pattern.', async () => {
     expect(restaurantRes[0].name).toBe("Bob's Burgers");
 });
 
-afterAll(() => {
+afterAll(async () => {
     db = require('../../db');
+
     // delete all accounts 
     // cascades to delete restaurantOwner, restaurant, menu, and menuitems)
-    let sql = `DELETE FROM account WHERE accountId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    })
+    accountModel = require('../../models/Account');
+    await accountModel.deleteAll();
 
-    sql = `DELETE FROM address WHERE addressId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    })
+    addressModel = require('../../models/Address');
+    await addressModel.deleteAll();
 
     db.end();
 })

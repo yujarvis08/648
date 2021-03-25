@@ -37,13 +37,11 @@ test('Inserting DELIVERY DRIVER account into account table', async () => {
     expect(result.affectedRows).toBe(1);
 });
 
-afterAll(() => {
+afterAll(async () => {
     db = require('../../db');
     // delete all accounts and addresses from testdb
-    let sql = `DELETE FROM account WHERE accountId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    });
+    accountModel = require('../../models/Account');
+    await accountModel.deleteAll();
 
     db.end();
 })

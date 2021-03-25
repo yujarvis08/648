@@ -61,20 +61,15 @@ test('Inserting a menu item.', async () => {
 });
 
 
-afterAll(() => {
+afterAll(async () => {
     db = require('../../db');
     // delete all accounts 
     // cascades to delete restaurantOwner, restaurant, menu, and menuitems)
-    let sql = `DELETE FROM account WHERE accountId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    })
+    accountModel = require('../../models/Account');
+    await accountModel.deleteAll();
 
     // delete menu (cascades to delete menu items as well)
-    sql = `DELETE FROM menu WHERE menuId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    })
+    await menuModel.deleteAll();
 
     db.end();
 })

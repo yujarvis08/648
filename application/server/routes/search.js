@@ -22,6 +22,11 @@ router.get('/restaurant', async (req, res, next) => {
         const restaurantRes = await restaurantModel.getByName(name);
         await insertRestaurantAddress(restaurantRes);
         res.status(200).json({ status: 'ok', restaurants: restaurantRes });
+    } else if (req.query.cuisine) {
+        let cuisine = req.query.cuisine;
+        const restaurantRes = await restaurantModel.getByCuisine(cuisine);
+        await insertRestaurantAddress(restaurantRes);
+        res.status(200).json({ status: 'ok', restaurants: restaurantRes });
     } else {
         let restaurantRes = await restaurantModel.getAll();
         await insertRestaurantAddress(restaurantRes);

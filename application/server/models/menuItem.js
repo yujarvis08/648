@@ -12,7 +12,7 @@ exports.insertMenuItem = (menuItem) => {
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
-			console.log('Inserted menuItem into DB. itemId:', result.insertId);
+			// console.log('Inserted menuItem into DB. itemId:', result.insertId);
 			resolve(result);
 		})
 	})

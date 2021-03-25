@@ -8,7 +8,7 @@ exports.insertCustomer = (customer) => {
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Inserted customer into DB.', result.insertId);
+            // console.log('Inserted customer into DB.', result.insertId);
             return resolve(result);
         });
     });

@@ -8,7 +8,19 @@ exports.insertAccount = (account) => {
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Inserted user into DB. User ID:', result.insertId);
+            // console.log('Inserted user into DB. User ID:', result.insertId);
+            return resolve(result);
+        });
+    });
+}
+
+exports.deleteAll = () => {
+    return new Promise((resolve, reject) => {
+
+        let sql = `DELETE FROM account WHERE accountId > -1`;
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
             return resolve(result);
         });
     });

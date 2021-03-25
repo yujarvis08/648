@@ -8,7 +8,7 @@ exports.insertDriver = (driver) => {
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Inserted driver into DB. driverId', result.insertId);
+            // console.log('Inserted driver into DB. driverId', result.insertId);
             return resolve(result);
         });
     });

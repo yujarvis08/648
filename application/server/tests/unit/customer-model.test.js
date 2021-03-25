@@ -31,12 +31,11 @@ test('Inserting customer into customer table', async () => {
 });
 
 
-afterAll(() => {
+afterAll(async () => {
     db = require('../../db');
     // delete all accounts (cascade also deletes customers)
-    let sql = `DELETE FROM account WHERE accountId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    })
+    accountModel = require('../../models/Account');
+    await accountModel.deleteAll();
+
     db.end();
 })

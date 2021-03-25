@@ -47,14 +47,12 @@ test('Inserting a menu and linking it to its respective restaurant', async () =>
     expect(menuRes.affectedRows).toBe(1);
 });
 
-afterAll(() => {
+afterAll(async () => {
     db = require('../../db');
     // delete all accounts 
     // cascades to delete restaurantOwner, restaurant, menu, and menuItems)
-    let sql = `DELETE FROM account WHERE accountId > -1;`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-    })
+    accountModel = require('../../models/Account');
+    await accountModel.deleteAll();
 
     db.end();
 })

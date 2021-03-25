@@ -72,10 +72,10 @@ const restaurantOwners = [
 const restaurants = [
     [
         1,
-        "Bob''s Burgers",
+        "Bob's Burgers",
         "Awesome burgers. Come get some!",
         "American",
-        2,
+        '$$',
         1
     ],
     [
@@ -83,7 +83,7 @@ const restaurants = [
         "Infinite Tacos",
         "Best tacos in the bay.",
         "Mexican",
-        1,
+        '$',
         2
     ],
     [
@@ -91,7 +91,7 @@ const restaurants = [
         "Pizzarino",
         "Delicious pizza and even better pasta. Yum!",
         "Italian",
-        3,
+        '$$$',
         3
     ],
     [
@@ -99,7 +99,7 @@ const restaurants = [
         "Brain Freeze",
         "Traditional flavors. Home-made ice cream and desserts.",
         "Dessert",
-        1,
+        '$',
         4
     ],
     [
@@ -107,7 +107,7 @@ const restaurants = [
         "Dynamic Coffee",
         "Get your morning started the right way! Premium coffee in a relaxing atmosphere.",
         "Cafe",
-        1,
+        '$',
         5
     ],
 ]
@@ -321,6 +321,21 @@ const cafeMenuItems = [
     ]
 ]
 
+exports.seedDB = () => {
+    insertAccounts(accounts)
+        .then(insertRestaurantOwners(restaurantOwners))
+        .then(insertAddresses(addresses))
+        .then(insertRestaurants(restaurants))
+        .then(insertMenus())
+        .then(insertMenuItems(americanMenuItems))
+        .then(insertMenuItems(mexicanMenuItems))
+        .then(insertMenuItems(italianMenuItems))
+        .then(insertMenuItems(icecreamMenuItems))
+        .then(insertMenuItems(cafeMenuItems))
+        .then(insertDeliveryDrivers())
+        .then(insertCustomers())
+        .catch(err => console.log('Seeding error:', err));
+}
 // insert accounts
 function insertAccounts(accounts) {
     return new Promise((resolve, reject) => {
@@ -433,17 +448,5 @@ function insertCustomers() {
     });
 }
 
-insertAccounts(accounts)
-    .then(insertRestaurantOwners(restaurantOwners))
-    .then(insertAddresses(addresses))
-    .then(insertRestaurants(restaurants))
-    .then(insertMenus())
-    .then(insertMenuItems(americanMenuItems))
-    .then(insertMenuItems(mexicanMenuItems))
-    .then(insertMenuItems(italianMenuItems))
-    .then(insertMenuItems(icecreamMenuItems))
-    .then(insertMenuItems(cafeMenuItems))
-    .then(insertDeliveryDrivers())
-    .then(insertCustomers())
-    .catch(err => console.log('Seeding error:', err));
+
 

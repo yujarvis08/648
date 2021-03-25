@@ -8,7 +8,7 @@ exports.insertOwner = (restaurantOwner) => {
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Inserted restaurantOwner into DB. ownerId:', result.insertId);
+            // console.log('Inserted restaurantOwner into DB. ownerId:', result.insertId);
             return resolve(result)
         });
     });

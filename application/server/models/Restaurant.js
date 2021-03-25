@@ -4,12 +4,12 @@ exports.insertRestaurant = (restaurant) => {
     return new Promise((resolve, reject) => {
 
         let sql = `INSERT into restaurant(name, description, priceRating, cuisine, ownerId, addressId) 
-                values(${restaurant.name}, ${restaurant.desciption}, ${restaurant.priceRating}, 
-                    ${restaurant.cuisine}, ${restaurant.ownerId}, ${restaurant.addressId})`;
+                values("${restaurant.name}", "${restaurant.desciption}", "${restaurant.priceRating}", 
+                    "${restaurant.cuisine}", ${restaurant.ownerId}, ${restaurant.addressId})`;
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Inserted restaurant into DB. restaurantID:', result.insertId);
+            // console.log('Inserted restaurant into DB. restaurantID:', result.insertId);
             return resolve(result);
         });
     });
@@ -22,7 +22,7 @@ exports.getAll = () => {
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log('Number of restaurants returned from getAll():', result.length);
+            // console.log('Number of restaurants returned from getAll():', result.length);
             return resolve(result);
         });
     });
@@ -39,7 +39,21 @@ exports.getByName = (pattern) => {
         // WHERE name LIKE '%${pattern}%'`;
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            console.log(`Restaurants matching pattern [${pattern}]:`, result);
+            // console.log(`Restaurants matching pattern [${pattern}]:`, result);
+            return resolve(result);
+        });
+
+    });
+}
+
+exports.getByCuisine = (cuisine) => {
+    return new Promise((resolve, reject) => {
+
+        let sql = `SELECT * FROM restaurant WHERE cuisine = '${cuisine}'`;
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            console.log(`Restaurants matching cuisine [${cuisine}]:`, result);
             return resolve(result);
         });
 
