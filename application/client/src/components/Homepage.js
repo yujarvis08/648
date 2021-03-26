@@ -5,11 +5,8 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import CardColumns from "react-bootstrap/CardColumns";
 // import { v4 as uuidv4 } from 'uuid';
 
 const Homepage = () => {
@@ -18,24 +15,53 @@ const Homepage = () => {
   const [restaurants, setRestaurants] = React.useState([]);
 
   async function fetchCuisines() {
-    let response = await (await fetch('/api/search/restaurant/cuisines')).json();
-    let cuisinesArr = ["All"];
+    try {
 
-    for (let cuisine of response.cuisines)
-      cuisinesArr.push(cuisine.cuisine);
+      let response = await (await fetch('/api/search/restaurant/cuisines')).json();
+      let cuisinesArr = ["All cuisines"];
 
-    return cuisinesArr;
+      for (let cuisine of response.cuisines)
+        cuisinesArr.push(cuisine.cuisine);
+
+      return cuisinesArr;
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function handleSubmitSearch(event) {
+    event.preventDefault();
+    let name = event.target.elements.restaurantSearchBar.value
+    searchRestaurantsByName(name);
   }
 
   async function searchRestaurantsByName(name) {
-    let response = await (await fetch(`/api/search/restaurant?name=${name}`)).json();
-    setRestaurants(response.restaurants);
+    name = name.trim(); // clean any white spaces before and after
+    try {
+      let response = await (await fetch(`/api/search/restaurant?name=${name}`)).json();
+      setRestaurants(response.restaurants);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function handleSelectCuisine(event) {
+    let cuisine = event.target.value;
+    searchRestaurantsByCuisine(cuisine);
   }
 
   async function searchRestaurantsByCuisine(cuisine) {
-    if (cuisine === "All") searchRestaurantsByName("");
-    let response = await (await fetch(`/api/search/restaurant?cuisine=${cuisine}`)).json();
-    setRestaurants(response.restaurants);
+    if (cuisine === "All cuisines") {
+      searchRestaurantsByName("");
+    } else {
+      try {
+        let response = await (await fetch(`/api/search/restaurant?cuisine=${cuisine}`)).json();
+        setRestaurants(response.restaurants);
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   // const cuisineFilter = async (cuisine) => {
@@ -47,7 +73,12 @@ const Homepage = () => {
   // }
 
   React.useEffect(() => {
-    fetchCuisines().then(setCuisines);
+    // get list of unique quisines available from our DB
+    fetchCuisines()
+      .then(setCuisines)
+      .catch(console.log);
+    // display all restaurants on load
+    searchRestaurantsByName("");
   }, []);
 
   console.log('Restaurants', restaurants);
@@ -62,59 +93,67 @@ const Homepage = () => {
         <p>Team 03</p>
       </Row>
 
-      <Form>
+      <Form onSubmit={handleSubmitSearch}>
         <Form.Row className="align-items-center">
 
           <Col lg="8" className="m-auto">
             {/* Label for screen readers only */}
-            <Form.Label htmlFor="inlineFormInputGroup" srOnly>
+            <Form.Label htmlFor="restaurantSearchBar" srOnly>
               Enter a restaurant's name
             </Form.Label>
 
             <InputGroup className="mb-2">
-              <DropdownButton
-                as={InputGroup.Prepend}
-                variant="outline-secondary"
-                title="Cuisines"
-                id="dropdown-cuisines"
-                onSelect={searchRestaurantsByCuisine}
-              >
-                {/* Cuisine dropdown item list */}
-                {cuisines.map((cuisine, index) => {
-                  return (
-                    <Dropdown.Item key={index} eventKey={cuisine}>
-                      {cuisine}
-                    </Dropdown.Item>)
-                })}
 
-              </DropdownButton>
+              {/* Cuisine options */}
+              <InputGroup.Prepend>
+                <Form.Control
+                  as="select"
+                  id="select-cuisines"
+                  onChange={handleSelectCuisine}
+                  className="bg-light border-right-0"
+                >
+                  {cuisines.map((cuisine, index) => {
+                    return (
+                      <option key={index}>
+                        {cuisine}
+                      </option>)
+                  })}
+                </Form.Control>
+              </InputGroup.Prepend>
 
+              {/* Restaurant search bar */}
               <FormControl
-                id="inlineFormInputGroup"
+                name="restaurantSearchBar"
                 placeholder="Enter a restaurant's name"
-                onChange={e => searchRestaurantsByName(e.target.value)}
+              // onChange={e => searchRestaurantsByName(e.target.value)}
               />
+
+              {/* Submit search (button) */}
+              <InputGroup.Append>
+                <Button variant="outline-secondary bg-light" type="submit">Go</Button>
+              </InputGroup.Append>
             </InputGroup>
           </Col>
 
-          <CardColumns>
-            {restaurants.map((restaurant, index) => {
-              return (
-                <Card key={restaurant.restaurantId} style={{ width: '18rem' }}>
-                  <Card.Img variant="top" src={restaurant.imagePath} />
-                  <Card.Body>
-                    <Card.Title>{restaurant.name}</Card.Title>
-                    <Card.Text>{restaurant.description}</Card.Text>
-                    <Card.Text>{restaurant.priceRating}</Card.Text>
-                  </Card.Body>
-                </Card>
-              )
-            })
-            }
-          </CardColumns>
-
         </Form.Row>
       </Form>
+
+      {/* Restaurant Cards */}
+      <Row className="d-flex justify-content-center">
+        {restaurants.map((restaurant, index) => {
+          return (
+            <Card key={restaurant.restaurantId} style={{ width: '18rem' }} className="m-3">
+              <Card.Img variant="top" src={restaurant.imagePath} />
+              <Card.Body>
+                <Card.Title>{restaurant.name}</Card.Title>
+                <Card.Text>{restaurant.description}</Card.Text>
+                <Card.Text>{restaurant.priceRating}</Card.Text>
+              </Card.Body>
+            </Card>
+          )
+        })
+        }
+      </Row>
 
     </Container>
   );
