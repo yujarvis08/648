@@ -13,8 +13,14 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.get('/ping', function (req, res) {
-    return res.send('pong');
+    return res.json({ msg: 'pong' });
 });
+
+app.post('/addMenuItem', (req, res) => {
+    let body = req.body;
+    console.log('request body', body);
+    return res.json(body);
+})
 
 if (process.env.NODE_ENV === "production") {
     app.get('/*', function (req, res) {

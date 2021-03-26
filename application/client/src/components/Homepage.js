@@ -12,6 +12,27 @@ import Angela from "./AboutMe/Angela";
 
 
 const Homepage = () => {
+
+  fetch('/ping')
+    .then(response => response.json())
+    .then(data => console.log(data));
+
+  const menuItem = {
+    name: 'spaghetti',
+    price: 11.25,
+    size: 'large'
+  }
+
+  fetch('/addMenuItem', {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(menuItem)
+  })
+    .then(response => response.json())
+    .then(data => console.log('menu item returned:', data))
+
   return (
     <Container className="bg-white">
       <Row className="justify-content-around">
@@ -29,13 +50,13 @@ const Homepage = () => {
 
           <Amit />
         </Tab>
-       
+
         <Tab eventKey="Angela" title="Angela">
           <Angela />
 
         </Tab>
         <Tab eventKey="Jacob" title="Jacob">
-           <Jacob />
+          <Jacob />
         </Tab>
         <Tab eventKey="Jarvis" title="Jarvis">
           <Jarvis />
