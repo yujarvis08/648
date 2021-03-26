@@ -1,26 +1,23 @@
 require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
-//const db = require('./db');
+const searchRoutes = require('./routes/search');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'build')));
 }
 
+app.use('/api/search', searchRoutes);
+
 app.get('/ping', function (req, res) {
     return res.json({ msg: 'pong' });
 });
 
-app.post('/addMenuItem', (req, res) => {
-    let body = req.body;
-    console.log('request body', body);
-    return res.json(body);
-})
 
 if (process.env.NODE_ENV === "production") {
     app.get('/*', function (req, res) {

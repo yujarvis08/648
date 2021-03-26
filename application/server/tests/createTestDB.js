@@ -1,3 +1,8 @@
+/** 
+ * Uses an SQL file to create the database schema.
+ * The SQL file is read and cleaned up from all lines with comments
+ * Written by Alex and Roberto
+ */
 require('dotenv').config();
 const mysql = require('mysql');
 const fs = require('fs');
@@ -19,7 +24,7 @@ let newSql = '';
 
 // Clean up the sql file
 try {
-    const sql = fs.readFileSync(`${__dirname}/team3db.sql`, 'utf8');
+    const sql = fs.readFileSync(`${__dirname}/testdb.sql`, 'utf8');
     let isComment = true;
     for (let i = 0; i < sql.length; i++) {
         if (!isComment && sql[i] != '\n') {
@@ -49,6 +54,8 @@ queryArray.forEach(query => {
     }
 });
 
-console.log('Database created and tables initiated...');
-db.end();
-console.log('>>> Disconnected from database.');
+db.end((err, result) => {
+    if (err) throw err;
+    console.log('>>> Database created and tables initiated (empty)...');
+    console.log('>>> Disconnected from database!');
+});

@@ -1,3 +1,4 @@
+/** This is where all main routes within our app will be defined */
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import Homepage from "./Homepage";
