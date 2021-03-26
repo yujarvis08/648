@@ -1,3 +1,8 @@
+/**
+ * Make sure you have your environment file set up with your
+ * own local DB password with the variable name DB_PASSWORD.
+ * You should also set up the DB_NAME variable to team3db.
+ */
 const mysql = require('mysql');
 require('dotenv').config();
 const dbName = process.env.DB_NAME;

@@ -1,3 +1,12 @@
+/**
+ * This test really likes to mess up all the other tests. I think it's
+ * because it's seeding the DB, which takes longer than other functions,
+ * so there is some type of concurrency problem going on.
+ * 
+ * To run all tests, you may temporarily rename this file to something
+ * without the word "test" in it, then run npm test, then rename it back
+ * and test it by itself. Still, a better solution for this needs to be found...
+ */
 let utilModel;
 let restaurantModel;
 let db;

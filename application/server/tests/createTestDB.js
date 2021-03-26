@@ -1,3 +1,8 @@
+/** 
+ * Uses an SQL file to create the database schema.
+ * The SQL file is read and cleaned up from all lines with comments
+ * Written by Alex and Roberto
+ */
 require('dotenv').config();
 const mysql = require('mysql');
 const fs = require('fs');

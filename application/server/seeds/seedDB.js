@@ -1,5 +1,5 @@
 /**
- * ! To seed properly, begin with an empty DB
+ * ! To seed properly, begin with an empty DB (npm run seed:db)
  * Seeds 7 different accounts: 1 customer, 5 owners, 1 driver
  * Seeds 5 restaurants
  * Seeds 5 addresses (1 for each restaurant)

@@ -1,3 +1,7 @@
+/** Use to seed DB with all 3 different types of accounts
+ *  Written by Alex and Roberto
+ */
+
 const accountModel = require('../models/Account');
 const customerModel = require('../models/Customer');
 const restaurantOwnerModel = require('../models/RestaurantOwner');

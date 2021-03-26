@@ -4,7 +4,7 @@ const restaurantModel = require('../models/Restaurant');
 const utilModel = require('../models/Util');
 const addressModel = require('../models/Address');
 
-// utility function
+// utility function to insert address into restaurant object
 async function insertRestaurantAddress(restaurants) {
     for (let restaurant of restaurants) {
         // console.log('passing in id:', restaurant.restaurantId);
@@ -14,8 +14,10 @@ async function insertRestaurantAddress(restaurants) {
     }
 }
 
+// returns all restaurants. If query has a name, then match name. Works for:
 // /api/search/restaurant?name=<restaurantName>
-// returns all restaurants. If query has a name, then match name
+// /api/search/restaurant?cuisine=<cuisine>
+// /api/search/restaurant?
 router.get('/restaurant', async (req, res, next) => {
     if (req.query.name) {
         let name = req.query.name;
@@ -34,6 +36,7 @@ router.get('/restaurant', async (req, res, next) => {
     }
 });
 
+// gets a list of all UNIQUE cuisines available in our app (DB). Useful for dropdown.
 router.get('/restaurant/cuisines', async (req, res, next) => {
     let cuisines = await utilModel.getAllCuisines();
     res.status(200).json({ status: 'ok', cuisines });
