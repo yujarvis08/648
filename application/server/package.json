@@ -1,20 +1,24 @@
 {
   "name": "team03-app",
-  "version": "1.2",
+  "version": "1.2.1",
   "description": "Web app for Software Engineering class by Team 03",
   "main": "server.js",
   "scripts": {
+    "seed:db": "node ./utils/createDB.js && node ./seeds/seedDB.js",
+    "init:testdb": "node ./tests/createTestDB.js",
     "init:db": "node ./utils/createDB.js",
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./tests/createTestDB.js && jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "jest": "^26.6.3",
+    "mysql": "^2.18.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

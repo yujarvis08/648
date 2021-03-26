@@ -8,20 +8,20 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema team3db
+-- Schema testdb
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `team3db` ;
+DROP SCHEMA IF EXISTS `testdb` ;
 
 -- -----------------------------------------------------
--- Schema team3db
+-- Schema testdb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `team3db` DEFAULT CHARACTER SET utf8 ;
-USE `team3db` ;
+CREATE SCHEMA IF NOT EXISTS `testdb` DEFAULT CHARACTER SET utf8 ;
+USE `testdb` ;
 
 -- -----------------------------------------------------
--- Table `team3db`.`account`
+-- Table `testdb`.`account`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`account` (
+CREATE TABLE IF NOT EXISTS `testdb`.`account` (
   `accountId` INT NOT NULL AUTO_INCREMENT,
   `userType` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
@@ -31,9 +31,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`customer`
+-- Table `testdb`.`customer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`customer` (
+CREATE TABLE IF NOT EXISTS `testdb`.`customer` (
   `customerId` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `accountId` INT NOT NULL,
@@ -41,16 +41,16 @@ CREATE TABLE IF NOT EXISTS `team3db`.`customer` (
   INDEX `customerAccountFK_idx` (`accountId` ASC) VISIBLE,
   CONSTRAINT `customerAccountFK`
     FOREIGN KEY (`accountId`)
-    REFERENCES `team3db`.`account` (`accountId`)
+    REFERENCES `testdb`.`account` (`accountId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`restaurantOwner`
+-- Table `testdb`.`restaurantOwner`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOwner` (
+CREATE TABLE IF NOT EXISTS `testdb`.`restaurantOwner` (
   `ownerId` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `accountId` INT NOT NULL,
@@ -58,16 +58,16 @@ CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOwner` (
   INDEX `accountIdFk_idx` (`accountId` ASC) VISIBLE,
   CONSTRAINT `ownerAccountIdFK`
     FOREIGN KEY (`accountId`)
-    REFERENCES `team3db`.`account` (`accountId`)
+    REFERENCES `testdb`.`account` (`accountId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`businessSchedule`
+-- Table `testdb`.`businessSchedule`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`businessSchedule` (
+CREATE TABLE IF NOT EXISTS `testdb`.`businessSchedule` (
   `scheduleId` INT NOT NULL AUTO_INCREMENT,
   `day` VARCHAR(45) NULL,
   `openingHour` DATETIME NULL,
@@ -77,9 +77,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`address`
+-- Table `testdb`.`address`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`address` (
+CREATE TABLE IF NOT EXISTS `testdb`.`address` (
   `addressId` INT NOT NULL AUTO_INCREMENT,
   `line1` VARCHAR(45) NOT NULL,
   `line2` VARCHAR(45) NULL,
@@ -91,9 +91,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`restaurant`
+-- Table `testdb`.`restaurant`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`restaurant` (
+CREATE TABLE IF NOT EXISTS `testdb`.`restaurant` (
   `restaurantId` INT NOT NULL AUTO_INCREMENT,
   `ownerId` INT NOT NULL,
   `businessScheduleId` INT NULL,
@@ -109,26 +109,26 @@ CREATE TABLE IF NOT EXISTS `team3db`.`restaurant` (
   INDEX `restaurantAddressFK_idx` (`addressId` ASC) VISIBLE,
   CONSTRAINT `ownerIdFK`
     FOREIGN KEY (`ownerId`)
-    REFERENCES `team3db`.`restaurantOwner` (`ownerId`)
+    REFERENCES `testdb`.`restaurantOwner` (`ownerId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `businessScheduleId`
     FOREIGN KEY (`businessScheduleId`)
-    REFERENCES `team3db`.`businessSchedule` (`scheduleId`)
+    REFERENCES `testdb`.`businessSchedule` (`scheduleId`)
     ON DELETE SET NULL
     ON UPDATE NO ACTION,
   CONSTRAINT `restaurantAddressFK`
     FOREIGN KEY (`addressId`)
-    REFERENCES `team3db`.`address` (`addressId`)
+    REFERENCES `testdb`.`address` (`addressId`)
     ON DELETE SET NULL
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`deliveryDriver`
+-- Table `testdb`.`deliveryDriver`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`deliveryDriver` (
+CREATE TABLE IF NOT EXISTS `testdb`.`deliveryDriver` (
   `driverId` INT NOT NULL AUTO_INCREMENT,
   `restaurantId` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
@@ -138,37 +138,37 @@ CREATE TABLE IF NOT EXISTS `team3db`.`deliveryDriver` (
   INDEX `driverAccountFK_idx` (`accountId` ASC) VISIBLE,
   CONSTRAINT `driverRestaurantIdFK`
     FOREIGN KEY (`restaurantId`)
-    REFERENCES `team3db`.`restaurant` (`restaurantId`)
+    REFERENCES `testdb`.`restaurant` (`restaurantId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `driverAccountFK`
     FOREIGN KEY (`accountId`)
-    REFERENCES `team3db`.`account` (`accountId`)
+    REFERENCES `testdb`.`account` (`accountId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`order`
+-- Table `testdb`.`order`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`order` (
+CREATE TABLE IF NOT EXISTS `testdb`.`order` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
   `restaurantId` INT NULL,
   PRIMARY KEY (`orderId`),
   INDEX `restaurantIdFK_idx` (`restaurantId` ASC) VISIBLE,
   CONSTRAINT `orderRestaurantIdFK`
     FOREIGN KEY (`restaurantId`)
-    REFERENCES `team3db`.`restaurant` (`restaurantId`)
+    REFERENCES `testdb`.`restaurant` (`restaurantId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`menu`
+-- Table `testdb`.`menu`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`menu` (
+CREATE TABLE IF NOT EXISTS `testdb`.`menu` (
   `menuId` INT NOT NULL AUTO_INCREMENT,
   `restaurantId` INT NOT NULL,
   PRIMARY KEY (`menuId`),
@@ -177,16 +177,16 @@ CREATE TABLE IF NOT EXISTS `team3db`.`menu` (
   UNIQUE INDEX `menuId_UNIQUE` (`menuId` ASC) VISIBLE,
   CONSTRAINT `menuRestaurantFK`
     FOREIGN KEY (`restaurantId`)
-    REFERENCES `team3db`.`restaurant` (`restaurantId`)
+    REFERENCES `testdb`.`restaurant` (`restaurantId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`menuItem`
+-- Table `testdb`.`menuItem`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`menuItem` (
+CREATE TABLE IF NOT EXISTS `testdb`.`menuItem` (
   `menuItemId` INT NOT NULL AUTO_INCREMENT,
   `menuId` INT NOT NULL,
   `name` VARCHAR(45) NULL,
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `team3db`.`menuItem` (
   INDEX `menuId_idx` (`menuId` ASC) VISIBLE,
   CONSTRAINT `menuId`
     FOREIGN KEY (`menuId`)
-    REFERENCES `team3db`.`menu` (`menuId`)
+    REFERENCES `testdb`.`menu` (`menuId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

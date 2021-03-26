@@ -1,37 +1,88 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Tabs from "react-bootstrap/Tabs";
-import Tab from "react-bootstrap/Tab";
-import Roberto from "./AboutMe/Roberto";
-import Amit from "./AboutMe/Amit";
-import Jacob from "./AboutMe/Jacob";
-import Alex from "./AboutMe/Alex";
-import Jarvis from "./AboutMe/Jarvis";
-import Angela from "./AboutMe/Angela";
-
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+// import { v4 as uuidv4 } from 'uuid';
 
 const Homepage = () => {
 
-  fetch('/ping')
-    .then(response => response.json())
-    .then(data => console.log(data));
+  const [cuisines, setCuisines] = React.useState([]);
+  const [restaurants, setRestaurants] = React.useState([]);
 
-  const menuItem = {
-    name: 'spaghetti',
-    price: 11.25,
-    size: 'large'
+  async function fetchCuisines() {
+    try {
+
+      let response = await (await fetch('/api/search/restaurant/cuisines')).json();
+      let cuisinesArr = ["All cuisines"];
+
+      for (let cuisine of response.cuisines)
+        cuisinesArr.push(cuisine.cuisine);
+
+      return cuisinesArr;
+
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  fetch('/addMenuItem', {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(menuItem)
-  })
-    .then(response => response.json())
-    .then(data => console.log('menu item returned:', data))
+  function handleSubmitSearch(event) {
+    event.preventDefault();
+    let name = event.target.elements.restaurantSearchBar.value
+    searchRestaurantsByName(name);
+  }
+
+  async function searchRestaurantsByName(name) {
+    name = name.trim(); // clean any white spaces before and after
+    try {
+      let response = await (await fetch(`/api/search/restaurant?name=${name}`)).json();
+      setRestaurants(response.restaurants);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function handleSelectCuisine(event) {
+    let cuisine = event.target.value;
+    searchRestaurantsByCuisine(cuisine);
+  }
+
+  async function searchRestaurantsByCuisine(cuisine) {
+    if (cuisine === "All cuisines") {
+      searchRestaurantsByName("");
+    } else {
+      try {
+        let response = await (await fetch(`/api/search/restaurant?cuisine=${cuisine}`)).json();
+        setRestaurants(response.restaurants);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  // const cuisineFilter = async (cuisine) => {
+  //   console.log('cuisine:', cuisine);
+  //   let rest = await fetchRestaurants('');
+  //   console.log('rest', rest)
+  //   let filterRest = rest.filter(restaurant => restaurant.cuisine === cuisine);
+  //   setRestaurants(filterRest);
+  // }
+
+  React.useEffect(() => {
+    // get list of unique quisines available from our DB
+    fetchCuisines()
+      .then(setCuisines)
+      .catch(console.log);
+    // display all restaurants on load
+    searchRestaurantsByName("");
+  }, []);
+
+  console.log('Restaurants', restaurants);
+  // console.log('Cuisines', cuisines);
 
   return (
     <Container className="bg-white">
@@ -42,7 +93,74 @@ const Homepage = () => {
         <p>Team 03</p>
       </Row>
 
-      <Tabs defaultActiveKey="Alex" id="uncontrolled-tab-example">
+      <Form onSubmit={handleSubmitSearch}>
+        <Form.Row className="align-items-center">
+
+          <Col lg="8" className="m-auto">
+            {/* Label for screen readers only */}
+            <Form.Label htmlFor="restaurantSearchBar" srOnly>
+              Enter a restaurant's name
+            </Form.Label>
+
+            <InputGroup className="mb-2">
+
+              {/* Cuisine options */}
+              <InputGroup.Prepend>
+                <Form.Control
+                  as="select"
+                  id="select-cuisines"
+                  onChange={handleSelectCuisine}
+                  className="bg-light border-right-0"
+                >
+                  {cuisines.map((cuisine, index) => {
+                    return (
+                      <option key={index}>
+                        {cuisine}
+                      </option>)
+                  })}
+                </Form.Control>
+              </InputGroup.Prepend>
+
+              {/* Restaurant search bar */}
+              <FormControl
+                name="restaurantSearchBar"
+                placeholder="Enter a restaurant's name"
+              // onChange={e => searchRestaurantsByName(e.target.value)}
+              />
+
+              {/* Submit search (button) */}
+              <InputGroup.Append>
+                <Button variant="outline-secondary bg-light" type="submit">Go</Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </Col>
+
+        </Form.Row>
+      </Form>
+
+      {/* Restaurant Cards */}
+      <Row className="d-flex justify-content-center">
+        {restaurants.map((restaurant, index) => {
+          return (
+            <Card key={restaurant.restaurantId} style={{ width: '18rem' }} className="m-3">
+              <Card.Img variant="top" src={restaurant.imagePath} />
+              <Card.Body>
+                <Card.Title>{restaurant.name}</Card.Title>
+                <Card.Text>{restaurant.description}</Card.Text>
+                <Card.Text>{restaurant.priceRating}</Card.Text>
+              </Card.Body>
+            </Card>
+          )
+        })
+        }
+      </Row>
+
+    </Container>
+  );
+};
+
+export default Homepage;
+{/* <Tabs defaultActiveKey="Alex" id="uncontrolled-tab-example">
         <Tab eventKey="Alex" title="Alex">
           <Alex />
         </Tab>
@@ -64,10 +182,4 @@ const Homepage = () => {
         <Tab eventKey="Roberto" title="Roberto">
           <Roberto />
         </Tab>
-      </Tabs>
-    </Container>
-  );
-};
-
-
-export default Homepage;
+      </Tabs> */}
