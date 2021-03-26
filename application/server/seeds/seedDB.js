@@ -76,7 +76,8 @@ const restaurants = [
         "Awesome burgers. Come get some!",
         "American",
         '$$',
-        1
+        1,
+        "/assets/images/restaurant/burger.jpeg"
     ],
     [
         2,
@@ -84,7 +85,8 @@ const restaurants = [
         "Best tacos in the bay.",
         "Mexican",
         '$',
-        2
+        2,
+        "/assets/images/restaurant/tacos.jpeg"
     ],
     [
         3,
@@ -92,7 +94,8 @@ const restaurants = [
         "Delicious pizza and even better pasta. Yum!",
         "Italian",
         '$$$',
-        3
+        3,
+        "/assets/images/restaurant/pizza.jpeg"
     ],
     [
         4,
@@ -100,7 +103,8 @@ const restaurants = [
         "Traditional flavors. Home-made ice cream and desserts.",
         "Dessert",
         '$',
-        4
+        4,
+        "/assets/images/restaurant/desserts.jpeg"
     ],
     [
         5,
@@ -108,7 +112,8 @@ const restaurants = [
         "Get your morning started the right way! Premium coffee in a relaxing atmosphere.",
         "Cafe",
         '$',
-        5
+        5,
+        "/assets/images/restaurant/cafe.jpeg"
     ],
 ]
 
@@ -321,21 +326,6 @@ const cafeMenuItems = [
     ]
 ]
 
-exports.seedDB = () => {
-    insertAccounts(accounts)
-        .then(insertRestaurantOwners(restaurantOwners))
-        .then(insertAddresses(addresses))
-        .then(insertRestaurants(restaurants))
-        .then(insertMenus())
-        .then(insertMenuItems(americanMenuItems))
-        .then(insertMenuItems(mexicanMenuItems))
-        .then(insertMenuItems(italianMenuItems))
-        .then(insertMenuItems(icecreamMenuItems))
-        .then(insertMenuItems(cafeMenuItems))
-        .then(insertDeliveryDrivers())
-        .then(insertCustomers())
-        .catch(err => console.log('Seeding error:', err));
-}
 // insert accounts
 function insertAccounts(accounts) {
     return new Promise((resolve, reject) => {
@@ -382,7 +372,7 @@ function insertAddresses(addresses) {
 function insertRestaurants(restaurants) {
     return new Promise((resolve, reject) => {
 
-        let sql = `INSERT INTO restaurant(ownerId, name, description, cuisine, priceRating, addressId) VALUES ?`;
+        let sql = `INSERT INTO restaurant(ownerId, name, description, cuisine, priceRating, addressId, imagePath) VALUES ?`;
         db.query(sql, [restaurants], (err, result) => {
             if (err) return reject(err);
             // console.log('Inserted restaurants...');
@@ -448,5 +438,16 @@ function insertCustomers() {
     });
 }
 
-
-
+insertAccounts(accounts)
+    .then(insertRestaurantOwners(restaurantOwners))
+    .then(insertAddresses(addresses))
+    .then(insertRestaurants(restaurants))
+    .then(insertMenus())
+    .then(insertMenuItems(americanMenuItems))
+    .then(insertMenuItems(mexicanMenuItems))
+    .then(insertMenuItems(italianMenuItems))
+    .then(insertMenuItems(icecreamMenuItems))
+    .then(insertMenuItems(cafeMenuItems))
+    .then(insertDeliveryDrivers())
+    .then(insertCustomers())
+    .catch(err => console.log('Seeding error:', err));

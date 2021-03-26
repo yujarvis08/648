@@ -8,14 +8,15 @@ const restaurant = {
     priceRating: "$$",
     cuisine: "American",
     ownerId: 1,
-    addressId: null
+    addressId: null,
+    imagePath: '/assets/images/restaurant/burger.jpeg'
 }
 
 
 beforeAll(() => {
     require('dotenv').config();
     process.env.DB_NAME = 'testdb';
-    require('../../seeds/seedDB').seedDB();
+    require('../../seeds/seedDB');
     utilModel = require('../../models/Util');
     restaurantModel = require('../../models/Restaurant');
     db = require('../../db');

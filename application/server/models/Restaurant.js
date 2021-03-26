@@ -3,9 +3,9 @@ const db = require('../db');
 exports.insertRestaurant = (restaurant) => {
     return new Promise((resolve, reject) => {
 
-        let sql = `INSERT into restaurant(name, description, priceRating, cuisine, ownerId, addressId) 
+        let sql = `INSERT into restaurant(name, description, priceRating, cuisine, ownerId, addressId, imagePath) 
                 values("${restaurant.name}", "${restaurant.desciption}", "${restaurant.priceRating}", 
-                    "${restaurant.cuisine}", ${restaurant.ownerId}, ${restaurant.addressId})`;
+                    "${restaurant.cuisine}", ${restaurant.ownerId}, ${restaurant.addressId}, "${restaurant.imagePath}")`;
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);

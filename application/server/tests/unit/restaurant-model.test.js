@@ -28,7 +28,8 @@ const restaurant = {
     priceRating: "$$",
     cuisine: "American",
     ownerId: null,
-    addressId: null
+    addressId: null,
+    imagePath: '/assets/images/restaurant/burger.jpeg'
 }
 
 beforeAll(() => {

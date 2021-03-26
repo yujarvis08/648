@@ -101,7 +101,7 @@ const Homepage = () => {
             {restaurants.map((restaurant, index) => {
               return (
                 <Card key={restaurant.restaurantId} style={{ width: '18rem' }}>
-                  {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+                  <Card.Img variant="top" src={restaurant.imagePath} />
                   <Card.Body>
                     <Card.Title>{restaurant.name}</Card.Title>
                     <Card.Text>{restaurant.description}</Card.Text>

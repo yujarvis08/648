@@ -17,12 +17,13 @@ const restaurantOwner = {
 }
 
 const restaurant = {
-    name: "'Bob''s Burgers'",
-    desciption: "'Awesome burgers. Come get some!'",
+    name: "Bob;s Burgers",
+    desciption: "Awesome burgers. Come get some!",
     priceRating: 2,
-    cuisine: "'American'",
+    cuisine: "American",
     ownerId: null,
-    addressId: null
+    addressId: null,
+    imagePath: '/assets/images/restaurant/burger.jpeg'
 }
 
 beforeAll(() => {
