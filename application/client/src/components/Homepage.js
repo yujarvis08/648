@@ -1,4 +1,6 @@
 import React from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -7,24 +9,31 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import logo from "../logo.svg";
+import banner from "../sfsubanner.png";
+import Modal from "react-bootstrap/Modal";
+import { Link } from "react-router-dom";
+
 // import { v4 as uuidv4 } from 'uuid';
 
 const Homepage = () => {
-
   const [cuisines, setCuisines] = React.useState([]);
   const [restaurants, setRestaurants] = React.useState([]);
+  /* Login Modal use state */
+  const [show, setShow] = React.useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   async function fetchCuisines() {
     try {
-
-      let response = await (await fetch('/api/search/restaurant/cuisines')).json();
+      let response = await (
+        await fetch("/api/search/restaurant/cuisines")
+      ).json();
       let cuisinesArr = ["All cuisines"];
 
-      for (let cuisine of response.cuisines)
-        cuisinesArr.push(cuisine.cuisine);
+      for (let cuisine of response.cuisines) cuisinesArr.push(cuisine.cuisine);
 
       return cuisinesArr;
-
     } catch (err) {
       console.log(err);
     }
@@ -32,14 +41,16 @@ const Homepage = () => {
 
   function handleSubmitSearch(event) {
     event.preventDefault();
-    let name = event.target.elements.restaurantSearchBar.value
+    let name = event.target.elements.restaurantSearchBar.value;
     searchRestaurantsByName(name);
   }
 
   async function searchRestaurantsByName(name) {
     name = name.trim(); // clean any white spaces before and after
     try {
-      let response = await (await fetch(`/api/search/restaurant?name=${name}`)).json();
+      let response = await (
+        await fetch(`/api/search/restaurant?name=${name}`)
+      ).json();
       setRestaurants(response.restaurants);
     } catch (err) {
       console.log(err);
@@ -56,7 +67,9 @@ const Homepage = () => {
       searchRestaurantsByName("");
     } else {
       try {
-        let response = await (await fetch(`/api/search/restaurant?cuisine=${cuisine}`)).json();
+        let response = await (
+          await fetch(`/api/search/restaurant?cuisine=${cuisine}`)
+        ).json();
         setRestaurants(response.restaurants);
       } catch (err) {
         console.log(err);
@@ -74,14 +87,12 @@ const Homepage = () => {
 
   React.useEffect(() => {
     // get list of unique quisines available from our DB
-    fetchCuisines()
-      .then(setCuisines)
-      .catch(console.log);
+    fetchCuisines().then(setCuisines).catch(console.log);
     // display all restaurants on load
     searchRestaurantsByName("");
   }, []);
 
-  console.log('Restaurants', restaurants);
+  console.log("Restaurants", restaurants);
   // console.log('Cuisines', cuisines);
 
   return (
@@ -93,93 +104,456 @@ const Homepage = () => {
         <p>Team 03</p>
       </Row>
 
-      <Form onSubmit={handleSubmitSearch}>
-        <Form.Row className="align-items-center">
+      <div
+        class="image"
+        className="bg-dark"
+        style={{
+          width: "100%",
+          height: "250px",
+          backgroundImage: `url(${logo})`,
+        }}
+      >
+        {/* Login Modal */}
+        <Button
+          variant="primary"
+          onClick={handleShow}
+          style={{
+            marginLeft: "1000px",
+            marginTop: "15px",
+            backgroundColor: "#61dafb",
+            color: "black",
+          }}
+        >
+          Login
+        </Button>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Login</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control type="email" placeholder="Enter email" />
+              </Form.Group>
 
-          <Col lg="8" className="m-auto">
-            {/* Label for screen readers only */}
-            <Form.Label htmlFor="restaurantSearchBar" srOnly>
-              Enter a restaurant's name
-            </Form.Label>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" placeholder="Password" />
+                <Form.Text>
+                  Forgot Password? <a href="/">Click Here</a>
+                </Form.Text>
+                <Form.Text>
+                  Don't Have an Account?{" "}
+                  <a href="/userRegistration">Click Here</a>
+                </Form.Text>
+              </Form.Group>
 
-            <InputGroup className="mb-2">
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                style={{ marginLeft: "325px" }}
+              >
+                Submit
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
 
-              {/* Cuisine options */}
-              <InputGroup.Prepend>
-                <Form.Control
-                  as="select"
-                  id="select-cuisines"
-                  onChange={handleSelectCuisine}
-                  className="bg-light border-right-0"
+        <Form onSubmit={handleSubmitSearch}>
+          <Form.Row className="align-items-center">
+            <Col lg="8" className="m-auto">
+              {/* Label for screen readers only */}
+              <Form.Label htmlFor="restaurantSearchBar" srOnly>
+                Enter a restaurant's name
+              </Form.Label>
+
+              <InputGroup className="mb-2">
+                {/* Cuisine options */}
+                <InputGroup.Prepend>
+                  <Form.Control
+                    as="select"
+                    id="select-cuisines"
+                    onChange={handleSelectCuisine}
+                    className="bg-light border-right-0"
+                    style={{ marginTop: "105px" }}
+                  >
+                    {cuisines.map((cuisine, index) => {
+                      return <option key={index}>{cuisine}</option>;
+                    })}
+                  </Form.Control>
+                </InputGroup.Prepend>
+
+                {/* Restaurant search bar */}
+                <FormControl
+                  name="restaurantSearchBar"
+                  placeholder="Enter a restaurant's name"
+                  style={{ marginTop: "105px" }}
+                  // onChange={e => searchRestaurantsByName(e.target.value)}
+                />
+
+                {/* Submit search (button) */}
+                <InputGroup.Append>
+                  <Button
+                    variant="outline-secondary bg-light"
+                    type="submit"
+                    style={{ marginTop: "105px" }}
+                  >
+                    Go
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Col>
+          </Form.Row>
+        </Form>
+      </div>
+
+      <Tabs>
+        <TabList>
+          <Tab>About Us</Tab>
+          <Tab>SFSU Customers</Tab>
+          <Tab>Restaurant Owners</Tab>
+          <Tab>Delivery Drivers</Tab>
+        </TabList>
+
+        <TabPanel>
+          {" "}
+          {/* About Us Tab */}
+          <h1>Hello there!</h1>
+          <br></br>
+          <h4>
+            Get food delivered to any place on campus. We serve SFSU students,
+            faculty and campus staff at lightning fast speeds. Simply search for
+            nearby restaurants, browse their menus, place your order, and let us
+            do the rest while you relax or do your schoolwork.
+          </h4>
+          <br></br>
+          <h4>
+            Restaurant owner? Join our platform! Cater to SFSU Students and
+            increase your online presence and gain a band of regular, loyal
+            customers.
+          </h4>
+          <br></br>
+          <h4>
+            Delivery drivers can also easily link up with their restaurant and
+            begin delivering today!
+          </h4>
+          <img src={banner} alt="sfsu banner"></img>
+        </TabPanel>
+
+        <TabPanel>
+          {" "}
+          {/* SFSU Customers Tab */}
+          <h1>Welcome, Gator!</h1>
+          <br></br>
+          <h4>
+            We’re happy to have you here. Go hungry no longer! Use the search
+            bar at the top and browse your favorite restaurants and cuisines.
+            You may <a href="/userRegistration">register</a> now or later. In
+            the meanwhile, feel free to browse our registered restaurants.
+          </h4>
+          {/* Restaurant Cards */}
+          <Row className="d-flex justify-content-center">
+            {restaurants.map((restaurant, index) => {
+              return (
+                <Card
+                  key={restaurant.restaurantId}
+                  style={{ width: "18rem" }}
+                  className="m-3"
                 >
-                  {cuisines.map((cuisine, index) => {
-                    return (
-                      <option key={index}>
-                        {cuisine}
-                      </option>)
-                  })}
-                </Form.Control>
-              </InputGroup.Prepend>
+                  <Card.Img variant="top" src={restaurant.imagePath} />
+                  <Card.Body>
+                    <Card.Title>{restaurant.name}</Card.Title>
+                    <Card.Text>{restaurant.description}</Card.Text>
+                    <Card.Text>{restaurant.priceRating}</Card.Text>
+                  </Card.Body>
+                </Card>
+              );
+            })}
+          </Row>
+        </TabPanel>
 
-              {/* Restaurant search bar */}
-              <FormControl
-                name="restaurantSearchBar"
-                placeholder="Enter a restaurant's name"
-              // onChange={e => searchRestaurantsByName(e.target.value)}
-              />
+        <TabPanel>
+          <h3>
+            Are you a restaurant owner that wants to register?<br></br>
+            <br></br>
+            Creating your account and registering your restaurant is easy.
+            Simply fill out this form!
+          </h3>
 
-              {/* Submit search (button) */}
-              <InputGroup.Append>
-                <Button variant="outline-secondary bg-light" type="submit">Go</Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Col>
+          <Form style={{ textAlign: "left" }}>
+            <br></br>
+            <br></br>
+            <br></br>
+            <h3>Account Info</h3>
 
-        </Form.Row>
-      </Form>
+            {/* Login modal if user already has account */}
+            <Form.Text>
+              Already have an Account?{" "}
+              <Link
+                variant="primary"
+                onClick={handleShow}
+                style={{
+                  textDecoration: "underline",
+                  color: "black",
+                }}
+              >
+                Click Here
+              </Link>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Login</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Email address</Form.Label>
+                      <Form.Control type="email" placeholder="Enter email" />
+                    </Form.Group>
 
-      {/* Restaurant Cards */}
-      <Row className="d-flex justify-content-center">
-        {restaurants.map((restaurant, index) => {
-          return (
-            <Card key={restaurant.restaurantId} style={{ width: '18rem' }} className="m-3">
-              <Card.Img variant="top" src={restaurant.imagePath} />
-              <Card.Body>
-                <Card.Title>{restaurant.name}</Card.Title>
-                <Card.Text>{restaurant.description}</Card.Text>
-                <Card.Text>{restaurant.priceRating}</Card.Text>
-              </Card.Body>
-            </Card>
-          )
-        })
-        }
-      </Row>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control type="password" placeholder="Password" />
+                      <Form.Text>
+                        Forgot Password? <a href="/">Click Here</a>
+                      </Form.Text>
+                      <Form.Text>
+                        Don't Have an Account?{" "}
+                        <a href="/userRegistration">Click Here</a>
+                      </Form.Text>
+                    </Form.Group>
 
+                    <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      style={{ marginLeft: "325px" }}
+                    >
+                      Submit
+                    </Button>
+                  </Form>
+                </Modal.Body>
+              </Modal>
+            </Form.Text>
+            <br></br>
+
+            {/* Registration Form */}
+            <Form.Row>
+              <Form.Label>First Name</Form.Label>
+              <Form.Control type="firstname" placeholder="First Name" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control type="lastname" placeholder="Last Name" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" placeholder="Enter email" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" placeholder="Password" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control type="password" placeholder="Confirm Password" />
+            </Form.Row>
+
+            <br></br>
+            <br></br>
+            <br></br>
+            <h3>Restaurant Info</h3>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Restaurant Name</Form.Label>
+              <Form.Control placeholder="Enter the name of your Restaurant" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Description</Form.Label>
+              <Form.Control placeholder="Add a description of your restaurant" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Cuisine</Form.Label>
+              <Form.Control placeholder="What cuisine do you serve?" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Group>
+                <Form.Label>Menu Prices:</Form.Label>
+                <Form.Check type="radio" label="$" name="option" />
+                <Form.Check type="radio" label="$$" name="option" />
+                <Form.Check type="radio" label="$$$" name="option" />
+              </Form.Group>
+            </Form.Row>
+
+            <br></br>
+            <br></br>
+            <br></br>
+            <h3>Restaurant Address</h3>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Address</Form.Label>
+              <Form.Control placeholder="1234 Main St" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>City</Form.Label>
+              <Form.Control placeholder="City" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>State</Form.Label>
+              <Form.Control placeholder="State" />
+            </Form.Row>
+            <br></br>
+
+            <Form.Row>
+              <Form.Label>Zip</Form.Label>
+              <Form.Control placeholder="Zip Code" />
+            </Form.Row>
+            <br></br>
+
+            <Button variant="primary" type="submit">
+              Finish
+            </Button>
+          </Form>
+          <br></br>
+        </TabPanel>
+
+        <TabPanel>
+          <h3>
+            Registering as a driver is easy. Simply fill out the form below!
+          </h3>
+
+          <Form style={{ textAlign: "left" }}>
+            <br></br>
+            <br></br>
+            <br></br>
+            <h3>Account Info</h3>
+
+            {/* Login modal if user already has account */}
+            <Form.Text>
+              Already have an Account?{" "}
+              <Link
+                variant="primary"
+                onClick={handleShow}
+                style={{
+                  textDecoration: "underline",
+                  color: "black",
+                }}
+              >
+                Click Here
+              </Link>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Login</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Email address</Form.Label>
+                      <Form.Control type="email" placeholder="Enter email" />
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control type="password" placeholder="Password" />
+                      <Form.Text>
+                        Forgot Password? <a href="/">Click Here</a>
+                      </Form.Text>
+
+                      <Form.Text>
+                        Don't Have an Account?{" "}
+                        <a href="/userRegistration">Click Here</a>
+                      </Form.Text>
+                    </Form.Group>
+
+                    <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      style={{ marginLeft: "325px" }}
+                    >
+                      Submit
+                    </Button>
+                  </Form>
+                </Modal.Body>
+              </Modal>
+            </Form.Text>
+            <br></br>
+
+            {/* Registration Form */}
+
+            <Form.Row>
+              <Form.Label>First Name</Form.Label>
+              <Form.Control type="firstname" placeholder="First Name" />
+            </Form.Row>
+            <br></br>
+            <Form.Row>
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control type="lastname" placeholder="Last Name" />
+            </Form.Row>
+            <br></br>
+            <Form.Row>
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" placeholder="Enter email" />
+            </Form.Row>
+            <br></br>
+            <Form.Row>
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" placeholder="Password" />
+            </Form.Row>
+            <br></br>
+            <Form.Row>
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control type="password" placeholder="Confirm Password" />
+            </Form.Row>
+            <br></br>
+            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+              <Form.Label>Which restaurant do you work for?</Form.Label>
+              <Form.Control as="select" size="sm" custom>
+                <option>Bob's Burgers</option>
+                <option>Infinite Tacos</option>
+                <option>Pizzarino</option>
+                <option>Brain Freeze</option>
+                <option>Dynamic Coffee</option>
+              </Form.Control>
+            </Form.Group>
+            <br></br>
+            <Button variant="primary" type="submit">
+              Finish
+            </Button>
+          </Form>
+
+          <br></br>
+        </TabPanel>
+      </Tabs>
     </Container>
   );
 };
 
 export default Homepage;
-{/* <Tabs defaultActiveKey="Alex" id="uncontrolled-tab-example">
-        <Tab eventKey="Alex" title="Alex">
-          <Alex />
-        </Tab>
-        <Tab eventKey="Amit" title="Amit">
-
-          <Amit />
-        </Tab>
-
-        <Tab eventKey="Angela" title="Angela">
-          <Angela />
-
-        </Tab>
-        <Tab eventKey="Jacob" title="Jacob">
-          <Jacob />
-        </Tab>
-        <Tab eventKey="Jarvis" title="Jarvis">
-          <Jarvis />
-        </Tab>
-        <Tab eventKey="Roberto" title="Roberto">
-          <Roberto />
-        </Tab>
-      </Tabs> */}

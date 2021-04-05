@@ -41,13 +41,14 @@ try {
 
 // Execute all queries to create the database as well as initiate the tables
 const queryArray = newSql.split(';')
-queryArray.forEach(query => {
+/*queryArray.forEach(query => {
     if (query) {
         db.query(query, (err, result) => {
             if (err) throw err;
         });
     }
-});
+});*/
+console.log(queryArray);
 
 console.log('Database created and tables initiated...');
 db.end();
