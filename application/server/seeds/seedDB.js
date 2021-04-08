@@ -7,12 +7,14 @@
  * Seeds 5 - 7 menu items in each menu
  */
 const db = require('../db');
+const bcrypt = require('bcrypt');
 
+let salt = bcrypt.genSaltSync();
 const accounts = [
     [
         "customer",
         "customer@mail.com",
-        "testpass",
+        bcrypt.hashSync('testpass', salt)
     ],
     [
         "restaurantOwner",
