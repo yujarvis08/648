@@ -12,9 +12,9 @@ const Jarvis = () => {
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous"
       ></link>
-      <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '50vh'}}>
+      <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
         <div class="row">
-          <div class="col-lg-8">
+          <div>
             <div>
               <Image src={ProfileImg} roundedCircle height="150px" />
               <div>
@@ -26,6 +26,9 @@ const Jarvis = () => {
                   State University studying Computer Science. Over the past few
                   years in school, I mainly coded in Java and some C++. I have a
                   few projects that I have done in school up on my GitHub page.
+                </p>
+                <p>
+                  Skills: Java, C++
                 </p>
               </div>
             </div>
@@ -44,6 +47,9 @@ const Jarvis = () => {
           >
             Click Here
           </a>
+          <p>
+            yujarvis8@gmail.com
+          </p>
         </div>
       </div>
     </Container>
