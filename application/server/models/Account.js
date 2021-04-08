@@ -25,3 +25,23 @@ exports.deleteAll = () => {
         });
     });
 }
+
+exports.getIdFromEmail = (email) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT id FROM account WHERE email = '${email}'`;
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}
+
+exports.getAccountFromEmail = (email) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * FROM account WHERE email = '${email}'`;
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}
