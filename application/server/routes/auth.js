@@ -8,13 +8,22 @@ router.post('/login', async (req, res) => {
     let credentials = req.body
     user = await account.getAccountFromEmail(credentials.email);
     user = user[0];
-    console.log(user);
+    //console.log(user);
 
-    if (bcrypt.compare(user.password, credentials.password)) {
-
+    try {
+        if (bcrypt.compare(user.password, credentials.password)) {
+            res.cookie('account_id', user.accountId);
+            res.status(200).json({ msg: 'Logged in' });
+        } else {
+            console.log("wrong password!");
+            res.status(403).json({ msg: 'Invalid credentials' });
+        }
+    } catch (error) {
+        console.log('Something went wrong, is the request correct');
+        console.log(error);
+        res.status(500).json({ msg: 'Internal error' });
     }
-    res.cookie('account_id', user.accountId);
-    res.status(200).json({ msg: 'Logged in' });
+        
 });
 
 module.exports = router;
