@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const app = express();
 const searchRoutes = require('./routes/search');
-const loginRoute = require('./routes/login');
+const authRoute = require('./routes/auth');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === "production") {
 
 
 app.use('/api/search', searchRoutes);
-app.use('/api/auth', loginRoute);
+app.use('/api/auth', authRoute);
 
 app.get('/ping', (req, res) => {
     return res.json({ msg: 'pong' });

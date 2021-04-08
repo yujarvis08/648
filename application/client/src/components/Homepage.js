@@ -24,6 +24,9 @@ const Homepage = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
   async function fetchCuisines() {
     try {
       let response = await (
@@ -85,6 +88,23 @@ const Homepage = () => {
   //   setRestaurants(filterRest);
   // }
 
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+
+    let loginData = { email, password }
+    console.log('Login data object:', loginData)
+
+    let response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(loginData) // body data type must match "Content-Type" header)
+    });
+    let responseJSON = await response.json();
+
+    console.log("Response from login:", responseJSON);
+  }
+
+
   React.useEffect(() => {
     // get list of unique quisines available from our DB
     fetchCuisines().then(setCuisines).catch(console.log);
@@ -131,15 +151,15 @@ const Homepage = () => {
             <Modal.Title>Login</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form onSubmit={handleLoginSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                 <Form.Text>
                   Forgot Password? <a href="/">Click Here</a>
                 </Form.Text>
@@ -192,7 +212,7 @@ const Homepage = () => {
                   name="restaurantSearchBar"
                   placeholder="Enter a restaurant's name"
                   style={{ marginTop: "105px" }}
-                  // onChange={e => searchRestaurantsByName(e.target.value)}
+                // onChange={e => searchRestaurantsByName(e.target.value)}
                 />
 
                 {/* Submit search (button) */}
@@ -308,15 +328,15 @@ const Homepage = () => {
                   <Modal.Title>Login</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Form>
+                  <Form onSubmit={handleLoginSubmit}>
                     <Form.Group controlId="formBasicEmail">
                       <Form.Label>Email address</Form.Label>
-                      <Form.Control type="email" placeholder="Enter email" />
+                      <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
                       <Form.Label>Password</Form.Label>
-                      <Form.Control type="password" placeholder="Password" />
+                      <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                       <Form.Text>
                         Forgot Password? <a href="/">Click Here</a>
                       </Form.Text>
@@ -332,6 +352,7 @@ const Homepage = () => {
                     <Button
                       variant="primary"
                       type="submit"
+                      // onClick={handleLoginSubmit}
                       style={{ marginLeft: "325px" }}
                     >
                       Submit
