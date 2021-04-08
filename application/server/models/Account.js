@@ -25,3 +25,14 @@ exports.deleteAll = () => {
         });
     });
 }
+
+exports.lastInsertId = () => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT LAST_INSERT_ID()`;
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}
