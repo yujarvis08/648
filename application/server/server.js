@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const searchRoutes = require('./routes/search');
+const registrationRoute = require('./routes/registration');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,6 +14,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use('/api/search', searchRoutes);
+app.use('/api/registration', registrationRoute);
 
 app.get('/ping', function (req, res) {
     return res.json({ msg: 'pong' });
