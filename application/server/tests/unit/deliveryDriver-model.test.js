@@ -13,7 +13,7 @@ const deliveryDriver = {
 
 const account = {
     userType: "deliveryDriver",
-    email: "deliveryDriver@mail.com",
+    email: "deliveryDriverTest@mail.com",
     password: "testpass"
 }
 
@@ -73,7 +73,7 @@ afterAll(async () => {
     // delete all accounts 
     // cascades to delete restaurantOwner, restaurant, menu, and menuitems)
     accountModel = require('../../models/Account');
-    await accountModel.deleteAll();
+    await accountModel.deleteAccountByEmail(account.email);
 
     db.end();
 })

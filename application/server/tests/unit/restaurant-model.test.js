@@ -8,7 +8,7 @@ let db;
 
 const restaurantOwnerAccount = {
     userType: "restaurantOwner",
-    email: "restaurantOwner@mail.com",
+    email: "restaurantOwnerRestaurantTest@mail.com",
     password: "testpass",
 }
 const restaurantOwner = {
@@ -85,7 +85,7 @@ afterAll(async () => {
     // delete all accounts 
     // cascades to delete restaurantOwner, restaurant, menu, and menuitems)
     accountModel = require('../../models/Account');
-    await accountModel.deleteAll();
+    await accountModel.deleteAccountByEmail(restaurantOwnerAccount.email);
 
     addressModel = require('../../models/Address');
     await addressModel.deleteAll();

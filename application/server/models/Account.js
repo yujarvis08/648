@@ -45,3 +45,14 @@ exports.getAccountFromEmail = (email) => {
         });
     });
 }
+
+exports.deleteAccountByEmail = (email) => {
+    return new Promise((resolve, reject) => {
+        let sql = `DELETE FROM account WHERE email = '${email}'`;
+        // let sql = `DELETE FROM account WHERE (email = '${email}' AND accountId <> 0)`;
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}

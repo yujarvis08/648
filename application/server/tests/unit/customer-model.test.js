@@ -12,7 +12,7 @@ const customer = {
 }
 const customerAccount = {
     userType: "customer",
-    email: "customer@mail.com",
+    email: "customerTest@mail.com",
     password: "testpass",
 }
 
@@ -35,7 +35,7 @@ afterAll(async () => {
     db = require('../../db');
     // delete all accounts (cascade also deletes customers)
     accountModel = require('../../models/Account');
-    await accountModel.deleteAll();
+    await accountModel.deleteAccountByEmail(customerAccount.email);
 
     db.end();
 })

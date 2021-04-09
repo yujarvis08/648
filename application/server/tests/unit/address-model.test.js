@@ -27,9 +27,5 @@ test('Inserting address into address table', async () => {
 
 afterAll(async () => {
     db = require('../../db');
-    // delete all addresses from testdb
-    addressModel = require('../../models/Address');
-    await addressModel.deleteAll();
-
     db.end();
 })

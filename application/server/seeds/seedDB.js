@@ -452,4 +452,9 @@ insertAccounts(accounts)
     .then(insertMenuItems(cafeMenuItems))
     .then(insertDeliveryDrivers())
     .then(insertCustomers())
+    .then(db.end((err, result) => {
+        if (err) throw err;
+        console.log('>>> Database seeding complete.');
+        console.log('>>> Disconnected from database!');
+    }))
     .catch(err => console.log('Seeding error:', err));
