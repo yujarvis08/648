@@ -1,25 +1,30 @@
 require('dotenv').config();
 const express = require('express');
+const cookieParser = require('cookie-parser');
 // const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 const searchRoutes = require('./routes/search');
 const registrationRoute = require('./routes/registration');
+const authRoute = require('./routes/auth');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'build')));
 }
 
+
 app.use('/api/search', searchRoutes);
 app.use('/api/registration', registrationRoute);
+app.use('/api/auth', authRoute);
 
-app.get('/ping', function (req, res) {
+app.get('/ping', (req, res) => {
     return res.json({ msg: 'pong' });
 });
-
 
 if (process.env.NODE_ENV === "production") {
     app.get('/*', function (req, res) {
