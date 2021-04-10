@@ -32,7 +32,7 @@ exports.lastInsertId = () => {
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
-            return resolve(result);
+            return resolve(result[0]['LAST_INSERT_ID()']);
         });
     });
 }

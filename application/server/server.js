@@ -30,3 +30,5 @@ if (process.env.NODE_ENV === "production") {
 
 app.listen(process.env.PORT || 8080, () =>
     console.log(`>>> Express connection listening on port ${process.env.PORT}...`));
+
+module.exports = app;
