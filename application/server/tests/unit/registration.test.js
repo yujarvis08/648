@@ -1,8 +1,8 @@
 const request = require('supertest');
 const app = require('./../../server');
 
-test('Testing login', async () => {
-    await request(app).post('/api/auth/login')
+test('Testing registration', async () => {
+    await request(app).post('/api/auth/createRestaurantOwner')
     .send({
         userType: 'restaurantOwner',
         name: 'testname',

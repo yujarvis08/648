@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const account = require('../models/Account');
-const restaurantOwner = require('../models/RestaurantOwner.js);
+const restaurantOwner = require('../models/RestaurantOwner');
 
-router.post('/restaurantOwner', (req, res) => {
+router.post('/createRestaurantOwner', (req, res) => {
     const { email, password } = req.body;
     registrationDetails = {email, password};
     registrationDetails.userType = 'restaurantOwner';
