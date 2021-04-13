@@ -7,8 +7,7 @@ import { Link } from "react-router-dom";
 const Checkout = () => {
 
   return (
-    <div>
-    <Form style={{ textAlign: "left" }}>
+    <Form>
       <br></br>
       <br></br>
       <br></br>
@@ -37,20 +36,19 @@ const Checkout = () => {
       </Form.Row>
       <br></br>
       <Form.Row>
-      <Form.Label>Zipcode</Form.Label>
-      <Form.Control type="Zip" placeholder="Zipcode: " />
+        <Form.Label>Zipcode</Form.Label>
+        <Form.Control type="Zip" placeholder="Zipcode: " />
       </Form.Row>
       <br></br>
       <Form.Row>
-      <Form.Label>Instructions</Form.Label>
-      <Form.Control type="Instructions" placeholder="Exact delivery instructions(room,area,field,etc): " />
+        <Form.Label>Instructions</Form.Label>
+        <Form.Control type="Instructions" placeholder="Exact delivery instructions(room,area,field,etc): " />
       </Form.Row>
       <Form.Row>
-      <Form.Button>Back</Form.Button>
+        <Button>Back</Button>
       </Form.Row>
-      </Form>
-      </div>
-      );
-    };
-    
-    export default Checkout;
+    </Form>
+  );
+};
+
+export default Checkout;

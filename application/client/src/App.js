@@ -9,10 +9,9 @@ function App() {
     <BrowserRouter>
       <Main />
       <Route path="/userRegistration" component={UserRegistration} />
-      <Route path="/checkout" component={Checkout} />
     </BrowserRouter>
-    
-    
+
+
   );
 }
 
