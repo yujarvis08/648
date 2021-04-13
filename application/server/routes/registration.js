@@ -12,8 +12,7 @@ router.post('/restaurantOwner', async (req, res) => {
     registrationDetails.userType = 'restaurantOwner';
 
     // input -> { userType, email, password }
-    await account.insertAccount(registrationDetails);
-    accountId = await account.lastInsertId();
+    let accountId = await account.insertAccount(registrationDetails).insertId;
     const { name } = req.body;
     owner = { name, accountId }
 
