@@ -7,7 +7,7 @@
     "seed:db": "node ./utils/createDB.js && node ./seeds/seedDB.js",
     "init:testdb": "node ./tests/createTestDB.js",
     "init:db": "node ./utils/createDB.js",
-    "start:dev": "DB_NAME=team3db nodemon server.js",
+    "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test DB_NAME=testdb npm run seed:db && NODE_ENV=test DB_NAME=testdb jest"
   },
