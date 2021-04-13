@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const app = express();
 const searchRoutes = require('./routes/search');
+const registrationRoute = require('./routes/registration');
 const authRoute = require('./routes/auth');
 
 app.use(express.json());
@@ -18,6 +19,7 @@ if (process.env.NODE_ENV === "production") {
 
 
 app.use('/api/search', searchRoutes);
+app.use('/api/registration', registrationRoute);
 app.use('/api/auth', authRoute);
 
 app.get('/ping', (req, res) => {
