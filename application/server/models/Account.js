@@ -26,17 +26,6 @@ exports.deleteAll = () => {
     });
 }
 
-exports.lastInsertId = () => {
-    return new Promise((resolve, reject) => {
-        let sql = `SELECT LAST_INSERT_ID()`;
-
-        db.query(sql, (err, result) => {
-            if (err) return reject(err);
-            return resolve(result[0]['LAST_INSERT_ID()']);
-        });
-    });
-}
-
 exports.getIdFromEmail = (email) => {
     return new Promise((resolve, reject) => {
         let sql = `SELECT id FROM account WHERE email = '${email}'`;
