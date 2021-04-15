@@ -167,8 +167,8 @@ const Homepage = () => {
                 {/*<Form.Text>
                   Don't Have an Account?{" "}
                   <a href="/userRegistration">Click Here</a>
-                </Form.Text>
-                </Form.Group>*/}
+                </Form.Text>*/}
+                </Form.Group>
 
               <Button variant="secondary" onClick={handleClose}>
                 Close
