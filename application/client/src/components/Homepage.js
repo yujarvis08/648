@@ -164,11 +164,11 @@ const Homepage = () => {
                 <Form.Text>
                   Forgot Password? <a href="/">Click Here</a>
                 </Form.Text>
-                <Form.Text>
+                {/*<Form.Text>
                   Don't Have an Account?{" "}
                   <a href="/userRegistration">Click Here</a>
                 </Form.Text>
-              </Form.Group>
+                </Form.Group>*/}
 
               <Button variant="secondary" onClick={handleClose}>
                 Close
