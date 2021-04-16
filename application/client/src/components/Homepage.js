@@ -14,19 +14,21 @@ import banner from "../sfsubanner.png";
 import Modal from "react-bootstrap/Modal";
 import DriverRegistration from "./DriverRegistration";
 import RestaurantRegistration from "./RestaurantRegistration";
+import LoginModal from './LoginModal';
 
 // import { v4 as uuidv4 } from 'uuid';
 
 const Homepage = () => {
   const [cuisines, setCuisines] = React.useState([]);
   const [restaurants, setRestaurants] = React.useState([]);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   /* Login Modal use state */
   const [show, setShow] = React.useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  // const [email, setEmail] = React.useState('');
+  // const [password, setPassword] = React.useState('');
 
   async function fetchCuisines() {
     try {
@@ -81,6 +83,14 @@ const Homepage = () => {
     }
   }
 
+  async function handleLogout() {
+    let wrappedResponse = await fetch('/api/auth/logout');
+    if (wrappedResponse.ok) {
+      console.log('logging out');
+      setIsLoggedIn(false);
+    }
+  }
+
   // const cuisineFilter = async (cuisine) => {
   //   console.log('cuisine:', cuisine);
   //   let rest = await fetchRestaurants('');
@@ -89,21 +99,21 @@ const Homepage = () => {
   //   setRestaurants(filterRest);
   // }
 
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
+  // const handleLoginSubmit = async (e) => {
+  //   e.preventDefault();
 
-    let loginData = { email, password }
-    console.log('Login data object:', loginData)
+  //   let loginData = { email, password }
+  //   console.log('Login data object:', loginData)
 
-    let response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(loginData) // body data type must match "Content-Type" header)
-    });
-    let responseJSON = await response.json();
+  //   let response = await fetch('/api/auth/login', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(loginData) // body data type must match "Content-Type" header)
+  //   });
+  //   let responseJSON = await response.json();
 
-    console.log("Response from login:", responseJSON);
-  }
+  //   console.log("Response from login:", responseJSON);
+  // }
 
 
   React.useEffect(() => {
@@ -111,12 +121,23 @@ const Homepage = () => {
     fetchCuisines().then(setCuisines).catch(console.log);
     // display all restaurants on load
     searchRestaurantsByName("");
+    console.log('cookie object:', document.cookie);
+    let cookies = document.cookie.split('=');
+    console.log('cookies split:', cookies);
+    console.log('includes cookie', cookies.includes('account_id'));
+    if (cookies.includes('account_id')) {
+      setIsLoggedIn(true);
+    }
   }, []);
 
   console.log("Restaurants", restaurants);
   // console.log('Cuisines', cuisines);
 
   return (
+    // <div>
+    //   {isLoggedIn && <h1>Logged In</h1>}
+    //   {!isLoggedIn && <h1>Not Logged In :(</h1>}
+    // </div>
     <Container className="bg-white">
       <Row className="justify-content-around">
         <p>Software Engineering Class SFSU</p>
@@ -134,55 +155,38 @@ const Homepage = () => {
           backgroundImage: `url(${logo})`,
         }}
       >
-        {/* Login Modal */}
-        <Button
-          variant="primary"
-          onClick={handleShow}
-          style={{
-            marginLeft: "1000px",
-            marginTop: "15px",
-            backgroundColor: "#61dafb",
-            color: "black",
-          }}
-        >
-          Login
+        {!isLoggedIn &&
+          <React.Fragment>
+            <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
+            <Button
+              variant="primary"
+              onClick={handleShow}
+              style={{
+                marginLeft: "1000px",
+                marginTop: "15px",
+                backgroundColor: "#61dafb",
+                color: "black",
+              }}
+            >
+              Login
         </Button>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Login</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={handleLoginSubmit}>
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
-              </Form.Group>
+          </React.Fragment>}
+        {/* Login Modal */}
+        {isLoggedIn &&
+          <Button
+            variant="primary"
+            onClick={handleLogout}
+            style={{
+              marginLeft: "1000px",
+              marginTop: "15px",
+              backgroundColor: "#61dafb",
+              color: "black",
+            }}
+          >
+            Logout
+  </Button>}
 
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                <Form.Text>
-                  Forgot Password? <a href="/">Click Here</a>
-                </Form.Text>
-                {/*<Form.Text>
-                  Don't Have an Account?{" "}
-                  <a href="/userRegistration">Click Here</a>
-                </Form.Text>*/}
-                </Form.Group>
 
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button
-                variant="primary"
-                type="submit"
-                style={{ marginLeft: "325px" }}
-              >
-                Submit
-              </Button>
-            </Form>
-          </Modal.Body>
-        </Modal>
 
         <Form onSubmit={handleSubmitSearch}>
           <Form.Row className="align-items-center">

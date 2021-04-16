@@ -11,27 +11,32 @@ router.post('/login', async (req, res) => {
     console.log(user);
 
     if (user === undefined) {
-        res.status(404).json( {msg: 'User not found'} );
+        res.status(404).json({ msg: 'User not found' });
     }
     try {
         bcrypt.compare(credentials.password, user.password,
-        (err, passwordsMatch) => {
-            if (passwordsMatch) {
-                res.cookie('account_id', user.accountId);
-                res.status(200).json({ msg: 'Logged in' });
-            } else {
-                console.log("wrong password!");
-                res.status(403).json({ msg: 'Invalid credentials' });
-            }
-        });
+            (err, passwordsMatch) => {
+                if (passwordsMatch) {
+                    res.cookie('account_id', user.accountId);
+                    res.status(200).json({ msg: 'Logged in' });
+                } else {
+                    console.log("wrong password!");
+                    res.status(403).json({ msg: 'Invalid credentials' });
+                }
+            });
     } catch (error) {
         //console.log('Something went wrong with the server');
         console.log("You have an error!", error);
         if (!res.headersSent) {
             res.status(500).json({ msg: 'Internal error' });
-        } 
+        }
     }
-        
+
+});
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('account_id');
+    res.status(200).json({ msg: 'Logged out.' });
 });
 
 module.exports = router;

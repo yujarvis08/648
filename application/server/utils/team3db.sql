@@ -24,7 +24,7 @@ USE `team3db` ;
 CREATE TABLE IF NOT EXISTS `team3db`.`account` (
   `accountId` INT NOT NULL AUTO_INCREMENT,
   `userType` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`accountId`, `email`))
 ENGINE = InnoDB;

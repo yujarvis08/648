@@ -12,7 +12,7 @@ router.post('/restaurantOwner', async (req, res) => {
 
     let salt = bcrypt.genSaltSync();
     password = bcrypt.hashSync(password, salt)
-    registrationDetails = {email, password};
+    let registrationDetails = { email, password };
     registrationDetails.userType = 'restaurantOwner';
 
     try {
@@ -24,36 +24,38 @@ router.post('/restaurantOwner', async (req, res) => {
 
         // input -> { name, accountId }
         restaurantOwner.insertOwner(owner);
-        res.status(200).json( {msg: 'registration complete'});
+        res.status(200).json({ msg: 'registration complete' });
     } catch (e) {
         console.log(e);
-        res.status(500).json({msg: 'Email exists'});
+        res.status(500).json({ msg: 'Email exists' });
     }
 });
 
 
-/* customer registration */
+/* ccustomer registration */
 router.post('/customer', async (req, res) => {
     let { email, password } = req.body;
 
     let salt = bcrypt.genSaltSync();
     password = bcrypt.hashSync(password, salt)
-    registrationDetails = {email, password};
+    let registrationDetails = { email, password };
     registrationDetails.userType = 'customer';
 
     try {
         // input -> { userType, email, password }
         let temp = await account.insertAccount(registrationDetails);
         let accountId = temp.insertId;
-        const { name } = req.body;
-        customer = { name, accountId }
+
+        let { firstName, lastName } = req.body;
+        let name = firstName + " " + lastName;
+        let customer = { name, accountId }
 
         // input -> { name, accountId }
         Customer.insertCustomer(customer);
-        res.status(200).json( {msg: 'registration complete'});
+        res.status(200).json({ msg: 'registration complete' });
     } catch (e) {
         console.log('Erorr!: ', e);
-        res.status(500).json({msg: 'Email exists'});
+        res.status(409).json({ msg: 'Email exists' });
     }
 });
 
@@ -62,7 +64,7 @@ router.post('/driver', async (req, res) => {
     let { email, password } = req.body;
     let salt = bcrypt.genSaltSync();
     password = bcrypt.hashSync(password, salt)
-    registrationDetails = {email, password};
+    registrationDetails = { email, password };
     registrationDetails.userType = 'deliveryDriver';
 
     try {
@@ -74,10 +76,10 @@ router.post('/driver', async (req, res) => {
 
         // input -> { name, accountId }
         Driver.insertDriver(customer);
-        res.status(200).json( {msg: 'registration complete'});
+        res.status(200).json({ msg: 'registration complete' });
     } catch (e) {
         console.log(e);
-        res.status(500).json( {msg: 'Email exists'} );
+        res.status(500).json({ msg: 'Email exists' });
     }
 });
 
