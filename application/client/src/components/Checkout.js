@@ -56,12 +56,35 @@ const Checkout = () => {
           </Form>
         </Col>
         <Col>
-          <h1>This will be the right side stuff</h1>
+          <h3>Order Details</h3>
+          <Form.Row>
+              <Form.Label></Form.Label>
+              <Form.Control type="Item name 1: " placeholder="Item Name 1:                       price:  $ " />
+              </Form.Row>
+              <Form.Row>
+              <Form.Label></Form.Label>
+              <Form.Control type="Item name 2: " placeholder="Item Name 2:                       price:  $ " />
+              </Form.Row>
+              <Form.Row>
+              <Form.Label></Form.Label>
+              <Form.Control type="Item name 3: " placeholder="Item Name 3:                       price:  $ " />
+              </Form.Row>
+              <Form.Row>
+              <Form.Label></Form.Label>
+              <Form.Control type="Total Cost: $ " placeholder="Total Cost: $  "/>
+              </Form.Row>
+              <Form.Row>
+              <Form.Label></Form.Label>
+              <Form.Control type="EST-Time" placeholder="Estimate Delivery Time:  "/>
+              </Form.Row>
+              <Form.Row>
+              <Button>Place Order</Button>
+            </Form.Row>
         </Col>
       </Row>
-
     </Container>
   );
 };
 
 export default Checkout;
+
