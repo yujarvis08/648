@@ -9,9 +9,20 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import logo from "../logo.svg";
+// import logo from "../logo.svg";
 import banner from "../sfsubanner.png";
+import Image from "react-bootstrap/Image";
+// import foodCollage from "../foodCollage.jpg";
+// import sfsuLogo from "../sfsu_logo.jpg";
+import deliveryScooter from "../deliveryScooter.jpg";
+import hermesLogo from "../hermesLogo.png";
+// import burger from "../burger.jpg";
+import food from "../food.jpg";
+// import food2 from "../food2.jpg";
+import gator from "../gator.jpg";
+import restaurant from "../restaurant.jpg";
 import Modal from "react-bootstrap/Modal";
+// import "./text-input-style.css";
 import { Link } from "react-router-dom";
 
 // import { v4 as uuidv4 } from 'uuid';
@@ -103,14 +114,35 @@ const Homepage = () => {
         <p>Section 03</p>
         <p>Team 03</p>
       </Row>
-
+      <Form.Text
+        style={{
+          textAlign: "left",
+          fontSize: "50px",
+          fontFamily: "Open Sans",
+          color: "green",
+        }}
+      >
+        <Image src={hermesLogo} height="75px" width="75px" />
+        Hermes
+      </Form.Text>
+      <Form.Text
+        style={{
+          textAlign: "center",
+          fontSize: "25px",
+          fontFamily: "Open Sans",
+          color: "black",
+        }}
+      >
+        {" "}
+        Get food delivered to SFSU campus fast!
+      </Form.Text>
       <div
         class="image"
         className="bg-dark"
         style={{
           width: "100%",
           height: "250px",
-          backgroundImage: `url(${logo})`,
+          backgroundImage: `url(${food})`,
         }}
       >
         {/* Login Modal */}
@@ -222,26 +254,42 @@ const Homepage = () => {
         <TabPanel>
           {" "}
           {/* About Us Tab */}
-          <h1>Hello there!</h1>
+          <h2>
+            <Image src={gator} height="150px" width="150px" />
+          </h2>
+          {/* <h1>
+            Hello there!
+          </h1> */}
           <br></br>
           <h4>
-            Get food delivered to any place on campus. We serve SFSU students,
-            faculty and campus staff at lightning fast speeds. Simply search for
-            nearby restaurants, browse their menus, place your order, and let us
-            do the rest while you relax or do your schoolwork.
+            Hello there! Get food delivered to any place on campus. We serve
+            SFSU students, faculty and campus staff at lightning fast speeds.
+            Simply search for nearby restaurants, browse their menus, place your
+            order, and let us do the rest while you relax or do your schoolwork.
           </h4>
           <br></br>
+          <h2>
+            <Image src={restaurant} height="150px" width="150px" />
+          </h2>
           <h4>
             Restaurant owner? Join our platform! Cater to SFSU Students and
             increase your online presence and gain a band of regular, loyal
             customers.
           </h4>
           <br></br>
+          <h2>
+            <Image src={deliveryScooter} height="150px" width="150px" />
+          </h2>
           <h4>
             Delivery drivers can also easily link up with their restaurant and
             begin delivering today!
           </h4>
-          <img src={banner} alt="sfsu banner"></img>
+          <img
+            src={banner}
+            alt="sfsu banner"
+            // height="250px"
+            // width="800px"
+          ></img>
         </TabPanel>
 
         <TabPanel>
