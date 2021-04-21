@@ -1,19 +1,42 @@
 import React from "react";
+import { Link } from 'react-router-dom';
+// bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import banner from "./images/sfsubanner.png";
 import Image from "react-bootstrap/Image";
+// images
+import food from './images/nav-banner.jpg';
+
+import banner from "./images/sfsubanner.png";
 import deliveryScooter from "./images/deliveryScooter.jpg";
 import gator from "./images/gator.jpg";
+// import restaurant from "./images/restaurant.jpg";
 import restaurant from "./images/restaurant.jpg";
+
 
 // import { v4 as uuidv4 } from 'uuid';
 
 const Homepage = () => {
-
+  const textStyle = {
+    fontSize: "20px",
+    // fontFamily: "Open Sans",
+    color: "black",
+  }
   return (
-    <Container className="bg-white">
+    <Container className="bg-white" fluid>
+      <Image src={food} className="position-relative" fluid
+        style={{
+          bottom: "135px",
+        }}
+      ></Image>
+      {/* <img src={food} className="position-absolute"
+        style={{
+          // bottom: "300px",
+          height: "100%",
+          backgroundImage: `url(${food})`
+        }}
+      ></img> */}
 
       <Row className="mt-5">
         <Col sm={4}>
@@ -22,27 +45,31 @@ const Homepage = () => {
           </h2>
         </Col>
         <Col sm={8} className="align-self-center">
-          <h4>
+          <Link to="/customer-registration"><h3>Students, faculty and staff</h3></Link>
+          <br />
+          <p style={textStyle}>
             Get food delivered to <b>any place on campus!</b> We serve
             SFSU students, faculty and campus staff at lightning fast speeds.
             Simply search for nearby restaurants, browse their menus, place your
             order, and let us do the rest while you relax or do your schoolwork.
-          </h4>
+          </p>
         </Col>
       </Row>
       <hr />
       <Row className="mt-5">
         <Col sm={4}>
-          <h2>
+          <p style={textStyle}>
             <Image src={restaurant} fluid rounded />
-          </h2>
+          </p>
         </Col >
         <Col sm={8} className="align-self-center">
-          <h4>
-            Restaurant owner? Join our platform! Cater to SFSU Students and
+          <Link to="/restaurant-registration"><h3>Restaurant owners</h3></Link>
+          <br />
+          <p style={textStyle}>
+            Join our platform! Cater to SFSU Students and
             <b> increase your online presence</b> and gain a band of regular, loyal
             customers.
-          </h4>
+          </p>
         </Col>
       </Row>
       <hr />
@@ -54,10 +81,12 @@ const Homepage = () => {
         </Col>
 
         <Col sm={8} className="align-self-center">
-          <h4 >
+          <Link to="/driver-registration"><h3>Delivery drivers</h3></Link>
+          <br />
+          <p style={textStyle} >
             Delivery drivers can also easily link up with their restaurant and
             begin delivering today!
-          </h4>
+          </p>
         </Col>
 
         {/* <img

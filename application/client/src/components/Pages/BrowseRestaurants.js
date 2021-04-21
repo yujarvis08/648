@@ -51,7 +51,7 @@ const BrowseRestaurants = (props) => {
         } else {
             searchRestaurantsByName(query.get('name'))
         }
-    }, [query.get('cuisine'), query.get('namepiz')]);
+    }, [query.get('cuisine'), query.get('name')]);
 
     return (
         <Container>

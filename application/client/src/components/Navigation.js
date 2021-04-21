@@ -10,13 +10,15 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+import Dropdown from "react-bootstrap/Dropdown";
+
 // images
 import hermesLogo from "./nav-hermesLogo.png";
 // components
 import LoginModal from './LoginModal';
 
 // import burger from "../burger.jpg";
-import food from "./nav-food.jpg";
+// import food from "./nav-food.jpg";
 // import food2 from "../food2.jpg";
 
 const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
@@ -71,15 +73,15 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
   }, []);
 
   return (
-    <Container>
-      <Row>
+    <Container className="sticky-top" fluid>
+      <Row >
         <Col xs={2} md={1} className="align-self-end">
           <Link to="/">
             <Image src={hermesLogo} height="75px" width="75px" />
           </Link>
         </Col>
 
-        <Col xs={2}>
+        <Col xs={2} md={2} className="align-self-end">
           <Link to="/">
             <span
               style={{
@@ -90,108 +92,88 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
             >Hermes</span>
           </Link>
         </Col>
-
-        <Col md={9} className="align-self-end">
-          <span
-            style={{
-              fontSize: "25px",
-              fontFamily: "Open Sans",
-              color: "black",
-            }}
-          > Get food delivered to SFSU campus fast!
-          </span>
-        </Col>
-
-      </Row>
-
-      {/* Background and Nav */}
-      <div
-        className="image"
-        className="bg-dark"
-        style={{
-          width: "100%",
-          height: "250px",
-          backgroundImage: `url(${food})`,
-        }}
-      >
-        {/* Login button */}
-        {!isLoggedIn &&
-          <React.Fragment>
-            <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
-            <Button
-              variant="primary"
-              onClick={handleShow}
-              style={{
-                // marginLeft: "1000px",
-                marginTop: "15px",
-                backgroundColor: "#61dafb",
-                color: "black",
-              }}
-            >
-              Login
-                    </Button>
-          </React.Fragment>}
-        {/* Logout button */}
-        {isLoggedIn &&
-          <Button
-            variant="primary"
-            onClick={handleLogout}
-            style={{
-              marginTop: "15px",
-              backgroundColor: "#61dafb",
-              color: "black",
-            }}
-          >
-            Logout
-          </Button>}
-
-        {/* Search bar */}
-        <Form onSubmit={handleSubmitSearch}>
-          <Form.Row className="align-items-center">
-            <Col lg="8" className="m-auto">
-              {/* Label for screen readers only */}
-              <Form.Label htmlFor="restaurantSearchBar" srOnly>
-                Enter a restaurant's name
+        <Col md={8} className="align-self-center mt-2">
+          {/* Search bar */}
+          <Form onSubmit={handleSubmitSearch}>
+            <Form.Row className="align-items-center">
+              <Col lg="8" className="m-auto">
+                {/* Label for screen readers only */}
+                <Form.Label htmlFor="restaurantSearchBar" srOnly>
+                  Enter a restaurant's name
               </Form.Label>
 
-              <InputGroup className="mb-2">
-                {/* Cuisine options */}
-                <InputGroup.Prepend>
-                  <Form.Control
-                    as="select"
-                    id="select-cuisines"
-                    onChange={handleSelectCuisine}
-                    className="bg-light border-right-0"
-                    style={{ marginTop: "105px" }}
-                  >
-                    {cuisines.map((cuisine, index) => {
-                      return <option key={index}>{cuisine}</option>;
-                    })}
-                  </Form.Control>
-                </InputGroup.Prepend>
+                <InputGroup className="mb-2">
+                  {/* Cuisine options */}
+                  <InputGroup.Prepend>
+                    <Form.Control
+                      as="select"
+                      id="select-cuisines"
+                      onChange={handleSelectCuisine}
+                      className="bg-light border-right-0"
+                    >
+                      {cuisines.map((cuisine, index) => {
+                        return <option key={index}>{cuisine}</option>;
+                      })}
+                    </Form.Control>
+                  </InputGroup.Prepend>
 
-                {/* Restaurant search bar */}
-                <FormControl
-                  name="restaurantSearchBar"
-                  placeholder="Enter a restaurant's name"
-                  style={{ marginTop: "105px" }}
-                />
+                  {/* Restaurant search bar */}
+                  <FormControl
+                    name="restaurantSearchBar"
+                    placeholder="Enter a restaurant's name"
+                  />
 
-                {/* Submit search (button) */}
-                <InputGroup.Append>
-                  <Button
-                    variant="outline-secondary bg-light"
-                    type="submit"
-                    style={{ marginTop: "105px" }}
-                  >
-                    Go
+                  {/* Submit search (button) */}
+                  <InputGroup.Append>
+                    <Button
+                      variant="outline-secondary bg-light"
+                      type="submit"
+                    >
+                      Go
                   </Button>
-                </InputGroup.Append>
-              </InputGroup>
-            </Col>
-          </Form.Row>
-        </Form>
-      </div>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Col>
+            </Form.Row>
+          </Form>
+        </Col>
+        <Col md={1} className="align-self-center">
+          {/* Login button */}
+          {
+            !isLoggedIn &&
+            <React.Fragment>
+              <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
+              <Button
+                variant="primary"
+                onClick={handleShow}
+                style={{
+                  // marginLeft: "1000px",
+                  marginTop: "15px",
+                  backgroundColor: "#61dafb",
+                  color: "black",
+                }}
+              >
+                Login
+                    </Button>
+            </React.Fragment>
+          }
+          {/* Logout button */}
+          {
+            isLoggedIn &&
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Menu
+          </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item href="#/action-1">Account</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Logout</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          }
+        </Col>
+      </Row>
+
+
     </Container >
 
   )

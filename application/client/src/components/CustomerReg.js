@@ -16,11 +16,6 @@ const UserRegistration = () => {
 
   const history = useHistory();
 
-  React.useEffect(() => {
-    // console.log('firstName', firstName);
-    // console.log('lastName', lastName);
-  }, []);
-
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -48,21 +43,10 @@ const UserRegistration = () => {
     }
   }
 
-  // const handleSubmit = () => {
-
-  // }
-
 
   return (
     <Container>
-      <Row className="justify-content-around">
-        <p>Software Engineering Class SFSU</p>
-        <p>Spring 2021</p>
-        <p>Section 03</p>
-        <p>Team 03</p>
-      </Row>
-
-      <Row className="justify-content-around"><h1>User Registration</h1></Row>
+      <Row className="mt-5 justify-content-around"><h1>Customer Registration</h1></Row>
       <Form style={{ textAlign: "left" }} onSubmit={(e) => handleSubmit(e)}>
         <br></br>
         <br></br>

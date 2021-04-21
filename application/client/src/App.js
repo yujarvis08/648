@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Main from "./components/Main";
-import UserRegistration from "./components/userRegistration";
+import UserRegistration from "./components/CustomerReg";
 import Sfsuswe from './components/Sfsuswe';
 import Navigation from './components/Navigation';
 
