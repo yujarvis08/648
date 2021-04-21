@@ -31,7 +31,10 @@ exports.getAll = () => {
 exports.getByName = (pattern) => {
     return new Promise((resolve, reject) => {
 
-        let sql = `SELECT * FROM restaurant WHERE name LIKE '%${pattern}%'`;
+        let sql = `SELECT * FROM restaurant WHERE 
+        name LIKE '%${pattern}%' OR
+        description LIKE '%${pattern}%' OR
+        cuisine LIKE '%${pattern}%'`;
         // let sql = `SELECT r.restaurantId, r.ownerId, r.name, r.description, r.cuisine, r.priceRating, 
         // a.line1, a.line2, a.city, a.state, a.zipcode 
         // FROM restaurant r 

@@ -25,6 +25,21 @@ body {
   height: 100%;
 }
 
+h1 {
+  color: rgb(10, 10, 10);
+  text-align: left;
+  line-height: 1;
+  font-family: "Open Sans";
+}
+h2 {
+  text-align: center;
+}
+h4 {
+  color: rgb(10, 10, 10);
+  text-align: center;
+  line-height: 1;
+  font-family: "Open Sans";
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
