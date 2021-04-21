@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import Dropdown from "react-bootstrap/Dropdown";
 
 
-const BrowseRestaurants = (props) => {
+const BrowseRestaurants = () => {
     const [restaurants, setRestaurants] = React.useState([]);
     const query = new URLSearchParams(useLocation().search);
 
@@ -55,6 +55,7 @@ const BrowseRestaurants = (props) => {
     }
 
     React.useEffect(() => {
+        console.log('Name query:', query.get('name'));
         if (query.get('cuisine')) {
             searchRestaurantsByCuisine(query.get("cuisine"));
         } else {

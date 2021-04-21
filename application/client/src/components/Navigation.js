@@ -1,3 +1,12 @@
+/**
+ * This component is composed of our App's name, logo, search bar, and
+ * login/menu button. The login and menu button is conditionally rendered
+ * depending on the login state of the user.
+ * 
+ * The search bar applies input validation via html (<40 alphanum chars except for
+ * apostrophes)
+ */
+
 // libraries
 import React from 'react';
 import { useHistory, Link } from 'react-router-dom';
@@ -16,10 +25,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import hermesLogo from "./nav-hermesLogo.png";
 // components
 import LoginModal from './LoginModal';
-
-// import burger from "../burger.jpg";
-// import food from "./nav-food.jpg";
-// import food2 from "../food2.jpg";
 
 const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
   const [show, setShow] = React.useState(false);
@@ -50,6 +55,8 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
   function handleSubmitSearch(event) {
     event.preventDefault();
     let name = event.target.elements.restaurantSearchBar.value;
+    name = name.replaceAll("'", "''");
+    console.log('name string:', name);
     // searchRestaurantsByName(name);
     history.push(`/search/restaurant?name=${name}`)
   }
@@ -117,10 +124,12 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
                     </Form.Control>
                   </InputGroup.Prepend>
 
-                  {/* Restaurant search bar */}
+                  {/* Restaurant search bar (must match alphanumeric and can contain apostrophes */}
                   <FormControl
                     name="restaurantSearchBar"
                     placeholder="Enter a restaurant's name"
+                    maxLength="40"
+                    pattern="^[A-Za-z0-9']*$"
                   />
 
                   {/* Submit search (button) */}
@@ -138,26 +147,15 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
           </Form>
         </Col>
         <Col md={1} className="align-self-center">
-          {/* Login button */}
+          {/* Login button - conditionally rendered */}
           {
             !isLoggedIn &&
             <React.Fragment>
               <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
-              <Button
-                variant="primary"
-                onClick={handleShow}
-                style={{
-                  // marginLeft: "1000px",
-                  marginTop: "15px",
-                  backgroundColor: "#61dafb",
-                  color: "black",
-                }}
-              >
-                Login
-                    </Button>
+              <Button variant="success" onClick={handleShow} > Login </Button>
             </React.Fragment>
           }
-          {/* Logout button */}
+          {/* Menu dropdown - conditionally rendered */}
           {
             isLoggedIn &&
             <Dropdown>
@@ -172,7 +170,6 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
           }
         </Col>
       </Row>
-
 
     </Container >
 

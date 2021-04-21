@@ -14,9 +14,6 @@ import gator from "./images/gator.jpg";
 // import restaurant from "./images/restaurant.jpg";
 import restaurant from "./images/restaurant.jpg";
 
-
-// import { v4 as uuidv4 } from 'uuid';
-
 const Homepage = () => {
   const textStyle = {
     fontSize: "20px",
@@ -26,17 +23,8 @@ const Homepage = () => {
   return (
     <Container className="bg-white" fluid>
       <Image src={food} className="position-relative" fluid
-        style={{
-          bottom: "135px",
-        }}
+        style={{ bottom: "90px" }}
       ></Image>
-      {/* <img src={food} className="position-absolute"
-        style={{
-          // bottom: "300px",
-          height: "100%",
-          backgroundImage: `url(${food})`
-        }}
-      ></img> */}
 
       <Row className="mt-5">
         <Col sm={4}>

@@ -3,9 +3,9 @@ import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import Homepage from "./Pages/Homepage";
 import BrowseRestaurants from './Pages/BrowseRestaurants';
-import DriverReg from './DriverReg';
-import RestaurantReg from './RestaurantReg';
-import CustomerReg from './CustomerReg';
+import DriverReg from './Pages/DriverReg';
+import RestaurantReg from './Pages/RestaurantReg';
+import CustomerReg from './Pages/CustomerReg';
 
 const Main = () => {
     return (
