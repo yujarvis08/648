@@ -163,10 +163,10 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Menu
-          </Dropdown.Toggle>
+            </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item href="#/action-1">Account</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Logout</Dropdown.Item>
+                <Dropdown.Item href="#/action-2" onClick={handleLogout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           }
