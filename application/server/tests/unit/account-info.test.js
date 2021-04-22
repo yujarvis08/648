@@ -23,12 +23,12 @@ test('Testing change email endpoint when email exists', async () => {
     }).expect(409); // 409 Conflict, email already exists
 });
 
-test('Changing password' async () => {
+test('Changing password', async () => {
     await request(app).post('/api/accountInfo/changePassword')
     .send({
         email: 'puajr@customer.com',
-        newEmail:  'jilbo@customer.com',
-    }).expect(409); // 409 Conflict, email already exists
+        newPassword:  'newPassword',
+    }).expect(200); // 409 Conflict, email already exists
 });
 
 /* sets email back to how it was but its not working*/

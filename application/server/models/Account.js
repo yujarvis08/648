@@ -75,12 +75,13 @@ exports.changeEmail = (email, newEmail) => {
     });
 }
 
-exports.changePassowrd = (email, newPassword) => {
+exports.changePassword = (email, newPassword) => {
     return new Promise( async (resolve, reject) => {
         let response = await getIdFromEmail(email);
         let sql = `UPDATE account
-            SET password = '${passoword} 
+            SET password = '${newPassword}'
             WHERE accountId = '${response[0].accountId}'`;
+        console.log(sql);
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);

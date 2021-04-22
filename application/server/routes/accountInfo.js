@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { changeEmail, changePassword } = require('../models/Account');
+const bcrypt = require('bcrypt-nodejs');
 
 /* accepts email and new email in req.body */
 router.post('/changeEmail', async (req, res) => {
@@ -20,7 +21,12 @@ router.post('/changeEmail', async (req, res) => {
 
 /* accepts email and new password in req.body */
 router.post('/changePassword', async (req, res) => {
+
     let { email, newPassword } = req.body;
+
+    let salt = bcrypt.genSaltSync();
+    newPassword = bcrypt.hashSync(newPassword, salt)
+
     let sqlRes = await changePassword(email, newPassword);
     res.status(200).json({
         msg: 'Successfully changed password'
