@@ -50,7 +50,6 @@ exports.getAccountFromEmail = email => {
 exports.deleteAccountByEmail = email => {
     return new Promise((resolve, reject) => {
         let sql = `DELETE FROM account WHERE email = '${email}'`;
-        // let sql = `DELETE FROM account WHERE (email = '${email}' AND accountId <> 0)`;
         db.query(sql, (err, result) => {
             if (err) return reject(err);
             return resolve(result);
@@ -62,12 +61,9 @@ exports.changeEmail = (email, newEmail) => {
     return new Promise( async (resolve, reject) => {
         let response = await getIdFromEmail(email);
         let checkDupe = await getIdFromEmail(newEmail);
-        console.log('checkDupe', checkDupe);
         if (checkDupe[0] && checkDupe[0].accountId) {
             return resolve(new Error('duplicate email'));
         }
-
-        console.log('accountId:', response);
         let sql = `UPDATE account 
             SET email = "${newEmail}"
             WHERE accountId = ${response[0].accountId}`;
@@ -76,6 +72,19 @@ exports.changeEmail = (email, newEmail) => {
             if (err) return reject(err);
             return resolve(result);
         });
-        
+    });
+}
+
+exports.changePassowrd = (email, newPassword) => {
+    return new Promise( async (resolve, reject) => {
+        let response = await getIdFromEmail(email);
+        let sql = `UPDATE account
+            SET password = '${passoword} 
+            WHERE accountId = '${response[0].accountId}'`;
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
     });
 }

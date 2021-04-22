@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { changeEmail } = require('../models/Account');
+const { changeEmail, changePassword } = require('../models/Account');
 
 /* accepts email and new email in req.body */
 router.post('/changeEmail', async (req, res) => {
@@ -16,6 +16,15 @@ router.post('/changeEmail', async (req, res) => {
             msg: 'Successfully changed Email'
         });
     }
+});
+
+/* accepts email and new password in req.body */
+router.post('/changePassword', async (req, res) => {
+    let { email, newPassword } = req.body;
+    let sqlRes = await changePassword(email, newPassword);
+    res.status(200).json({
+        msg: 'Successfully changed password'
+    });
 });
 
 module.exports = router;
