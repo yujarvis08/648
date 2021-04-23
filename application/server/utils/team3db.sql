@@ -150,9 +150,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`order`
+-- Table `team3db`.`restaurantOrder`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`order` (
+CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOrder` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
   `restaurantId` INT NULL,
   PRIMARY KEY (`orderId`),
