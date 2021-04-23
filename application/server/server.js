@@ -9,7 +9,6 @@ const app = express();
 const searchRoutes      = require('./routes/search');
 const registrationRoute = require('./routes/registration');
 const authRoute         = require('./routes/auth');
-const accountInfoRoute  = require('./routes/accountInfo');
 const ordersRoute       = require('./routes/orders');
 
 app.use(express.json());
@@ -25,7 +24,6 @@ if (process.env.NODE_ENV === "production") {
 app.use('/api/search', searchRoutes);
 app.use('/api/registration', registrationRoute);
 app.use('/api/auth', authRoute);
-app.use('/api/accountInfo', accountInfoRoute);
 app.use('/api/orders', ordersRouter);
 
 app.get('/ping', (req, res) => {
