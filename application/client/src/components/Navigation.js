@@ -154,7 +154,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
             !isLoggedIn &&
             <React.Fragment>
               <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
-              <Button variant="success" onClick={handleShow} > Login </Button>
+              <Button variant="light" onClick={handleShow} > Login </Button>
             </React.Fragment>
           }
           {/* Menu dropdown - conditionally rendered */}
@@ -178,12 +178,17 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
         <div>Driver</div>
         <div>Restaurant Owner</div>
       </div> */}
-      {!isLoggedIn && <Row className="text-center">
-        <Col>About Us</Col>
-        <Col>SFSU Customer</Col>
-        <Col>Driver</Col>
-        <Col>Restaurant Owner</Col>
-      </Row>}
+      {!isLoggedIn &&
+        <Row className="text-center text-white">
+          {/* <Col><a style={{ color: "inherit" }} href="#about-us">About Us</a></Col>
+        <Col><a style={{ color: "inherit" }} href="#sfsu-customers">SFSU Customer</a></Col>
+        <Col><a style={{ color: "inherit" }} href="#delivery-drivers">Driver</a></Col>
+        <Col><a style={{ color: "inherit" }} href="#restaurant-owners">Restaurant Owner</a></Col> */}
+          <Col><Link style={{ color: "inherit" }} to="/">About Us</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/customer-registration">SFSU Customer</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="driver-registration">Driver</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="restaurant-registration">Restaurant Owner</Link></Col>
+        </Row>}
 
 
     </Container >
