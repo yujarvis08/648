@@ -80,7 +80,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
   }, []);
 
   return (
-    <Container className="sticky-top" fluid>
+    <Container className="sticky-top" style={{ backgroundColor: "#2A9D8F" }} fluid>
       <Row >
         <Col xs={2} md={1} className="align-self-end">
           <Link to="/">
@@ -94,7 +94,9 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
               style={{
                 fontSize: "50px",
                 fontFamily: "Open Sans",
-                color: "green",
+                color: "white",
+                WebkitTextStroke: "1px F8F8F8",
+                textShadow: "0px 1px 4px #23430C"
               }}
             >Hermes</span>
           </Link>
@@ -159,7 +161,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
           {
             isLoggedIn &&
             <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
+              <Dropdown.Toggle variant="light" id="dropdown-basic">
                 Menu
             </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -170,6 +172,19 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
           }
         </Col>
       </Row>
+      {/* <div className="d-flex justify-content-between">
+        <div>About Us</div>
+        <div>SFSU Customer</div>
+        <div>Driver</div>
+        <div>Restaurant Owner</div>
+      </div> */}
+      {!isLoggedIn && <Row className="text-center">
+        <Col>About Us</Col>
+        <Col>SFSU Customer</Col>
+        <Col>Driver</Col>
+        <Col>Restaurant Owner</Col>
+      </Row>}
+
 
     </Container >
 

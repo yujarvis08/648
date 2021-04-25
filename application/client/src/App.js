@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Main from "./components/Main";
 import Sfsuswe from './components/Sfsuswe';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -30,6 +31,7 @@ const App = () => {
       <Sfsuswe />
       <Navigation handleLogout={handleLogout} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Main />
+      <Footer />
     </BrowserRouter>
 
   );
