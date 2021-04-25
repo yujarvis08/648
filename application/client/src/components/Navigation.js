@@ -80,7 +80,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
   }, []);
 
   return (
-    <Container className="sticky-top" fluid>
+    <Container className="sticky-top" style={{ backgroundColor: "#2A9D8F" }} fluid>
       <Row >
         <Col xs={2} md={1} className="align-self-end">
           <Link to="/">
@@ -94,7 +94,9 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
               style={{
                 fontSize: "50px",
                 fontFamily: "Open Sans",
-                color: "green",
+                color: "white",
+                WebkitTextStroke: "1px F8F8F8",
+                textShadow: "0px 1px 4px #23430C"
               }}
             >Hermes</span>
           </Link>
@@ -152,14 +154,14 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
             !isLoggedIn &&
             <React.Fragment>
               <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
-              <Button variant="success" onClick={handleShow} > Login </Button>
+              <Button variant="light" onClick={handleShow} > Login </Button>
             </React.Fragment>
           }
           {/* Menu dropdown - conditionally rendered */}
           {
             isLoggedIn &&
             <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
+              <Dropdown.Toggle variant="light" id="dropdown-basic">
                 Menu
             </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -170,6 +172,24 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
           }
         </Col>
       </Row>
+      {/* <div className="d-flex justify-content-between">
+        <div>About Us</div>
+        <div>SFSU Customer</div>
+        <div>Driver</div>
+        <div>Restaurant Owner</div>
+      </div> */}
+      {!isLoggedIn &&
+        <Row className="text-center text-white">
+          {/* <Col><a style={{ color: "inherit" }} href="#about-us">About Us</a></Col>
+        <Col><a style={{ color: "inherit" }} href="#sfsu-customers">SFSU Customer</a></Col>
+        <Col><a style={{ color: "inherit" }} href="#delivery-drivers">Driver</a></Col>
+        <Col><a style={{ color: "inherit" }} href="#restaurant-owners">Restaurant Owner</a></Col> */}
+          <Col><Link style={{ color: "inherit" }} to="/">About Us</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/customer-registration">SFSU Customer</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="driver-registration">Driver</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="restaurant-registration">Restaurant Owner</Link></Col>
+        </Row>}
+
 
     </Container >
 
