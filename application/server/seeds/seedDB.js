@@ -7,12 +7,14 @@
  * Seeds 5 - 7 menu items in each menu
  */
 const db = require('../db');
+const bcrypt = require('bcrypt-nodejs');
 
+let salt = bcrypt.genSaltSync();
 const accounts = [
     [
         "customer",
         "customer@mail.com",
-        "testpass",
+        bcrypt.hashSync('testpass', salt)
     ],
     [
         "restaurantOwner",
@@ -450,4 +452,9 @@ insertAccounts(accounts)
     .then(insertMenuItems(cafeMenuItems))
     .then(insertDeliveryDrivers())
     .then(insertCustomers())
+    .then(db.end((err, result) => {
+        if (err) throw err;
+        console.log('>>> Database seeding complete.');
+        console.log('>>> Disconnected from database!');
+    }))
     .catch(err => console.log('Seeding error:', err));

@@ -1,23 +1,23 @@
 require('dotenv').config();
 
 let accountModel;
-let db;
+// let db;
 
 // ! delivery driver must be created AFTER restaurant
 const accounts = {
     customer: {
-        userType: "customer", email: "customer@mail.com", password: "testpass",
+        userType: "customer", email: "customerAccTest@mail.com", password: "testpass",
     },
     restaurantOwner: {
-        userType: "restaurantOwner", email: "owner@restaurant.com", password: "testpass",
+        userType: "restaurantOwner", email: "ownerAccTest@restaurant.com", password: "testpass",
     },
     deliveryDriver: {
-        userType: "deliveryDriver", email: "driver@mail.com", password: "testpass",
+        userType: "deliveryDriver", email: "driverAccTest@mail.com", password: "testpass",
     }
 }
 
 beforeAll(() => {
-    process.env.DB_NAME = 'testdb';
+    // process.env.DB_NAME = 'testdb';
     accountModel = require('../../models/Account');
 })
 
@@ -37,11 +37,18 @@ test('Inserting DELIVERY DRIVER account into account table', async () => {
     expect(result.affectedRows).toBe(1);
 });
 
+test('Deleting an account by email', async () => {
+    let result = await accountModel.deleteAccountByEmail(accounts.customer.email);
+    expect(result.affectedRows).toBe(1);
+});
+
 afterAll(async () => {
-    db = require('../../db');
     // delete all accounts and addresses from testdb
     accountModel = require('../../models/Account');
-    await accountModel.deleteAll();
+    // clean up all the accounts that were inserted during tests
+    await accountModel.deleteAccountByEmail(accounts.deliveryDriver.email);
+    await accountModel.deleteAccountByEmail(accounts.restaurantOwner.email);
 
+    db = require('../../db');
     db.end();
 })
