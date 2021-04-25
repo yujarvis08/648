@@ -172,19 +172,10 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
           }
         </Col>
       </Row>
-      {/* <div className="d-flex justify-content-between">
-        <div>About Us</div>
-        <div>SFSU Customer</div>
-        <div>Driver</div>
-        <div>Restaurant Owner</div>
-      </div> */}
+
       {!isLoggedIn &&
         <Row className="text-center text-white">
-          {/* <Col><a style={{ color: "inherit" }} href="#about-us">About Us</a></Col>
-        <Col><a style={{ color: "inherit" }} href="#sfsu-customers">SFSU Customer</a></Col>
-        <Col><a style={{ color: "inherit" }} href="#delivery-drivers">Driver</a></Col>
-        <Col><a style={{ color: "inherit" }} href="#restaurant-owners">Restaurant Owner</a></Col> */}
-          <Col><Link style={{ color: "inherit" }} to="/">About Us</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/about-us">About Us</Link></Col>
           <Col><Link style={{ color: "inherit" }} to="/customer-registration">SFSU Customer</Link></Col>
           <Col><Link style={{ color: "inherit" }} to="driver-registration">Driver</Link></Col>
           <Col><Link style={{ color: "inherit" }} to="restaurant-registration">Restaurant Owner</Link></Col>

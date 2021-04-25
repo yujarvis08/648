@@ -87,6 +87,10 @@ const UserRegistration = () => {
             </Button>
         <br></br>
       </Form>
+      <br />
+      <br />
+      <br />
+      <br />
     </Container>
 
 
