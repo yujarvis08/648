@@ -112,6 +112,10 @@ const RestaurantRegistration = () => {
           Finish
       </Button>
       </Form>
+      <br />
+      <br />
+      <br />
+      <br />
     </Container>
   );
 };

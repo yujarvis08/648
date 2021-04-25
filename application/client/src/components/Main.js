@@ -6,6 +6,9 @@ import BrowseRestaurants from './Pages/BrowseRestaurants';
 import DriverReg from './Pages/DriverReg';
 import RestaurantReg from './Pages/RestaurantReg';
 import CustomerReg from './Pages/CustomerReg';
+import AboutUs from './Pages/AboutUs';
+import TermsOfUse from './Pages/TermsOfUse';
+
 
 const Main = () => {
     return (
@@ -14,6 +17,10 @@ const Main = () => {
                 {/* Homepage */}
                 <Route exact path="/">
                     <Homepage />
+                </Route>
+
+                <Route exact path="/about-us">
+                    <AboutUs />
                 </Route>
 
                 {/* Registrations */}
@@ -34,6 +41,10 @@ const Main = () => {
                 {/* Browse Restaurants */}
                 <Route exact path="/search/restaurant">
                     <BrowseRestaurants />
+                </Route>
+
+                <Route exact path="/terms-of-use">
+                    <TermsOfUse />
                 </Route>
 
             </Switch>

@@ -6,8 +6,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 // images
-import food from './images/nav-banner.jpg';
-
 import banner from "./images/sfsubanner.png";
 import deliveryScooter from "./images/deliveryScooter.jpg";
 import gator from "./images/gator.jpg";
@@ -22,7 +20,12 @@ const Homepage = () => {
   }
   return (
     <Container className="bg-white" fluid>
-      <Image src={food} className="position-relative" fluid style={{ bottom: "90px" }} />
+
+      <h1 className="text-center p-5">Quickly get food delivered to <b>any place on campus!</b> </h1>
+
+      <hr />
+
+      {/* <Image src={food} className="position-relative" fluid style={{ bottom: "90px" }} /> */}
 
       <Row className="mt-5" >
         <Col sm={4}>
@@ -34,7 +37,7 @@ const Homepage = () => {
           <Link name="sfsu-customers" to="/customer-registration"><h3>Students, faculty and staff</h3></Link>
           <br />
           <p style={textStyle}>
-            Get food delivered to <b>any place on campus!</b> We serve
+            We serve
             SFSU students, faculty and campus staff at lightning fast speeds.
             Simply search for nearby restaurants, browse their menus, place your
             order, and let us do the rest while you relax or do your schoolwork.
