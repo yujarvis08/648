@@ -5,7 +5,8 @@ const {
     insertOrder, 
     getOrders, 
     updateComment, 
-    cancelOrder 
+    cancelOrder,
+    orderStatus
 } = require('../models/Order');
 
 //Create order: POST /order/create
@@ -34,6 +35,12 @@ router.post('/cancelOrder', (req, res) => {
     let { restaurantOrderId } = req.body;
     cancelOrder(restaurantOrderId);
     res.status(200).json({ msg: 'Cancelled the order' });
+});
+
+router.post('/orderStatus', (req, res) => {
+    let { restaurantOrderId } = req.body;
+    orderStatus(restaurantOrderId);
+    res.status(200).json({ msg: 'Retrieved the order status' });
 });
 
 module.exports = router;
