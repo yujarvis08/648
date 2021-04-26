@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
 app.use('/api/search', searchRoutes);
 app.use('/api/registration', registrationRoute);
 app.use('/api/auth', authRoute);
-app.use('/api/orders', ordersRouter);
+app.use('/api/orders', ordersRoute);
 
 app.get('/ping', (req, res) => {
     return res.json({ msg: 'pong' });

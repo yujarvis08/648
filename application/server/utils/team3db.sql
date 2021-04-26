@@ -154,6 +154,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOrder` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
+  `comment` VARCHAR(45),
   `restaurantId` INT NULL,
   PRIMARY KEY (`orderId`),
   INDEX `restaurantIdFK_idx` (`restaurantId` ASC) VISIBLE,
