@@ -17,7 +17,7 @@ router.post('/create', (req, res) => {
 });
 
 //Get order: GET /order/orderId
-router.post('/getOrders', (req, res) => {
+router.get('/getOrders', (req, res) => {
     let { restaurantId } = req.body;
     getOrders(restaurantId);
     res.status(200).json({ msg: 'got the orders' });
@@ -37,10 +37,19 @@ router.post('/cancelOrder', (req, res) => {
     res.status(200).json({ msg: 'Cancelled the order' });
 });
 
-router.post('/orderStatus', (req, res) => {
+// gets the order status
+router.get('/orderStatus', (req, res) => {
     let { restaurantOrderId } = req.body;
     orderStatus(restaurantOrderId);
     res.status(200).json({ msg: 'Retrieved the order status' });
 });
+
+// update the order status
+router.put('/setOrderStatus', (req, res) => {
+    let { restaurantOrderId } = req.body;
+    setOrderStatus(restaurantOrderId);
+    res.status(200).json({ msg: 'Set the order status' });
+});
+
 
 module.exports = router;
