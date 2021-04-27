@@ -30,7 +30,7 @@ const DriverRegistration = () => {
   return (
     <Container>
 
-      <Row className="mt-5 justify-content-around"><h1>Customer Registration</h1></Row>
+      <Row className="mt-5 justify-content-around"><h1>Driver Registration</h1></Row>
 
       <Form className="mb-5">
         <br></br>
