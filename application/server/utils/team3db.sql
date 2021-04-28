@@ -202,7 +202,30 @@ CREATE TABLE IF NOT EXISTS `team3db`.`menuItem` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `team3db`.`shoppingCart`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `team3db`.`shoppingCart` (
+  `shoppingCartId` INT NOT NULL AUTO_INCREMENT,
+  `accountId` INT NOT NULL,
+  `menuItemId` INT NOT NULL,
+  PRIMARY KEY (`shoppingCartId`),
+  CONSTRAINT `shoppingCartAccountFK`
+    FOREIGN KEY (`accountId`)
+    REFERENCES `team3db`.`account` (`accountId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `menuItemShoppingCartFK`
+    FOREIGN KEY (`menuItemId`)
+    REFERENCES `team3db`.`menuItem` (`menuItemId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
