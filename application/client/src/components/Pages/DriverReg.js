@@ -4,11 +4,32 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
-
 const DriverRegistration = () => {
 
+  const [restaurants, setRestaurants] = React.useState([]);
+
+  async function fetchRestaurants() {
+    try {
+      let response = await (
+        await fetch("/api/search/restaurant/restaurants")
+      ).json();
+      let restaurantsArr = ["All restaurants"];
+
+      for (let restaurant of response.restaurants) restaurantsArr.push(restaurant.name);
+
+      return restaurantsArr;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  React.useEffect(() => {
+
+    fetchRestaurants().then(setRestaurants).catch(console.log);
+
+  }, []);
   return (
     <Container>
+
       <Row className="mt-5 justify-content-around"><h1>Driver Registration</h1></Row>
 
       <Form className="mb-5">
@@ -47,20 +68,21 @@ const DriverRegistration = () => {
         <Form.Group controlId="exampleForm.SelectCustomSizeSm">
           <Form.Label>Which restaurant do you work for?</Form.Label>
           <Form.Control as="select" size="sm" custom>
-            <option>Bob's Burgers</option>
+          {restaurants.map((restaurant, index) => {
+                        return <option key={index}>{restaurant}</option>;
+                      })}
+            {/*<option>Bob's Burgers</option>
             <option>Infinite Tacos</option>
             <option>Pizzarino</option>
             <option>Brain Freeze</option>
-            <option>Dynamic Coffee</option>
+  <option>Dynamic Coffee</option>*/}
+            
           </Form.Control>
         </Form.Group>
         <br></br>
         <Button variant="primary" type="submit">Finish</Button>
       </Form>
-      <br />
-      <br />
-      <br />
-      <br />
+      <hr />
     </Container>
   );
 };
