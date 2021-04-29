@@ -57,7 +57,10 @@ const DriverRegistration = () => {
         <br></br>
         <Button variant="primary" type="submit">Finish</Button>
       </Form>
-      <hr />
+      <br />
+      <br />
+      <br />
+      <br />
     </Container>
   );
 };

@@ -1,10 +1,11 @@
-const express = require('express');
-const router = express.Router();
-const account = require('../models/Account');
+const express         = require('express');
+const router          = express.Router();
+const account         = require('../models/Account');
 const restaurantOwner = require('../models/RestaurantOwner');
-const Customer = require('../models/Customer');
-const Driver = require('../models/DeliveryDriver');
-const bcrypt = require('bcrypt-nodejs');
+const menuItem        = require('../models/menuItem');
+const Customer        = require('../models/Customer');
+const Driver          = require('../models/DeliveryDriver');
+const bcrypt          = require('bcrypt-nodejs');
 
 /* restaurantOwner registration */
 router.post('/restaurantOwner', async (req, res) => {
@@ -31,6 +32,11 @@ router.post('/restaurantOwner', async (req, res) => {
     }
 });
 
+/* add menu item (restauraunt owner registration) */
+router.post('/restaurantOwner/addMenuItem', async (req, res) => {;
+    menuItem.insertMenuItem(req.body);
+    res.status(200).json({ msg: 'Inserted menu item' });
+});
 
 /* ccustomer registration */
 router.post('/customer', async (req, res) => {
@@ -58,6 +64,7 @@ router.post('/customer', async (req, res) => {
         res.status(409).json({ msg: 'Email exists' });
     }
 });
+
 
 /* driver registration */
 router.post('/driver', async (req, res) => {
