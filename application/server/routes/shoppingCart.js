@@ -14,4 +14,10 @@ router.post('/addItem', async (req, res) => {
     res.status(200).json({ msg: 'inserted into shoppingCart' });
 });
 
+router.post('/deleteItem', async (req, res) => {
+    let { shoppingCartId } = req.body;
+
+    shoppingCart.deleteItem(shoppingCartId);
+});
+
 module.exports = router;
