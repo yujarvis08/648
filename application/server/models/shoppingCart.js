@@ -13,14 +13,7 @@ exports.addItem = (accountId, menuItemId) => {
     });
 };
 
-/* TODO, need to attach order to accountId somewhere */
-exports.checkout = (restaurantId) => {
-	return new Promise((resolve, reject) => {
-        order.insertOrder(restaurantId);
-    });
-}
-
-exports.delete = (shoppingCartId) => {
+exports.deleteItem = (shoppingCartId) => {
 	return new Promise((resolve, reject) => {
         sql = `DELETE FROM shoppingCart 
             WHERE shoppingCardId = ${shoppingCardId}`;
@@ -33,3 +26,12 @@ exports.delete = (shoppingCartId) => {
 
     });
 }
+
+/* TODO, need to attach order to accountId somewhere */
+exports.checkout = (restaurantId) => {
+	return new Promise((resolve, reject) => {
+        order.insertOrder(restaurantId);
+    });
+}
+
+
