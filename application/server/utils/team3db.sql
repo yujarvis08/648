@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOrder` (
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `order_customer_FK`
-    FOREIGN KEY (`restaurantId`)
+    FOREIGN KEY (`customerId`)
     REFERENCES `team3db`.`customer` (`customerId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
