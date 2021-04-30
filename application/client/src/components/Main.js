@@ -9,6 +9,7 @@ import RestaurantReg from './Pages/RestaurantReg';
 import CustomerReg from './Pages/CustomerReg';
 import AboutUs from './Pages/AboutUs';
 import TermsOfUse from './Pages/TermsOfUse';
+import TestModal from './TestModal';
 
 
 const Main = () => {
@@ -52,6 +53,10 @@ const Main = () => {
 
                 <Route exact path="/terms-of-use">
                     <TermsOfUse />
+                </Route>
+
+                <Route exact path="/test-modal">
+                    <TestModal />
                 </Route>
 
             </Switch>
