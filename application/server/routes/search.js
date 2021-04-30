@@ -42,4 +42,9 @@ router.get('/restaurant/cuisines', async (req, res, next) => {
     res.status(200).json({ status: 'ok', cuisines });
 });
 
+router.get('/restaurant/restaurants', async (req, res, next) => {
+    let restaurants = await utilModel.getAllRestaurants();
+    res.status(200).json({ status: 'ok', restaurants });
+});
+
 module.exports = router;

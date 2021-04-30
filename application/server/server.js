@@ -1,12 +1,15 @@
 require('dotenv').config();
-const express           = require('express');
-const cookieParser      = require('cookie-parser');
-const path              = require('path');
-const app               = express();
-const authRoute         = require('./routes/auth');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+// const bodyParser = require('body-parser');
+const path = require('path');
+const app = express();
+
+/* ========== Routes ========== */
 const searchRoutes      = require('./routes/search');
 const registrationRoute = require('./routes/registration');
-const accountInfoRoute  = require('./routes/accountInfo');
+const authRoute         = require('./routes/auth');
+const ordersRoute       = require('./routes/orders');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,10 +20,11 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'build')));
 }
 
-app.use('/api/auth', authRoute);
+/* ===== Middleware ====== */
 app.use('/api/search', searchRoutes);
 app.use('/api/registration', registrationRoute);
-app.use('/api/accountInfo', accountInfoRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/orders', ordersRoute);
 
 app.get('/ping', (req, res) => {
     return res.json({ msg: 'pong' });

@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { changeEmail, changePassword } = require('../models/Account');
+const { 
+    changeEmail, 
+    changePassword,
+    deleteAccountByEmail
+} = require('../models/Account');
 const bcrypt = require('bcrypt-nodejs');
 
 /* accepts email and new email in req.body */
@@ -30,6 +34,16 @@ router.post('/changePassword', async (req, res) => {
     let sqlRes = await changePassword(email, newPassword);
     res.status(200).json({
         msg: 'Successfully changed password'
+    });
+});
+
+/* Delete account */
+
+router.put('/deleteAccount', async (req, res) => {
+    let { email } = req.body;
+    deleteAccountByEmail(email);
+    res.status(200).json({
+        msg: 'Deleted account if account existed'
     });
 });
 
