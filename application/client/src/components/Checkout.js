@@ -4,9 +4,11 @@ import Button from "react-bootstrap/Button";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useHistory } from 'react-router-dom';
 
 const Checkout = () => {
   const [cartItems, setCartItems] = React.useState([]);
+  const history = useHistory();
 
   const testItems = [
     {
@@ -36,6 +38,10 @@ const Checkout = () => {
     )
   });
 
+  function handleSubmit() {
+    console.log('Submit order information to backend.')
+  }
+
   React.useEffect(() => {
     setCartItems(testItems);
   }, []);
@@ -51,8 +57,8 @@ const Checkout = () => {
   return (
     <Container>
       <Row>
-        <Col>
-          <Form className="p-5">
+        <Col md={6}>
+          <Form className="p-3 mt-5">
             <h3>Checkout</h3>
 
             <Form.Row>
@@ -82,24 +88,34 @@ const Checkout = () => {
             <br></br>
             <Form.Row>
               <Form.Label>Instructions</Form.Label>
-              <Form.Control name="Instructions" placeholder="Exact delivery instructions(room,area,field,etc): " />
-            </Form.Row>
-            <Form.Row>
-              <Button type="submit">Back</Button>
+              <Form.Control
+                name="Instructions"
+                placeholder="Exact delivery instructions (room, area, field, etc)"
+                as="textarea" rows={3} />
             </Form.Row>
           </Form>
         </Col>
 
-        <Col className="p-5">
+        <Col md={6} className="p-3 mt-5">
           <h3>Order Details</h3>
           <Container className="p-5 border" fluid>
             {itemList}
             <Row>
-              <Col>Total cost: {getTotalPrice(cartItems)}</Col>
+              <Col><b>Total cost: {getTotalPrice(cartItems)}</b></Col>
             </Row>
           </Container>
+          <Row className="justify-content-around p-2">
+            <Button onClick={() => history.goBack()}>Back</Button>
+            <Button onClick={handleSubmit}>Place Order</Button>
+          </Row>
         </Col>
       </Row>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </Container>
   );
 };
