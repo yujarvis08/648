@@ -7,7 +7,7 @@
  * Seeds 5 - 7 menu items in each menu
  */
 const db = require('../db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 
 let salt = bcrypt.genSaltSync();
 const accounts = [
