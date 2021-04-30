@@ -156,14 +156,22 @@ CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOrder` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
   `comment` VARCHAR(45),
   `orderStatus` VARCHAR(45) NOT NULL,
+  `address` VARCHAR(45) NOT NULL,
   `restaurantId` INT NULL,
+  `customerId` INT NULL,
   PRIMARY KEY (`orderId`),
   INDEX `restaurantIdFK_idx` (`restaurantId` ASC) VISIBLE,
   CONSTRAINT `orderRestaurantIdFK`
     FOREIGN KEY (`restaurantId`)
     REFERENCES `team3db`.`restaurant` (`restaurantId`)
     ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `order_customer_FK`
+    FOREIGN KEY (`restaurantId`)
+    REFERENCES `team3db`.`customer` (`customerId`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
+
 ENGINE = InnoDB;
 
 
