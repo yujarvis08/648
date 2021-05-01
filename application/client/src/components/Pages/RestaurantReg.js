@@ -5,10 +5,33 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 const RestaurantRegistration = () => {
+  const [cuisines, setCuisines] = React.useState([]);
+
+  async function fetchCuisines() {
+    try {
+      let response = await (
+        await fetch("/api/search/restaurant/cuisines")
+      ).json();
+      let cuisinesArr = ["All cuisines"];
+
+      for (let cuisine of response.cuisines) cuisinesArr.push(cuisine.cuisine);
+
+      return cuisinesArr;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  React.useEffect(() => {
+    // get list of unique quisines available from our DB
+    fetchCuisines().then(setCuisines).catch(console.log);
+  }, []);
 
   return (
     <Container>
-      <Row className="mt-5 justify-content-around"><h1>Restaurant Owner Registration</h1></Row>
+      <Row className="mt-5 justify-content-around">
+        <h1>Restaurant Owner Registration</h1>
+      </Row>
       <Form style={{ textAlign: "left" }}>
         <br></br>
         <br></br>
@@ -65,7 +88,16 @@ const RestaurantRegistration = () => {
 
         <Form.Row>
           <Form.Label>Cuisine</Form.Label>
-          <Form.Control placeholder="What cuisine do you serve?" />
+          <Form.Control             required="true"
+            placeholder="What cuisine do you serve?"
+            as="select"
+            size="sm"
+            custom
+            >
+            {cuisines.map((cuisine, index) => {
+              return <option key={index}>{cuisine}</option>;
+            })}
+          </Form.Control>
         </Form.Row>
         <br></br>
 
@@ -110,7 +142,7 @@ const RestaurantRegistration = () => {
 
         <Button variant="primary" type="submit">
           Finish
-      </Button>
+        </Button>
       </Form>
       <br />
       <br />
