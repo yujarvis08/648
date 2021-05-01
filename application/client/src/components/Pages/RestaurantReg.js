@@ -41,25 +41,25 @@ const RestaurantRegistration = () => {
         {/* Registration Form */}
         <Form.Row>
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="firstname" placeholder="First Name" />
+          <Form.Control type="firstname" placeholder="First Name"  required="true"/>
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="lastname" placeholder="Last Name" />
+          <Form.Control type="lastname" placeholder="Last Name"  required="true"/>
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control type="email" placeholder="Enter email" pattern=".+@.+.com|.+@.+.net" required="true"/>
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control type="password" placeholder="Password"  required="true"/>
         </Form.Row>
         <br></br>
 
@@ -76,13 +76,13 @@ const RestaurantRegistration = () => {
 
         <Form.Row>
           <Form.Label>Restaurant Name</Form.Label>
-          <Form.Control placeholder="Enter the name of your Restaurant" />
+          <Form.Control placeholder="Enter the name of your Restaurant"  required="true"/>
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Description</Form.Label>
-          <Form.Control placeholder="Add a description of your restaurant" />
+          <Form.Control placeholder="Add a description of your restaurant"  required="true"/>
         </Form.Row>
         <br></br>
 

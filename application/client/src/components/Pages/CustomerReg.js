@@ -56,22 +56,22 @@ const UserRegistration = () => {
 
         <Form.Row>
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="firstname" placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
+          <Form.Control type="firstname" placeholder="First Name"  required="true" onChange={(e) => setFirstName(e.target.value)} />
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="lastname" placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} />
+          <Form.Control type="lastname" placeholder="Last Name"  required="true" onChange={(e) => setLastName(e.target.value)} />
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter email"  pattern=".+@sfsu.edu|.+@.+sfsu.edu" onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control type="email" placeholder="Enter email"   required="true" pattern=".+@sfsu.edu|.+@.+sfsu.edu" onChange={(e) => setEmail(e.target.value)} />
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+          <Form.Control type="password" placeholder="Password"  required="true" onChange={(e) => setPassword(e.target.value)} />
         </Form.Row>
         <br></br>
         <Form.Row>

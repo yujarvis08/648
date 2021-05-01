@@ -42,22 +42,22 @@ const DriverRegistration = () => {
 
         <Form.Row>
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="firstname" placeholder="First Name" />
+          <Form.Control type="firstname" placeholder="First Name"  required="true"/>
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="lastname" placeholder="Last Name" />
+          <Form.Control type="lastname" placeholder="Last Name"  required="true"/>
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control type="email" placeholder="Enter email" pattern=".+@.+.com|.+@.+.net"/>
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control type="password" placeholder="Password"  required="true"/>
         </Form.Row>
         <br></br>
         <Form.Row>
@@ -67,7 +67,7 @@ const DriverRegistration = () => {
         <br></br>
         <Form.Group controlId="exampleForm.SelectCustomSizeSm">
           <Form.Label>Which restaurant do you work for?</Form.Label>
-          <Form.Control as="select" size="sm" custom>
+          <Form.Control  required="true" as="select" size="sm" custom>
           {restaurants.map((restaurant, index) => {
                         return <option key={index}>{restaurant}</option>;
                       })}
