@@ -66,7 +66,7 @@ const UserRegistration = () => {
         <br></br>
         <Form.Row>
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control type="email" placeholder="Enter email"  pattern=".+@sfsu.edu|.+@.+sfsu.edu" onChange={(e) => setEmail(e.target.value)} />
         </Form.Row>
         <br></br>
         <Form.Row>

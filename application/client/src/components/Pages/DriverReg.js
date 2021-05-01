@@ -71,11 +71,6 @@ const DriverRegistration = () => {
           {restaurants.map((restaurant, index) => {
                         return <option key={index}>{restaurant}</option>;
                       })}
-            {/*<option>Bob's Burgers</option>
-            <option>Infinite Tacos</option>
-            <option>Pizzarino</option>
-            <option>Brain Freeze</option>
-  <option>Dynamic Coffee</option>*/}
             
           </Form.Control>
         </Form.Group>
