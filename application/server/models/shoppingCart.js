@@ -13,14 +13,14 @@ exports.addItem = (accountId, menuItemId) => {
     });
 };
 
-exports.deleteItem = (shoppingCartId) => {
+exports.deleteItem = shoppingCartId => {
 	return new Promise((resolve, reject) => {
         sql = `DELETE FROM shoppingCart 
             WHERE shoppingCardId = ${shoppingCardId}`;
 
         db.query(sql, (err, result) => {
 			if (err) return reject(err);
-			console.log('Inserted into shoppingCart:', result);
+			//console.log('Inserted into shoppingCart:', result);
 			resolve(result);
 		});
 
@@ -28,7 +28,7 @@ exports.deleteItem = (shoppingCartId) => {
 }
 
 /* TODO, need to attach order to accountId somewhere */
-exports.checkout = (restaurantId) => {
+exports.checkout = restaurantId => {
 	return new Promise((resolve, reject) => {
         order.insertOrder(restaurantId);
     });

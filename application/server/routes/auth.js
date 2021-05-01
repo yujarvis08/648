@@ -8,7 +8,6 @@ router.post('/login', async (req, res) => {
     let credentials = req.body
     let user = await account.getAccountFromEmail(credentials.email);
     user = user[0];
-    console.log(user);
 
     if (user === undefined) {
         res.status(404).json({ msg: 'User not found' });

@@ -8,7 +8,9 @@ router.post('/', async (req, res) => {
 
 /* add item to shoppingCart */
 router.post('/addItem', async (req, res) => {
-    let { accountId, menuItemId } = req.body;
+    let { menuItemId } = req.body;
+    // will get account id from cookie
+    let { account_id: accountId } = req.cookies;
 
     await shoppingCart.addItem(accountId, menuItemId);
     res.status(200).json({ msg: 'inserted into shoppingCart' });
