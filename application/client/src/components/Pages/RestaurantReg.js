@@ -41,25 +41,42 @@ const RestaurantRegistration = () => {
         {/* Registration Form */}
         <Form.Row>
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="firstname" placeholder="First Name"  required="true"/>
+          <Form.Control
+            type="firstname"
+            placeholder="First Name"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="lastname" placeholder="Last Name"  required="true"/>
+          <Form.Control
+            type="lastname"
+            placeholder="Last Name"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" pattern=".+@.+.com|.+@.+.net" required="true"/>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            pattern=".+@.+.com|.+@.+.net"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password"  required="true"/>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
@@ -76,24 +93,31 @@ const RestaurantRegistration = () => {
 
         <Form.Row>
           <Form.Label>Restaurant Name</Form.Label>
-          <Form.Control placeholder="Enter the name of your Restaurant"  required="true"/>
+          <Form.Control
+            placeholder="Enter the name of your Restaurant"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Description</Form.Label>
-          <Form.Control placeholder="Add a description of your restaurant"  required="true"/>
+          <Form.Control
+            placeholder="Add a description of your restaurant"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Cuisine</Form.Label>
-          <Form.Control             required="true"
+          <Form.Control
+            required="true"
             placeholder="What cuisine do you serve?"
             as="select"
             size="sm"
             custom
-            >
+          >
             {cuisines.map((cuisine, index) => {
               return <option key={index}>{cuisine}</option>;
             })}
@@ -138,6 +162,21 @@ const RestaurantRegistration = () => {
           <Form.Label>Zip</Form.Label>
           <Form.Control placeholder="Zip Code" />
         </Form.Row>
+        <br></br>
+        <Form.Label className="mr-2">
+          Upload an Image of your Restaurant
+        </Form.Label>
+        <br></br>
+        <input type="file" accept="image/*"></input>
+        <br></br>
+        <br></br>
+        <br></br>
+
+        <Form.Text>
+          I agree to the <a href="/terms-of-use">Terms of Use</a>{" "}
+          <input type="checkbox" required="true" />
+        </Form.Text>
+        <br></br>
         <br></br>
 
         <Button variant="primary" type="submit">

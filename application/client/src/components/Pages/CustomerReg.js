@@ -6,13 +6,11 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
-
 const UserRegistration = () => {
-
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   const history = useHistory();
 
@@ -23,30 +21,31 @@ const UserRegistration = () => {
       firstName,
       lastName,
       email,
-      password
-    }
+      password,
+    };
 
-    let wrappedResponse = await fetch('/api/registration/customer', {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(regData) // body data type must match "Content-Type" header
+    let wrappedResponse = await fetch("/api/registration/customer", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(regData), // body data type must match "Content-Type" header
     });
-    console.log('wrapped response:', wrappedResponse);
+    console.log("wrapped response:", wrappedResponse);
 
     let response = await wrappedResponse.json();
     // console.log('Response from registering customer:', response);
     if (wrappedResponse.ok) {
-      alert("You've been registered! Login at the homepage.")
-      history.push('/');
+      alert("You've been registered! Login at the homepage.");
+      history.push("/");
     } else {
       alert(`Registration failed. ${response.msg}`);
     }
   }
 
-
   return (
     <Container>
-      <Row className="mt-5 justify-content-around"><h1>Customer Registration</h1></Row>
+      <Row className="mt-5 justify-content-around">
+        <h1>Customer Registration</h1>
+      </Row>
       <Form style={{ textAlign: "left" }} onSubmit={(e) => handleSubmit(e)}>
         <br></br>
         <br></br>
@@ -56,22 +55,43 @@ const UserRegistration = () => {
 
         <Form.Row>
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="firstname" placeholder="First Name"  required="true" onChange={(e) => setFirstName(e.target.value)} />
+          <Form.Control
+            type="firstname"
+            placeholder="First Name"
+            required="true"
+            onChange={(e) => setFirstName(e.target.value)}
+          />
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="lastname" placeholder="Last Name"  required="true" onChange={(e) => setLastName(e.target.value)} />
+          <Form.Control
+            type="lastname"
+            placeholder="Last Name"
+            required="true"
+            onChange={(e) => setLastName(e.target.value)}
+          />
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter email"   required="true" pattern=".+@sfsu.edu|.+@.+sfsu.edu" onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            required="true"
+            pattern=".+@sfsu.edu|.+@.+sfsu.edu"
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </Form.Row>
         <br></br>
         <Form.Row>
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password"  required="true" onChange={(e) => setPassword(e.target.value)} />
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            required="true"
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Form.Row>
         <br></br>
         <Form.Row>
@@ -80,11 +100,19 @@ const UserRegistration = () => {
         </Form.Row>
         <br></br>
 
-        <Link to="/" className="btn btn-secondary">Back</Link>
+        <Form.Text>
+          I agree to the <a href="/terms-of-use">Terms of Use</a>{" "}
+          <input type="checkbox" required="true" />
+        </Form.Text>
+        <br></br>
+        <br></br>
+        <Link to="/" className="btn btn-secondary">
+          Back
+        </Link>
 
-        <Button variant="primary" type="submit" style={{ marginLeft: '50px' }}>
+        <Button variant="primary" type="submit" style={{ marginLeft: "50px" }}>
           Finish
-            </Button>
+        </Button>
         <br></br>
       </Form>
       <br />
@@ -92,9 +120,7 @@ const UserRegistration = () => {
       <br />
       <br />
     </Container>
-
-
-  )
-}
+  );
+};
 
 export default UserRegistration;
