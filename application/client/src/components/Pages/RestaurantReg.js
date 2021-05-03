@@ -5,10 +5,33 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 const RestaurantRegistration = () => {
+  const [cuisines, setCuisines] = React.useState([]);
+
+  async function fetchCuisines() {
+    try {
+      let response = await (
+        await fetch("/api/search/restaurant/cuisines")
+      ).json();
+      let cuisinesArr = ["All cuisines"];
+
+      for (let cuisine of response.cuisines) cuisinesArr.push(cuisine.cuisine);
+
+      return cuisinesArr;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  React.useEffect(() => {
+    // get list of unique quisines available from our DB
+    fetchCuisines().then(setCuisines).catch(console.log);
+  }, []);
 
   return (
     <Container>
-      <Row className="mt-5 justify-content-around"><h1>Restaurant Owner Registration</h1></Row>
+      <Row className="mt-5 justify-content-around">
+        <h1>Restaurant Owner Registration</h1>
+      </Row>
       <Form style={{ textAlign: "left" }}>
         <br></br>
         <br></br>
@@ -18,25 +41,42 @@ const RestaurantRegistration = () => {
         {/* Registration Form */}
         <Form.Row>
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="firstname" placeholder="First Name" />
+          <Form.Control
+            type="firstname"
+            placeholder="First Name"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="lastname" placeholder="Last Name" />
+          <Form.Control
+            type="lastname"
+            placeholder="Last Name"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            pattern=".+@.+.com|.+@.+.net"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
@@ -53,19 +93,35 @@ const RestaurantRegistration = () => {
 
         <Form.Row>
           <Form.Label>Restaurant Name</Form.Label>
-          <Form.Control placeholder="Enter the name of your Restaurant" />
+          <Form.Control
+            placeholder="Enter the name of your Restaurant"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Description</Form.Label>
-          <Form.Control placeholder="Add a description of your restaurant" />
+          <Form.Control
+            placeholder="Add a description of your restaurant"
+            required="true"
+          />
         </Form.Row>
         <br></br>
 
         <Form.Row>
           <Form.Label>Cuisine</Form.Label>
-          <Form.Control placeholder="What cuisine do you serve?" />
+          <Form.Control
+            required="true"
+            placeholder="What cuisine do you serve?"
+            as="select"
+            size="sm"
+            custom
+          >
+            {cuisines.map((cuisine, index) => {
+              return <option key={index}>{cuisine}</option>;
+            })}
+          </Form.Control>
         </Form.Row>
         <br></br>
 
@@ -107,10 +163,25 @@ const RestaurantRegistration = () => {
           <Form.Control placeholder="Zip Code" />
         </Form.Row>
         <br></br>
+        <Form.Label className="mr-2">
+          Upload an Image of your Restaurant
+        </Form.Label>
+        <br></br>
+        <input type="file" accept="image/*"></input>
+        <br></br>
+        <br></br>
+        <br></br>
+
+        <Form.Text>
+          I agree to the <a href="/terms-of-use">Terms of Use</a>{" "}
+          <input type="checkbox" required="true" />
+        </Form.Text>
+        <br></br>
+        <br></br>
 
         <Button variant="primary" type="submit">
           Finish
-      </Button>
+        </Button>
       </Form>
       <br />
       <br />
