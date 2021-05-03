@@ -18,15 +18,16 @@ router.post('/addItem', async (req, res) => {
 
 /* delete item from shoppingCard */
 router.post('/deleteItem', async (req, res) => {
-    let { shoppingCartId } = req.body;
-    shoppingCart.deleteItem(shoppingCartId);
+    let { account_id: accountId } = req.cookies;
+    let { menuItemId } = req.body;
+    shoppingCart.deleteItem(accountId, menuItemId);
     res.status(200).json({ msg: 'deleted item from shopping cart' });
 });
 
 router.post('/checkout', async (req, res) => {
-    let accountId = req.cookies.account_id;
+    let { account_id: accountId } = req.cookies;
     let { shoppingCartId, restaurantId } = req.body;
     shoppingCart.checkout(accountId, restaurantId);
-
+    res.status(200).json({ msg: 'checkout' });
 });
 module.exports = router;

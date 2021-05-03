@@ -4,8 +4,11 @@ exports.insertOrder = (customerId, restaurantId) => {
 	return new Promise((resolve, reject) => {
 
         let sql = `INSERT INTO 
-            restaurantOrder(restaurantId, orderStatus, customerId)
-			VALUES(${restaurantId}, "restaurant is preparing", ${customerId})`;
+            restaurantOrder(restaurantId, orderStatus, customerId, address)
+			VALUES(${restaurantId}, 
+            "restaurant is preparing", 
+            ${customerId},
+            '200 broadyway, san Francisco')`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
