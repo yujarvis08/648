@@ -28,8 +28,8 @@ exports.deleteItem = (accountId, menuItemId) => {
 }
 
 /* checkout creates an order and clears shopping cart*/
-exports.checkout = (accountId, restaurantId) => {
-	return new Promise((resolve, reject) => {
+exports.checkout = async (accountId, restaurantId) => {
+	return new Promise(async (resolve, reject) => {
         await order.insertOrder(restaurantId);
         await clearShoppingCart(accountId);
     });
@@ -45,7 +45,8 @@ exports.clearShoppingCart = accountId => {
 			//console.log('Inserted into shoppingCart:', result);
 			resolve(result);
 		});
-};
+    });
+}
 
 /* Gets all items in shopping cart in an account */
 exports.getCartItems = accountId => {
