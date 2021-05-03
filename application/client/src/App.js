@@ -1,24 +1,41 @@
-import Checkout from "./components/Checkout";
-import AccountInfo from './components/AccountInfo';
-// import { insertRestaurant } from '../../server/models/Restaurant';
-import Resturantmenu from './components/Resturantmenu';
-import AccountChangePassword from "./components/AccountChangePassword";
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Main from "./components/Main";
+import Sfsuswe from './components/Sfsuswe';
+import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 
- 
-function App() {
- return (
-   <BrowserRouter>
-     <Main />
-     <Route path="/userRegistration" component={UserRegistration} />
-     <Route path="/Checkout" component={Checkout} />
-     <Route path="/AccountInfo" component={AccountInfo} />
-     <Route path="/Resturantmenu" component={Resturantmenu} />
-     <Route path="/AccountChangePassword" component={AccountChangePassword} />
-   </BrowserRouter>
- 
- 
- );
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  async function handleLogout() {
+    let wrappedResponse = await fetch('/api/auth/logout');
+    if (wrappedResponse.ok) {
+      console.log('logging out');
+      setIsLoggedIn(false);
+    }
+  }
+
+  // Check login status on App load
+  React.useEffect(() => {
+    // console.log('cookie object:', document.cookie);
+    let cookies = document.cookie.split('=');
+    // console.log('cookies split:', cookies);
+    // console.log('includes cookie', cookies.includes('account_id'));
+    if (cookies.includes('account_id')) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <Sfsuswe />
+      <Navigation handleLogout={handleLogout} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Main />
+      <Footer />
+    </BrowserRouter>
+
+  );
 }
- 
+
 export default App;
 

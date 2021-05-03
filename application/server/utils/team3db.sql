@@ -150,10 +150,12 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`order`
+-- Table `team3db`.`restaurantOrder`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`order` (
+CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOrder` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
+  `comment` VARCHAR(45),
+  `orderStatus` VARCHAR(45) NOT NULL,
   `restaurantId` INT NULL,
   PRIMARY KEY (`orderId`),
   INDEX `restaurantIdFK_idx` (`restaurantId` ASC) VISIBLE,
