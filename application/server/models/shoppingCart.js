@@ -27,12 +27,25 @@ exports.deleteItem = (accountId, menuItemId) => {
     });
 }
 
-/* checkout */
-exports.checkout = (customerId, restaurantId) => {
+/* checkout creates an order and clears shopping cart*/
+exports.checkout = (accountId, restaurantId) => {
 	return new Promise((resolve, reject) => {
-        order.insertOrder(restaurantId);
+        await order.insertOrder(restaurantId);
+        await clearShoppingCart(accountId);
     });
 }
+
+exports.clearShoppingCart = accountId => {
+    return new Promise((resolve, reject) => {
+        let sql = `DELETE FROM shoppingCart
+            WHERE accountId = ${accountId}`;
+
+        db.query(sql, (err, result) => {
+			if (err) return reject(err);
+			//console.log('Inserted into shoppingCart:', result);
+			resolve(result);
+		});
+};
 
 /* Gets all items in shopping cart in an account */
 exports.getCartItems = accountId => {
