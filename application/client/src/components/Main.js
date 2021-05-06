@@ -10,9 +10,14 @@ import CustomerReg from './Pages/CustomerReg';
 import AboutUs from './Pages/AboutUs';
 import TermsOfUse from './Pages/TermsOfUse';
 import TestModal from './TestModal';
+import AccountInfo from './AccountInfo';
+// import { insertRestaurant } from '../../server/models/Restaurant';
+import ResturantMenu from './RestaurantMenu';
+import AccountChangePassword from "./AccountChangePassword";
 
 
 const Main = () => {
+
     return (
         <React.Fragment>
             <Switch>
@@ -58,6 +63,10 @@ const Main = () => {
                 <Route exact path="/test-modal">
                     <TestModal />
                 </Route>
+
+                <Route path="/AccountInfo" component={AccountInfo} />
+                <Route path="/restaurant-menu" component={ResturantMenu} />
+                <Route path="/AccountChangePassword" component={AccountChangePassword} />
 
             </Switch>
         </React.Fragment>

@@ -7,11 +7,11 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form';
 
-const MenuItemModal = ({ showState, handleClose }) => {
-    const [quantity, setQuantity] = React.useState(0.00);
-    const [total, setTotal] = React.useState(0.00);
-
-    const menuItem = { name: "pork chop", price: "2.99" };
+const MenuItemModal = ({
+    showState, handleClose,
+    menuItem,
+    quantity, setQuantity,
+    total }) => {
 
     function handleDecrement() {
         let newQuantity = quantity - 1;
@@ -28,15 +28,6 @@ const MenuItemModal = ({ showState, handleClose }) => {
         setQuantity(newQuantity);
     }
 
-    React.useEffect(() => {
-        let newTotal = quantity * menuItem.price;
-        if (newTotal < 0) {
-            newTotal = 0;
-        }
-        setTotal(newTotal.toFixed(2));
-    }, [quantity]);
-
-
     return (
         <Modal show={showState} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -45,9 +36,9 @@ const MenuItemModal = ({ showState, handleClose }) => {
 
             <Modal.Body>
                 <Form>
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1"></label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                    <div className="form-group">
+                        <label htmlFor="exampleFormControlTextarea1"></label>
+                        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
                             placeholder="No cheese, no peppers, etc"></textarea>
                     </div>
                 </Form>
