@@ -58,6 +58,7 @@ const UserRegistration = () => {
           <Form.Control
             type="firstname"
             placeholder="First Name"
+            required="true"
             onChange={(e) => setFirstName(e.target.value)}
           />
         </Form.Row>
@@ -67,6 +68,7 @@ const UserRegistration = () => {
           <Form.Control
             type="lastname"
             placeholder="Last Name"
+            required="true"
             onChange={(e) => setLastName(e.target.value)}
           />
         </Form.Row>
@@ -76,6 +78,8 @@ const UserRegistration = () => {
           <Form.Control
             type="email"
             placeholder="Enter email"
+            required="true"
+            pattern=".+@sfsu.edu|.+@.+sfsu.edu"
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Row>
@@ -85,6 +89,7 @@ const UserRegistration = () => {
           <Form.Control
             type="password"
             placeholder="Password"
+            required="true"
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Row>
@@ -93,6 +98,13 @@ const UserRegistration = () => {
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control type="password" placeholder="Confirm Password" />
         </Form.Row>
+        <br></br>
+
+        <Form.Text>
+          I agree to the <a href="/terms-of-use">Terms of Use</a>{" "}
+          <input type="checkbox" required="true" />
+        </Form.Text>
+        <br></br>
         <br></br>
 
         <Link to="/" className="btn btn-secondary">
