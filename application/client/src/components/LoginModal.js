@@ -26,7 +26,6 @@ const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
             setIsLoggedIn(true);
         }
     }
-    console.log('show state in login modal:', showState, handleClose);
 
     return (
         <Modal show={showState} onHide={handleClose}>

@@ -1,5 +1,6 @@
 import React from "react";
-import "react-tabs/style/react-tabs.css";
+import { useLocation } from 'react-router-dom';
+import SearchAPI from '../api/search.js';
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -8,24 +9,58 @@ import Card from "react-bootstrap/Card";
 // components
 import MenuItemModal from "./MenuItemModal";
 
+/**
+ * TODO: Fetch restaurant menu items from DB
+ * TODO: Create function for handling adding items to shopping cart in DB
+ */
+/**
+ * This component displays the restaurant's menu items.
+ * It is also in charge of displaying the MenuItemModal.
+ * It renders when the url is: /restaurant-menu?name=<restaurant name>
+ * Devs: Amit, Roberto
+ */
 const Resturantmenu = () => {
   const [show, setShow] = React.useState(false);
-  const handleClose = () => setShow(false);
+  // const [menuItems, setMenuItems] = React.useState([]);
+  const [selectedMenuItem, setSelectedMenuItem] = React.useState({ name: "", price: 0.00 });
+  const [quantity, setQuantity] = React.useState(0);
+  const [total, setTotal] = React.useState(0.00);
+  const query = new URLSearchParams(useLocation().search);
+  const [restaurant, setRestaurant] = React.useState({
+    name: "",
+    priceRating: "",
+    cuisine: "",
+    description: "",
+    address: {},
+    imagePath: ""
+  });
+
+  /**
+   * When the user clicks away from the MenuItem modal, this function
+   * is triggered. This sets the quantity and total back to zero so that
+   * the next item selected starts at zero as well.
+   */
+  const handleClose = () => {
+    setQuantity(0);
+    setTotal(0.00);
+    setShow(false);
+  }
+
+  /**
+   * Triggered "on click". It gets the menu item name and price from the
+   * html element and updates the selectedMenuItem state variable before
+   * toggling the show state for the MenuItem modal so that it pops up.
+   * @param {object} e 
+   */
   const handleShow = (e) => {
-    console.log('event data:', e);
-    console.log('children:', e.target.childNodes)
-    console.log('name:', e.target.childNodes.innerText)
-    // console.log('description:', e.target.childNodes[1].childNodes[0].innerText)
-    // console.log('price:', e.target.childNodes[1].childNodes[1].innerText)
-    console.log('price:', e.target.innerText)
+    let itemName = e.currentTarget.getAttribute("item-name");
+    let itemPrice = e.currentTarget.getAttribute("item-price");
+    let newMenuItem = { name: itemName, price: itemPrice }
+    setSelectedMenuItem(newMenuItem)
     setShow(true)
   };
-  const menuItemData = { name: "pork chop", price: "2.99" };
-  // grab restaurant name from url.
-  // url should be something like /RestaurantMenu?name=<restaurant name>
-  // using the restauran's name (gotten from url), do a fetch request to get restaurant data
-  // so we can dispaly the restaurant's description
 
+  // Dummy data
   const menuItemsTestData = [
     {
       name: "pork chop",
@@ -49,37 +84,65 @@ const Resturantmenu = () => {
     }
   ]
 
-  const menuItems = menuItemsTestData.map((item, i) => {
-    return (
-      <Card
-        className="m-5"
-        style={{ width: '18rem' }}
-        key={i}
-        onClick={handleShow}
-      >
-        <Card.Body>
-          <Card.Title>{`${item.name}`}</Card.Title>
-          {/* <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle> */}
-          <Card.Text>
-            <p>{`${item.description}`}</p>
-            <p>{`$${item.price}`}</p>
-          </Card.Text>
-        </Card.Body>
-      </Card>
-    )
-  })
+  /**
+   * On mount, this hook gets the selected restaurant's name from the URI,
+   * then it uses the Search API to fetch the restaurant's data and saves
+   * it into the restaurant state variable.
+   */
+  React.useEffect(async () => {
+    let restaurantName = decodeURIComponent(query.get('name'));
+    let response = await SearchAPI.searchRestaurantsByName(restaurantName);
+    if (response.restaurants) {
+      setRestaurant(response.restaurants[0]);
+    }
+  }, [])
+
+  /**
+   * When the quantity changes, this hook recalculates the new total
+   */
+  React.useEffect(() => {
+    let newTotal = quantity * selectedMenuItem.price;
+    if (newTotal < 0) {
+      newTotal = 0;
+    }
+    setTotal(newTotal.toFixed(2));
+  }, [quantity]);
 
   return (
     <Container className="bg-white m-5">
-      <MenuItemModal showState={show} handleClose={handleClose} menuItem={menuItemData} />
+      <MenuItemModal
+        showState={show}
+        handleClose={handleClose}
+        quantity={quantity}
+        setQuantity={setQuantity}
+        total={total}
+        setTotal={setTotal}
+        menuItem={selectedMenuItem} />
       <Row>
-        <Col><h1>Restaurant Name</h1></Col>
+        <Col><h1>{`${restaurant.name}`}</h1></Col>
       </Row>
       <Row>
-        <Col><h2>Restaurant Description</h2></Col>
+        <Col><h2>{`${restaurant.description}`}</h2></Col>
       </Row>
       <Row className="justify-content-center mt-5 mb-5">
-        {menuItems}
+        {menuItemsTestData.map((item, i) => {
+          return (
+            <Card
+              className="m-5"
+              style={{ width: '18rem' }}
+              key={i}
+              onClick={handleShow}
+              item-name={item.name}
+              item-price={item.price}
+            >
+              <Card.Body>
+                <Card.Title>{`${item.name}`}</Card.Title>
+                <p>{`${item.description}`}</p>
+                <p>{`$${item.price}`}</p>
+              </Card.Body>
+            </Card>
+          )
+        })}
       </Row>
       <br />
       <br />

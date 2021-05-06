@@ -65,7 +65,7 @@ const Main = () => {
                 </Route>
 
                 <Route path="/AccountInfo" component={AccountInfo} />
-                <Route path="/RestaurantMenu" component={ResturantMenu} />
+                <Route path="/restaurant-menu" component={ResturantMenu} />
                 <Route path="/AccountChangePassword" component={AccountChangePassword} />
 
             </Switch>
