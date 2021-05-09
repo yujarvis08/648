@@ -1,20 +1,23 @@
 /** This is where all main routes within our app will be defined */
-import React from 'react';
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Checkout from "./Checkout";
 import Homepage from "./Pages/Homepage";
-import BrowseRestaurants from './Pages/BrowseRestaurants';
-import DriverReg from './Pages/DriverReg';
-import RestaurantReg from './Pages/RestaurantReg';
-import CustomerReg from './Pages/CustomerReg';
-import AboutUs from './Pages/AboutUs';
-import TermsOfUse from './Pages/TermsOfUse';
+
+import BrowseRestaurants from "./Pages/BrowseRestaurants";
+import DriverReg from "./Pages/DriverReg";
+import RestaurantReg from "./Pages/RestaurantReg";
+import CustomerReg from "./Pages/CustomerReg";
+import AboutUs from "./Pages/AboutUs";
+import TermsOfUse from "./Pages/TermsOfUse";
+import OrdersToDeliver from "./OrdersToDeliver";
+import CampusMap from "./CampusMap";
+import OrderConfirmation from "./OrderConfirmation";
 import TestModal from './TestModal';
 import AccountInfo from './AccountInfo';
 // import { insertRestaurant } from '../../server/models/Restaurant';
 import ResturantMenu from './RestaurantMenu';
 import AccountChangePassword from "./AccountChangePassword";
-
 
 const Main = () => {
 
@@ -49,8 +52,6 @@ const Main = () => {
                     <Checkout />
                 </Route>
 
-
-
                 {/* Browse Restaurants */}
                 <Route exact path="/search/restaurant">
                     <BrowseRestaurants />
@@ -67,9 +68,21 @@ const Main = () => {
                 <Route path="/AccountInfo" component={AccountInfo} />
                 <Route path="/restaurant-menu" component={ResturantMenu} />
                 <Route path="/AccountChangePassword" component={AccountChangePassword} />
+      
+                <Route exact path="/orders-to-deliver">
+                  <OrdersToDeliver />
+                </Route>
 
-            </Switch>
-        </React.Fragment>
+                <Route exact path="/campus-map">
+                  <CampusMap />
+                </Route>
+
+                <Route exact path="/order-confirmation">
+                  <OrderConfirmation />
+                </Route>
+
+                </Switch>
+            </React.Fragment>
     );
 }
 

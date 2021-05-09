@@ -106,6 +106,7 @@ const UserRegistration = () => {
         </Form.Text>
         <br></br>
         <br></br>
+
         <Link to="/" className="btn btn-secondary">
           Back
         </Link>
