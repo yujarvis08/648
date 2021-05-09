@@ -1,10 +1,14 @@
 const db = require('../db');
 
-exports.insertOrder = restaurantId => {
+exports.insertOrder = (customerId, restaurantId) => {
 	return new Promise((resolve, reject) => {
 
-        let sql = `INSERT INTO restaurantOrder(restaurantId, orderStatus)
-					VALUES(${restaurantId}, "restaurant is preparing")`;
+        let sql = `INSERT INTO 
+            restaurantOrder(restaurantId, orderStatus, customerId, address)
+			VALUES(${restaurantId}, 
+            "restaurant is preparing", 
+            ${customerId},
+            '200 broadyway, san Francisco')`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
@@ -28,7 +32,8 @@ exports.getOrders = restaurantId => {
     });
 }
 
-exports.getOrders = (restaurantId, orderStatus) => {
+/*set order status of order */
+exports.setOrder = (restaurantId, orderStatus) => {
 	return new Promise((resolve, reject) => {
 
         let sql = `UPDATE restaurantOrder
