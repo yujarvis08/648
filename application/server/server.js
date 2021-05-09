@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
-// const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const path = require('path');
 const app = express();
 
@@ -15,7 +15,9 @@ const shoppingCartRoute = require('./routes/shoppingCart');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(fileUpload({ // enable uploading photos
+    createParentPath: true
+}));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'build')));
