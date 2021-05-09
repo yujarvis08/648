@@ -4,7 +4,7 @@ exports.insertRestaurant = (restaurant) => {
     return new Promise((resolve, reject) => {
 
         let sql = `INSERT into restaurant(name, description, priceRating, cuisine, ownerId, addressId, imagePath) 
-                values("${restaurant.name}", "${restaurant.desciption}", "${restaurant.priceRating}", 
+                values("${restaurant.name}", "${restaurant.description}", "${restaurant.priceRating}", 
                     "${restaurant.cuisine}", ${restaurant.ownerId}, ${restaurant.addressId}, "${restaurant.imagePath}")`;
 
         db.query(sql, (err, result) => {
