@@ -11,17 +11,19 @@ const RestaurantRegistration = () => {
   const [validated, setValidated] = React.useState(false);
 
   const handleSubmit = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     const form = event.currentTarget;
 
     let match = form.confirmPassword.value === form.password.value ? "" : "Passwords must match!";
     form.confirmPassword.setCustomValidity(match);
 
+    setValidated(true);
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+      // if form is not valid, don't do anything
+      return
     }
 
-    setValidated(true);
   };
 
   async function fetchCuisines() {
@@ -49,13 +51,12 @@ const RestaurantRegistration = () => {
       <Row className="mt-5 justify-content-around">
         <h1>Restaurant Owner Registration</h1>
       </Row>
+      <hr />
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <br></br>
-        <br></br>
-        <br></br>
+        <br />
         <h3>Account Info</h3>
         <p className="text-danger" >* All fields are required unless noted as optional</p>
-
+        <br />
         {/* Registration Form */}
 
         <Form.Group as={Col} md="6" controlId="validationCustom01">
@@ -69,7 +70,6 @@ const RestaurantRegistration = () => {
             Please provide a valid first name
             </Form.Control.Feedback>
         </Form.Group>
-        <br></br>
 
         <Form.Group as={Col} md="6" controlId="validationCustom02">
           <Form.Label>Last Name</Form.Label>
@@ -82,7 +82,6 @@ const RestaurantRegistration = () => {
             Please provide a valid last name
             </Form.Control.Feedback>
         </Form.Group>
-        <br></br>
 
         <Form.Group as={Col} md="6" controlId="validationCustom03">
           <Form.Label>Email</Form.Label>
@@ -96,7 +95,6 @@ const RestaurantRegistration = () => {
             Please provide a valid email
           </Form.Control.Feedback>
         </Form.Group>
-        <br></br>
 
         <Form.Group as={Col} md="6" controlId="validationCustom04">
           <Form.Label>Password</Form.Label>
@@ -114,7 +112,6 @@ const RestaurantRegistration = () => {
             Please provide a valid password.
           </Form.Control.Feedback>
         </Form.Group>
-        <br></br>
 
         <Form.Group as={Col} md="6" controlId="validationCustom05">
           <Form.Label>Confirm Password</Form.Label>
@@ -141,7 +138,6 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <br></br>
 
         <Form.Group as={Col} md="6" controlId="validationCustom07">
 
@@ -157,7 +153,6 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <br></br>
 
         <Form.Group as={Col} md="2" controlId="validationCustom07">
           <Form.Label>Cuisine</Form.Label>
@@ -177,7 +172,6 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <br></br>
 
         <Form.Group as={Col} md="6" controlId="validationCustom09">
           <Form.Label>Average Menu Price: &nbsp;</Form.Label>
@@ -189,7 +183,6 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <br></br>
         <br></br>
         <br></br>
         <h3>Restaurant Address</h3>
@@ -208,9 +201,7 @@ const RestaurantRegistration = () => {
           <Form.Control placeholder="Apt 321" />
         </Form.Group>
 
-        <br></br>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom11">
+        <Form.Group as={Col} md="3" controlId="validationCustom11">
 
           <Form.Label>City</Form.Label>
           <Form.Control placeholder="City" required />
@@ -219,12 +210,10 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <br></br>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom12">
+        <Form.Group as={Col} md="3" controlId="validationCustom12">
           <Form.Label>State</Form.Label>
-          <Form.Control as="select" required >
-            <option value="">Choose</option>
+          <Form.Control as="select" custom required >
+            <option value="">Choose state</option>
             <option value="AK">Alaska</option>
             <option value="AL">Alabama</option>
             <option value="AR">Arkansas</option>
@@ -283,9 +272,7 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <br></br>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom13">
+        <Form.Group as={Col} md="2" controlId="validationCustom13">
           <Form.Label>Zipcode</Form.Label>
           <Form.Control placeholder="Zip Code" required minLength="5" maxLength="5" />
           <Form.Control.Feedback type="invalid">
@@ -293,32 +280,31 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <br></br>
-
         <Form.Group>
-          <input type="file" accept="image/*" required></input>
-          <div className="invalid-feedback">Please upload an image of your restaurant</div>
-          <br></br>
+          <div className="ml-3">
+            <p>Upload a restaurant image</p>
+            <input type="file" accept="image/*" required></input>
+            <div className="invalid-feedback">Please upload an image of your restaurant</div>
+          </div>
         </Form.Group>
 
-        <Form.Text>
-          <Form.Group>
-            <input type="checkbox" required />{" "}
+        <Form.Group >
+          <input className="ml-3" type="checkbox" required />{" "}
           I agree to the <a href="/terms-of-use">Terms of Use</a>
-            <Form.Control.Feedback type="invalid">
-              You must agree before submitting
+          <Form.Control.Feedback type="invalid">
+            You must agree before submitting
           </Form.Control.Feedback>
-          </Form.Group>
-        </Form.Text>
-        <br></br>
-        <br></br>
+        </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Finish
+        <br></br>
+        <br></br>
+        <Form.Row>
+          <Button variant="primary" type="submit" className="ml-3">
+            Submit
         </Button>
+        </Form.Row>
       </Form>
-      <br />
-      <br />
+      <hr />
       <br />
       <br />
     </Container>
