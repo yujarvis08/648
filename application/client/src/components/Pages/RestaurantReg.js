@@ -1,4 +1,5 @@
 import React from "react";
+import SearchAPI from "../../api/search";
 // Bootstrap
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -19,31 +20,48 @@ const RestaurantRegistration = () => {
     form.confirmPassword.setCustomValidity(match);
 
     setValidated(true);
-    if (form.checkValidity() === false) {
-      // if form is not valid, don't do anything
-      return
+    if (form.checkValidity() === true) {
+      // if form is valid, submit data
+      /* Account { email, password }
+        restaurantOwner { name }
+        restaurant { restaurantName, restaurantDescription,
+        priceRating, photo }
+        address { line1, line2, city, state, zipcode }
+        */
+      const regData = {
+        firstName: form.firstName.value,
+        lastName: form.lastName.value,
+        email: form.email.value,
+        password: form.password.value,
+        restaurantName: form.restaurant,
+        restaurantDescription: form.restaurantDescription
+      };
+
+      let wrappedResponse = await fetch("/api/registration/customer", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(regData), // body data type must match "Content-Type" header
+      });
+      console.log("wrapped response:", wrappedResponse);
+
+      let response = await wrappedResponse.json();
+      // console.log('Response from registering customer:', response);
+      if (wrappedResponse.ok) {
+        alert("You've been registered! Login at the homepage.");
+        history.push("/");
+      } else {
+        alert(`Registration failed. ${response.msg}`);
+      }
     }
+
+
 
   };
 
-  async function fetchCuisines() {
-    try {
-      let response = await (
-        await fetch("/api/search/restaurant/cuisines")
-      ).json();
-      let cuisinesArr = ["Other"];
-
-      for (let cuisine of response.cuisines) cuisinesArr.push(cuisine.cuisine);
-
-      return cuisinesArr;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  React.useEffect(() => {
+  React.useEffect(async () => {
     // get list of unique quisines available from our DB
-    fetchCuisines().then(setCuisines).catch(console.log);
+    let cuisinesArr = await SearchAPI.getCuisines();
+    setCuisines(cuisinesArr)
   }, []);
 
   return (

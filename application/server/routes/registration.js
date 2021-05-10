@@ -1,11 +1,11 @@
-const express         = require('express');
-const router          = express.Router();
-const account         = require('../models/Account');
+const express = require('express');
+const router = express.Router();
+const account = require('../models/Account');
 const restaurantOwner = require('../models/RestaurantOwner');
-const menuItem        = require('../models/menuItem');
-const Customer        = require('../models/Customer');
-const Driver          = require('../models/DeliveryDriver');
-const bcrypt          = require('bcrypt-nodejs');
+const menuItem = require('../models/menuItem');
+const Customer = require('../models/Customer');
+const Driver = require('../models/DeliveryDriver');
+const bcrypt = require('bcrypt-nodejs');
 
 /* restaurantOwner registration */
 router.post('/restaurantOwner', async (req, res) => {
@@ -21,7 +21,7 @@ router.post('/restaurantOwner', async (req, res) => {
         let temp = await account.insertAccount(registrationDetails);
         let accountId = temp.insertId;
         const { name } = req.body;
-        owner = { name, accountId }
+        let owner = { name, accountId }
 
         // input -> { name, accountId }
         restaurantOwner.insertOwner(owner);
@@ -33,7 +33,7 @@ router.post('/restaurantOwner', async (req, res) => {
 });
 
 /* add menu item (restauraunt owner registration) */
-router.post('/restaurantOwner/addMenuItem', async (req, res) => {;
+router.post('/restaurantOwner/addMenuItem', async (req, res) => {
     menuItem.insertMenuItem(req.body);
     res.status(200).json({ msg: 'Inserted menu item' });
 });
@@ -69,20 +69,22 @@ router.post('/customer', async (req, res) => {
 /* driver registration */
 router.post('/driver', async (req, res) => {
     let { email, password } = req.body;
+    let registrationDetails = { email, password };
+    let { firstName, lastName } = req.body;
+    let name = firstName + ' ' + lastName;
     let salt = bcrypt.genSaltSync();
     password = bcrypt.hashSync(password, salt)
-    registrationDetails = { email, password };
     registrationDetails.userType = 'deliveryDriver';
 
     try {
         // input -> { userType, email, password }
         let temp = await account.insertAccount(registrationDetails);
         let accountId = temp.insertId;
-        const { name, restaurantId } = req.body;
-        customer = { name, accountId, restaurantId }
+        const { restaurantId } = req.body;
+        let driver = { name, accountId, restaurantId }
 
         // input -> { name, accountId }
-        Driver.insertDriver(customer);
+        Driver.insertDriver(driver);
         res.status(200).json({ msg: 'registration complete' });
     } catch (e) {
         console.log(e);

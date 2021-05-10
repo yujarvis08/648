@@ -328,6 +328,29 @@ const cafeMenuItems = [
     ]
 ]
 
+const cuisineTypes = [
+    'Other',
+    'American',
+    'Mexican',
+    'Italian',
+    'Dessert',
+    'Cafe'
+]
+
+function insertCuisine(cuisineTypes) {
+    return new Promise((resolve, reject) => {
+        for (let cuisine of cuisineTypes) {
+            let sql = `INSERT INTO cuisine(cuisineType)
+                VALUES("${cuisine}")`;
+
+            db.query(sql, (err, result) => {
+                if (err) return reject(err);
+                return resolve(result);
+            });
+        }
+    });
+}
+
 // insert accounts
 function insertAccounts(accounts) {
     return new Promise((resolve, reject) => {
@@ -441,6 +464,7 @@ function insertCustomers() {
 }
 
 insertAccounts(accounts)
+    .then(insertCuisine(cuisineTypes))
     .then(insertRestaurantOwners(restaurantOwners))
     .then(insertAddresses(addresses))
     .then(insertRestaurants(restaurants))

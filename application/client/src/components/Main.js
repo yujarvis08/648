@@ -65,24 +65,24 @@ const Main = () => {
                     <TestModal />
                 </Route>
 
-                <Route path="/AccountInfo" component={AccountInfo} />
+                <Route path="/account" component={AccountInfo} />
                 <Route path="/restaurant-menu" component={ResturantMenu} />
                 <Route path="/AccountChangePassword" component={AccountChangePassword} />
-      
+
                 <Route exact path="/orders-to-deliver">
-                  <OrdersToDeliver />
+                    <OrdersToDeliver />
                 </Route>
 
                 <Route exact path="/campus-map">
-                  <CampusMap />
+                    <CampusMap />
                 </Route>
 
                 <Route exact path="/order-confirmation">
-                  <OrderConfirmation />
+                    <OrderConfirmation />
                 </Route>
 
-                </Switch>
-            </React.Fragment>
+            </Switch>
+        </React.Fragment>
     );
 }
 

@@ -19,6 +19,15 @@ CREATE SCHEMA IF NOT EXISTS `team3db` DEFAULT CHARACTER SET utf8 ;
 USE `team3db` ;
 
 -- -----------------------------------------------------
+-- Table `team3db`.`cuisine`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `team3db`.`cuisine` (
+  `cuisineId` INT NOT NULL AUTO_INCREMENT,
+  `cuisineType` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`cuisineId`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `team3db`.`account`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `team3db`.`account` (

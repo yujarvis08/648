@@ -8,12 +8,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 const UserRegistration = () => {
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
   const [validated, setValidated] = React.useState(false);
-
   const history = useHistory();
 
   async function handleSubmit(e) {
@@ -31,10 +26,10 @@ const UserRegistration = () => {
     }
 
     const regData = {
-      firstName,
-      lastName,
-      email,
-      password,
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      email: form.email.value,
+      password: form.password.value,
     };
 
     let wrappedResponse = await fetch("/api/registration/customer", {
@@ -60,7 +55,7 @@ const UserRegistration = () => {
         <h1>Customer Registration</h1>
       </Row>
       <hr />
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form noValidate validated={validated} onSubmit={handleSubmit} >
         <br></br>
         <h3>Account Info</h3>
         <p className="text-danger" >* All fields are required unless noted as optional</p>
@@ -72,6 +67,7 @@ const UserRegistration = () => {
             type="text"
             placeholder="First Name"
             required="true"
+            name="firstName"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid first name
@@ -84,6 +80,7 @@ const UserRegistration = () => {
             type="lastname"
             placeholder="Last Name"
             required="true"
+            name="lastName"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid last name
@@ -95,8 +92,9 @@ const UserRegistration = () => {
           <Form.Control
             type="email"
             placeholder="Enter email"
-            pattern=".+@.+.com|.+@.+.net"
+            pattern=".+@sfsu.edu|.+@.+sfsu.edu"
             required="true"
+            name="email"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid email
