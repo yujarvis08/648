@@ -1,5 +1,6 @@
 import React from "react";
 import SearchAPI from "../../api/search";
+import { useHistory } from "react-router-dom";
 // Bootstrap
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -10,8 +11,9 @@ import Col from "react-bootstrap/Col";
 const RestaurantRegistration = () => {
   const [cuisines, setCuisines] = React.useState([]);
   const [validated, setValidated] = React.useState(false);
+  const history = useHistory();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     const form = event.currentTarget;
@@ -20,38 +22,49 @@ const RestaurantRegistration = () => {
     form.confirmPassword.setCustomValidity(match);
 
     setValidated(true);
+
+    // console.log('photo:', form.photo.files[0]);
+
     if (form.checkValidity() === true) {
       // if form is valid, submit data
-      /* Account { email, password }
-        restaurantOwner { name }
-        restaurant { restaurantName, restaurantDescription,
-        priceRating, photo }
-        address { line1, line2, city, state, zipcode }
-        */
       const regData = {
         firstName: form.firstName.value,
         lastName: form.lastName.value,
         email: form.email.value,
         password: form.password.value,
-        restaurantName: form.restaurant,
-        restaurantDescription: form.restaurantDescription
+        restaurantName: form.restaurantName.value,
+        restaurantDescription: form.restaurantDescription.value,
+        // priceRating: form.priceRating.value,
+        priceRating: "",
+        photo: form.photo.files[0],
+        line1: form.addressLine1.value,
+        line2: '',
+        city: form.city.value,
+        state: form.state.value,
+        zipcode: form.zipcode.value
       };
 
-      let wrappedResponse = await fetch("/api/registration/customer", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(regData), // body data type must match "Content-Type" header
-      });
-      console.log("wrapped response:", wrappedResponse);
+      // let fd = new FormData();
+      // let postData = JSON.stringify(regData)
+      // fd.append('postData', postData);
+      // console.log('postData:', postData)
+      // console.log('fd:', fd);
 
-      let response = await wrappedResponse.json();
-      // console.log('Response from registering customer:', response);
-      if (wrappedResponse.ok) {
-        alert("You've been registered! Login at the homepage.");
-        history.push("/");
-      } else {
-        alert(`Registration failed. ${response.msg}`);
-      }
+      // let wrappedResponse = await fetch("/api/registration/restaurantOwner", {
+      //   method: "POST", // *GET, POST, PUT, DELETE, etc.
+      //   headers: { "Content-Type": "multipart/form-data" },
+      //   body: JSON.stringify(regData), // body data type must match "Content-Type" header
+      // });
+      // console.log("wrapped response:", wrappedResponse);
+
+      // let response = await wrappedResponse.json();
+      // // console.log('Response from registering customer:', response);
+      // if (wrappedResponse.ok) {
+      //   alert("You've been registered! Login at the homepage.");
+      //   history.push("/");
+      // } else {
+      //   alert(`Registration failed. ${response.msg}`);
+      // }
     }
 
 
@@ -83,6 +96,7 @@ const RestaurantRegistration = () => {
             type="text"
             placeholder="First Name"
             required="true"
+            name="firstName"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid first name
@@ -95,6 +109,7 @@ const RestaurantRegistration = () => {
             type="lastname"
             placeholder="Last Name"
             required="true"
+            name="lastName"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid last name
@@ -108,6 +123,7 @@ const RestaurantRegistration = () => {
             placeholder="Enter email"
             pattern=".+@.+.com|.+@.+.net"
             required="true"
+            name="email"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid email
@@ -149,7 +165,8 @@ const RestaurantRegistration = () => {
           <Form.Label>Restaurant Name</Form.Label>
           <Form.Control
             placeholder="Enter the name of your restaurant"
-            required="true"
+            required
+            name="restaurantName"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid restaurant name
@@ -164,7 +181,8 @@ const RestaurantRegistration = () => {
             as="textarea"
             rows="3"
             placeholder="Add a description of your restaurant"
-            required="true"
+            required
+            name="restaurantDescription"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid description
@@ -175,11 +193,12 @@ const RestaurantRegistration = () => {
         <Form.Group as={Col} md="2" controlId="validationCustom07">
           <Form.Label>Cuisine</Form.Label>
           <Form.Control
-            required="true"
+            required
             placeholder="What cuisine do you serve?"
             as="select"
             size="sm"
             custom
+            name="restaurantCuisine"
           >
             {cuisines.map((cuisine, index) => {
               return <option key={index}>{cuisine}</option>;
@@ -193,6 +212,7 @@ const RestaurantRegistration = () => {
 
         <Form.Group as={Col} md="6" controlId="validationCustom09">
           <Form.Label>Average Menu Price: &nbsp;</Form.Label>
+          // TODO make this a dropdown instead of 3 radio buttons
           <Form.Check type="radio" label="$" name="option" required inline />
           <Form.Check type="radio" label="$$" name="option" required inline />
           <Form.Check type="radio" label="$$$" name="option" required inline />
@@ -208,7 +228,10 @@ const RestaurantRegistration = () => {
 
         <Form.Group as={Col} md="6" controlId="validationCustom10">
           <Form.Label>Address line 1</Form.Label>
-          <Form.Control placeholder="1234 Main St" required />
+          <Form.Control
+            placeholder="1234 Main St"
+            name="addressLine1"
+            required />
           <Form.Control.Feedback type="invalid">
             Please provide a valid house number and street name
           </Form.Control.Feedback>
@@ -216,13 +239,19 @@ const RestaurantRegistration = () => {
 
         <Form.Group as={Col} md="6">
           <Form.Label>Address line 2 (optional)</Form.Label>
-          <Form.Control placeholder="Apt 321" />
+          <Form.Control
+            placeholder="Apt 321"
+            name="addressLine2"
+          />
         </Form.Group>
 
         <Form.Group as={Col} md="3" controlId="validationCustom11">
 
           <Form.Label>City</Form.Label>
-          <Form.Control placeholder="City" required />
+          <Form.Control
+            placeholder="City"
+            name="city"
+            required />
           <Form.Control.Feedback type="invalid">
             Please provide a valid city
           </Form.Control.Feedback>
@@ -230,7 +259,7 @@ const RestaurantRegistration = () => {
 
         <Form.Group as={Col} md="3" controlId="validationCustom12">
           <Form.Label>State</Form.Label>
-          <Form.Control as="select" custom required >
+          <Form.Control as="select" custom required name="state">
             <option value="">Choose state</option>
             <option value="AK">Alaska</option>
             <option value="AL">Alabama</option>
@@ -292,7 +321,12 @@ const RestaurantRegistration = () => {
 
         <Form.Group as={Col} md="2" controlId="validationCustom13">
           <Form.Label>Zipcode</Form.Label>
-          <Form.Control placeholder="Zip Code" required minLength="5" maxLength="5" />
+          <Form.Control
+            placeholder="Zip Code"
+            name="zipcode"
+            required
+            minLength="5"
+            maxLength="5" />
           <Form.Control.Feedback type="invalid">
             Please provide a valid zipcode
           </Form.Control.Feedback>
@@ -301,7 +335,7 @@ const RestaurantRegistration = () => {
         <Form.Group>
           <div className="ml-3">
             <p>Upload a restaurant image</p>
-            <input type="file" accept="image/*" required></input>
+            <input type="file" accept="image/*" required name="photo"></input>
             <div className="invalid-feedback">Please upload an image of your restaurant</div>
           </div>
         </Form.Group>
