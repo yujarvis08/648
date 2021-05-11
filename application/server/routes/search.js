@@ -38,7 +38,12 @@ router.get('/restaurant', async (req, res, next) => {
 
 // gets a list of all UNIQUE cuisines available in our app (DB). Useful for dropdown.
 router.get('/restaurant/cuisines', async (req, res, next) => {
-    let cuisines = await utilModel.getAllCuisines();
+    let response = await restaurantModel.getCuisines();
+    let cuisines = []
+    response.forEach(cuisine => {
+        cuisines.push(cuisine.cuisineType)
+    });
+
     res.status(200).json({ status: 'ok', cuisines });
 });
 

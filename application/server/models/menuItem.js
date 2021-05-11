@@ -1,11 +1,12 @@
 const db = require('../db');
 
-exports.insertMenuItem = (menuItem) => {
+exports.insertMenuItem = (menuId, menuItem) => {
+	//console.log('inserMenuItem menuItem:', menuId, menuItem);
 
 	return new Promise((resolve, reject) => {
 
 		let sql = `INSERT INTO menuItem(menuId, name, description, price)
-					VALUES(${menuItem.menuId},
+					VALUES(${menuId},
 					"${menuItem.name}",
 					"${menuItem.description}",
 					${menuItem.price})`

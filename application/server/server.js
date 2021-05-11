@@ -6,10 +6,10 @@ const path = require('path');
 const app = express();
 
 /* ========== Routes ========== */
-const searchRoutes      = require('./routes/search');
+const searchRoutes = require('./routes/search');
 const registrationRoute = require('./routes/registration');
-const authRoute         = require('./routes/auth');
-const ordersRoute       = require('./routes/orders');
+const authRoute = require('./routes/auth');
+const ordersRoute = require('./routes/orders');
 const shoppingCartRoute = require('./routes/shoppingCart');
 
 app.use(express.json());
@@ -18,6 +18,8 @@ app.use(cookieParser());
 app.use(fileUpload({ // enable uploading photos
     createParentPath: true
 }));
+/* static folder */
+app.use(express.static(path.join(__dirname, 'public')));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'build')));
@@ -29,10 +31,6 @@ app.use('/api/registration', registrationRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/orders', ordersRoute);
 app.use('/api/shoppingCart', shoppingCartRoute);
-
-app.get('/ping', (req, res) => {
-    return res.json({ msg: 'pong' });
-});
 
 if (process.env.NODE_ENV === "production") {
     app.get('/*', function (req, res) {

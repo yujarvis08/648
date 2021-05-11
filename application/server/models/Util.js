@@ -17,7 +17,7 @@ exports.getAllCuisines = () => {
 exports.getAllRestaurants = () => {
     return new Promise((resolve, reject) => {
 
-        let sql = `SELECT DISTINCT name FROM restaurant`;
+        let sql = `SELECT * FROM restaurant`;
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);

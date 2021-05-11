@@ -35,7 +35,23 @@ const searchRestaurantsByName = async (name) => {
     }
 }
 
+/**
+ * Searches DB for a list of all cuisines
+ * @returns an array of cuisines
+ */
+const getCuisines = async () => {
+    try {
+        let response = await (
+            await fetch("/api/search/restaurant/cuisines")
+        ).json();
+        return response.cuisines;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export default {
     searchRestaurantsByCuisine,
-    searchRestaurantsByName
+    searchRestaurantsByName,
+    getCuisines
 }

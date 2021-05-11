@@ -62,3 +62,26 @@ exports.getByCuisine = (cuisine) => {
 
     });
 }
+
+exports.insertCuisine = cuisineType => {
+    return new Promise((resolve, reject) => {
+        let sql = `INSERT INTO cuisine(cuisineType)
+            VALUES("${cuisineType}")`;
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}
+
+exports.getCuisines = () => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT cuisineType FROM cuisine`;
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}

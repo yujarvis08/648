@@ -19,6 +19,15 @@ CREATE SCHEMA IF NOT EXISTS `team3db` DEFAULT CHARACTER SET utf8 ;
 USE `team3db` ;
 
 -- -----------------------------------------------------
+-- Table `team3db`.`cuisine`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `team3db`.`cuisine` (
+  `cuisineId` INT NOT NULL AUTO_INCREMENT,
+  `cuisineType` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`cuisineId`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `team3db`.`account`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `team3db`.`account` (
@@ -102,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `team3db`.`restaurant` (
   `cuisine` VARCHAR(45) NULL,
   `priceRating` VARCHAR(3) NULL,
   `addressId` INT NULL,
-  `imagePath` VARCHAR(45) NULL,
+  `imagePath` VARCHAR(255) NULL,
   INDEX `ownerIdFK_idx` (`ownerId` ASC) VISIBLE,
   PRIMARY KEY (`restaurantId`),
   INDEX `businessScheduleId_idx` (`businessScheduleId` ASC) VISIBLE,
