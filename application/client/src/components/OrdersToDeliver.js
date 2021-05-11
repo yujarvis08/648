@@ -41,7 +41,8 @@ const OrdersToDeliver = () => {
   ]
 
   async function handleComplete(e) {
-    let orderNum = e.target.getAttribute("orderNumber");
+    let orderNum = e.target.getAttribute("order-number");
+    console.log('orderNum:', orderNum)
     let orderBody = { orderId: orderNum };
 
     // let wrappedResponse = await fetch("/api/orders/deliver", {
@@ -88,7 +89,7 @@ const OrdersToDeliver = () => {
                 className="mr-3"
                 variant="outline-success"
                 onClick={handleComplete}
-                orderNumber={order.orderNumber}
+                order-number={order.orderNumber}
               >Complete</Button>
             </Col>
           </Row>

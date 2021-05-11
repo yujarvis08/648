@@ -7,24 +7,91 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import InputGroup from "react-bootstrap/InputGroup";
+
 
 const RestaurantRegistration = () => {
   const [cuisines, setCuisines] = React.useState([]);
   const [validated, setValidated] = React.useState(false);
-  const history = useHistory();
+  // const [menuItems, setMenuItems] = React.useState([{name: "", description: "", price: 0}]);
+  const [numItems, setNumItems] = React.useState(1);
 
+  /**
+   * Appends a new menu item card into our registration form
+   * It works by deep-cloning a menuItem Card element, cleaning it,
+   * and appending it to a parent node.
+   * Bad think about this function is that it's very sensitive to new
+   * additions to the menuItem Card element due to the child indexes.
+   * @param {Event} e 
+   */
+  function addMenuItem(e) {
+    let parentNode = document.getElementById("menuItemsRow");
+    let newNode = document.getElementsByName("menuItem")[0].cloneNode(true);
+    // reset the values for the new node
+    newNode.childNodes[0].childNodes[0].childNodes[1].value = ''; // item name
+    newNode.childNodes[0].childNodes[1].childNodes[1].value = ''; // item description
+    newNode.childNodes[0].childNodes[3].childNodes[1].value = ''; // item price
+    console.log('wtf:', newNode.childNodes[0].childNodes[3].childNodes)
+    // let removeBtn = newNode.childNodes[0].childNodes[3].childNodes[3];
+    // add event listener (cloneNode deep copy doesn't clone event listeners)
+    newNode.childNodes[0].childNodes[3].childNodes[3].addEventListener('click', removeMenuItem);
+    // remove disabled attribute from button for the case when we clone from an item with it disabled
+    newNode.childNodes[0].childNodes[3].childNodes[3].removeAttribute("disabled");
+    parentNode.appendChild(newNode);
+    setNumItems(numItems + 1);
+  }
+
+  /**
+   * Removes the menu item Card from the registration form
+   * It works by clicking on a remove button within the Card element
+   * @param {Event} e 
+   */
+  function removeMenuItem(e) {
+    console.log(e.currentTarget.parentNode.parentNode.parentNode)
+    e.currentTarget.parentNode.parentNode.parentNode.remove();
+    setNumItems(numItems - 1);
+  }
+
+  /**
+   * Extracts the values from all of the menu items within the given form element
+   * @param {Form} form 
+   * @returns {Array} menuItems
+   */
+  function getMenuItems(form) {
+    let menuItemArrays = {
+      names: form.itemName,
+      descriptions: form.itemDescription,
+      prices: form.itemPrice,
+    }
+    let menuItems = []
+    for (let i = 0; i < menuItemArrays.names.length; i++) {
+      menuItems.push({
+        name: menuItemArrays.names[i].value,
+        description: menuItemArrays.descriptions[i].value,
+        price: menuItemArrays.prices[i].value
+      })
+    }
+    return menuItems;
+  }
+
+  /**
+   * Validates the form before submitting the data
+   * @param {Event} event 
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
+    // validate password and confirm password match
     const form = event.currentTarget;
-
     let match = form.confirmPassword.value === form.password.value ? "" : "Passwords must match!";
     form.confirmPassword.setCustomValidity(match);
 
     setValidated(true);
 
+    let menuItems = getMenuItems(form); // temporarily here
+    console.log('menu items in handle submit:', menuItems)
     // console.log('photo:', form.photo.files[0]);
-
     if (form.checkValidity() === true) {
       // if form is valid, submit data
       const regData = {
@@ -40,9 +107,10 @@ const RestaurantRegistration = () => {
         line2: '',
         city: form.city.value,
         state: form.state.value,
-        zipcode: form.zipcode.value
+        zipcode: form.zipcode.value,
+        menuItems
       };
-
+      // TODO: Figure out how to send a file along with the rest of the data
       // let fd = new FormData();
       // let postData = JSON.stringify(regData)
       // fd.append('postData', postData);
@@ -65,16 +133,22 @@ const RestaurantRegistration = () => {
       //   alert(`Registration failed. ${response.msg}`);
       // }
     }
-
-
-
   };
+
 
   React.useEffect(async () => {
     // get list of unique quisines available from our DB
     let cuisinesArr = await SearchAPI.getCuisines();
     setCuisines(cuisinesArr)
-  }, []);
+    // Disable the remove button when there's only one menu item left
+    let parentNode = document.getElementById("menuItemsRow");
+    let removeBtn = parentNode.childNodes[0].childNodes[0].childNodes[3].childNodes[3];
+    if (parentNode.children.length === 1) {
+      removeBtn.setAttribute("disabled", "");
+    } else {
+      removeBtn.removeAttribute("disabled");
+    }
+  }, [numItems]);
 
   return (
     <Container>
@@ -82,10 +156,15 @@ const RestaurantRegistration = () => {
         <h1>Restaurant Owner Registration</h1>
       </Row>
       <hr />
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form
+        noValidate
+        validated={validated}
+        onSubmit={handleSubmit}
+        id="registrationForm"
+      >
         <br />
-        <h3>Account Info</h3>
-        <p className="text-danger" >* All fields are required unless noted as optional</p>
+        <h3>Account Information</h3>
+        <p className="text-danger" >All fields are required unless noted as optional</p>
         <br />
         {/* Registration Form */}
 
@@ -94,7 +173,7 @@ const RestaurantRegistration = () => {
           <Form.Control
             type="text"
             placeholder="First Name"
-            required="true"
+            required
             name="firstName"
           />
           <Form.Control.Feedback type="invalid">
@@ -107,7 +186,7 @@ const RestaurantRegistration = () => {
           <Form.Control
             type="lastname"
             placeholder="Last Name"
-            required="true"
+            required
             name="lastName"
           />
           <Form.Control.Feedback type="invalid">
@@ -121,7 +200,7 @@ const RestaurantRegistration = () => {
             type="email"
             placeholder="Enter email"
             pattern=".+@.+.com|.+@.+.net"
-            required="true"
+            required
             name="email"
           />
           <Form.Control.Feedback type="invalid">
@@ -134,7 +213,7 @@ const RestaurantRegistration = () => {
           <Form.Control
             type="password"
             placeholder="Password"
-            required="true"
+            required
             maxLength="20"
             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
             name="password"
@@ -154,10 +233,9 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
+        <hr />
         <br></br>
-        <br></br>
-        <br></br>
-        <h3>Restaurant Info</h3>
+        <h3>Restaurant Information</h3>
         <br></br>
 
         <Form.Group as={Col} md="6" controlId="validationCustom06">
@@ -189,7 +267,7 @@ const RestaurantRegistration = () => {
         </Form.Group>
 
 
-        <Form.Group as={Col} md="2" controlId="validationCustom07">
+        <Form.Group as={Col} md="2" controlId="validationCustom08">
           <Form.Label>Cuisine</Form.Label>
           <Form.Control
             required
@@ -211,7 +289,12 @@ const RestaurantRegistration = () => {
 
         <Form.Group as={Col} md="2" controlId="validationCustom09">
           <Form.Label>Average Menu Price:</Form.Label>
-          <Form.Control as="select" custom required name="priceRating">
+          <Form.Control
+            as="select"
+            custom
+            required
+            name="priceRating"
+          >
             <option value="$">$</option>
             <option value="$$">$$</option>
             <option value="$$$">$$$</option>
@@ -221,8 +304,8 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <br></br>
-        <br></br>
+        <hr />
+        <br />
         <h3>Restaurant Address</h3>
         <br></br>
 
@@ -340,6 +423,54 @@ const RestaurantRegistration = () => {
           </div>
         </Form.Group>
 
+        <hr />
+        <br />
+        <h3>Restaurant Menu</h3>
+        <br></br>
+        <Form.Row id="menuItemsRow">
+          <Card
+            className="m-3"
+            style={{ width: '25rem' }}
+            name="menuItem"
+          >
+            <Card.Body>
+              <Form.Group>
+                <Form.Label>Item name:</Form.Label>
+                <Form.Control placeholder="Spaghetti Pomodoro" name="itemName" required />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="itemDescription"
+                  required
+                  placeholder="Spaghetti pasta cooked al dente with tomatoes, fresh basil, garlic, and olive oil" />
+              </Form.Group>
+              <Form.Label>Price</Form.Label>
+              <InputGroup className="p-0">
+                <InputGroup.Prepend>
+                  <InputGroup.Text>$</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control placeholder="0.00" name="itemPrice" required />
+                <div name="spacer" className="col md-6"></div>
+                <Button variant="danger" onClick={(e) => removeMenuItem(e)}>Remove</Button>
+              </InputGroup>
+            </Card.Body>
+          </Card>
+          {/* <Button style={{ width: "25rem", height: "20rem" }} 
+          className="m-3" 
+          id="addMenuItemBtn" 
+          onClick={addMenuItem}
+          >Add another menu item</Button> */}
+        </Form.Row>
+        <Button
+          className="m-3"
+          id="addMenuItemBtn"
+          onClick={addMenuItem}
+        >Add another menu item</Button>
+        <hr />
+        <br />
+
         <Form.Group >
           <input className="ml-3" type="checkbox" required />{" "}
           I agree to the <a href="/terms-of-use">Terms of Use</a>
@@ -349,9 +480,8 @@ const RestaurantRegistration = () => {
         </Form.Group>
 
         <br></br>
-        <br></br>
         <Form.Row>
-          <Button variant="primary" type="submit" className="ml-3">
+          <Button style={{ width: "15rem" }} variant="primary" type="submit" className="ml-3">
             Submit
         </Button>
         </Form.Row>

@@ -87,8 +87,8 @@ const DriverRegistration = () => {
 
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <br></br>
-        <h3>Account Info</h3>
-        <p className="text-danger" >* All fields are required unless noted as optional</p>
+        <h3>Account Information</h3>
+        <p className="text-danger" >All fields are required unless noted as optional</p>
         <br></br>
 
         <Form.Group as={Col} md="6" controlId="validationCustom01">
