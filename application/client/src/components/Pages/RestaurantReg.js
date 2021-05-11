@@ -34,8 +34,7 @@ const RestaurantRegistration = () => {
         password: form.password.value,
         restaurantName: form.restaurantName.value,
         restaurantDescription: form.restaurantDescription.value,
-        // priceRating: form.priceRating.value,
-        priceRating: "",
+        priceRating: form.priceRating.value,
         photo: form.photo.files[0],
         line1: form.addressLine1.value,
         line2: '',
@@ -210,12 +209,13 @@ const RestaurantRegistration = () => {
         </Form.Group>
 
 
-        <Form.Group as={Col} md="6" controlId="validationCustom09">
-          <Form.Label>Average Menu Price: &nbsp;</Form.Label>
-          // TODO make this a dropdown instead of 3 radio buttons
-          <Form.Check type="radio" label="$" name="option" required inline />
-          <Form.Check type="radio" label="$$" name="option" required inline />
-          <Form.Check type="radio" label="$$$" name="option" required inline />
+        <Form.Group as={Col} md="2" controlId="validationCustom09">
+          <Form.Label>Average Menu Price:</Form.Label>
+          <Form.Control as="select" custom required name="priceRating">
+            <option value="$">$</option>
+            <option value="$$">$$</option>
+            <option value="$$$">$$$</option>
+          </Form.Control>
           <Form.Control.Feedback type="invalid">
             Please select the average price for your menu items
           </Form.Control.Feedback>

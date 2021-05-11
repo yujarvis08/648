@@ -72,13 +72,12 @@ const Main = () => {
                 <Route exact path="/orders-to-deliver">
                     <OrdersToDeliver />
                 </Route>
+                <Route exact path="/order-confirmation">
+                    <OrderConfirmation />
+                </Route>
 
                 <Route exact path="/campus-map">
                     <CampusMap />
-                </Route>
-
-                <Route exact path="/order-confirmation">
-                    <OrderConfirmation />
                 </Route>
 
             </Switch>
