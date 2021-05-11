@@ -1,11 +1,13 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+// Bootstrap
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+// components
+import AccountInfoForm from "../AccountInfoForm";
+
 
 const UserRegistration = () => {
   const [validated, setValidated] = React.useState(false);
@@ -37,10 +39,9 @@ const UserRegistration = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(regData), // body data type must match "Content-Type" header
     });
-    console.log("wrapped response:", wrappedResponse);
 
     let response = await wrappedResponse.json();
-    // console.log('Response from registering customer:', response);
+
     if (wrappedResponse.ok) {
       alert("You've been registered! Login at the homepage.");
       history.push("/");
@@ -57,75 +58,7 @@ const UserRegistration = () => {
       <hr />
       <Form noValidate validated={validated} onSubmit={handleSubmit} >
         <br></br>
-        <h3>Account Information</h3>
-        <p className="text-danger" >All fields are required unless noted as optional</p>
-        <br></br>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom01">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="First Name"
-            required="true"
-            name="firstName"
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid first name
-            </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom02">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            type="lastname"
-            placeholder="Last Name"
-            required="true"
-            name="lastName"
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid last name
-            </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom03">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            pattern=".+@sfsu.edu|.+@.+sfsu.edu"
-            required="true"
-            name="email"
-          />
-          <Form.Text muted>Must be an SFSU email</Form.Text>
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid email
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom04">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            required="true"
-            maxLength="20"
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-            name="password"
-          />
-          <Form.Text muted>Password must be 8-20 characters long and contain
-             at least 1 number, 1 uppercase, and 1 lowercase letter.</Form.Text>
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid password.
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom05">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control type="password" placeholder="Confirm Password" name="confirmPassword" />
-          <Form.Control.Feedback type="invalid">
-            Passwords must match
-          </Form.Control.Feedback>
-        </Form.Group>
+        <AccountInfoForm />
         <br />
         <Form.Group>
           <input type="checkbox" className="ml-3" required />{" "}

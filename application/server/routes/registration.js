@@ -17,9 +17,7 @@ const bcrypt = require('bcrypt-nodejs');
 //                          priceRating, photo }
 // address         input { line1, line2, city, state, zipcode }
 router.post('/restaurantOwner', async (req, res) => {
-    // console.log('req:', req)
     console.log('req body:', req.body)
-    // console.log('req headers:', req.headers);
     let { email, password } = req.body;
     let { firstName, lastName } = req.body;
     let name = firstName + ' ' + lastName;

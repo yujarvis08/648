@@ -1,3 +1,7 @@
+/**
+ * This set of functions query information from the database about restaurants
+ */
+
 
 /**
 * Submits a search query to DB to find restaurants that match 'cuisine'
@@ -50,8 +54,25 @@ const getCuisines = async () => {
     }
 }
 
+/**
+ * Requests all data about all restaurants from DB
+ * @returns An array of restaurants
+ */
+const getRestaurants = async () => {
+    try {
+        let restaurantsResult = await (
+            await fetch("/api/search/restaurant/restaurants")
+        ).json();
+
+        return restaurantsResult.restaurants;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export default {
     searchRestaurantsByCuisine,
     searchRestaurantsByName,
-    getCuisines
+    getCuisines,
+    getRestaurants,
 }

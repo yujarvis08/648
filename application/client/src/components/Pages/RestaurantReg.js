@@ -36,7 +36,6 @@ const RestaurantRegistration = () => {
     newNode.childNodes[0].childNodes[1].childNodes[1].value = ''; // item description
     newNode.childNodes[0].childNodes[3].childNodes[1].value = ''; // item price
     console.log('wtf:', newNode.childNodes[0].childNodes[3].childNodes)
-    // let removeBtn = newNode.childNodes[0].childNodes[3].childNodes[3];
     // add event listener (cloneNode deep copy doesn't clone event listeners)
     newNode.childNodes[0].childNodes[3].childNodes[3].addEventListener('click', removeMenuItem);
     // remove disabled attribute from button for the case when we clone from an item with it disabled
@@ -342,11 +341,6 @@ const RestaurantRegistration = () => {
               </InputGroup>
             </Card.Body>
           </Card>
-          {/* <Button style={{ width: "25rem", height: "20rem" }} 
-          className="m-3" 
-          id="addMenuItemBtn" 
-          onClick={addMenuItem}
-          >Add another menu item</Button> */}
         </Form.Row>
         <Button
           className="m-3"
