@@ -9,13 +9,16 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import InputGroup from "react-bootstrap/InputGroup";
+// components
+import StateDropdown from "../StateDropdown";
+import AccountInfoForm from "../AccountInfoForm";
 
 
 const RestaurantRegistration = () => {
   const [cuisines, setCuisines] = React.useState([]);
   const [validated, setValidated] = React.useState(false);
-  // const [menuItems, setMenuItems] = React.useState([{name: "", description: "", price: 0}]);
   const [numItems, setNumItems] = React.useState(1);
+  const history = useHistory();
 
   /**
    * Appends a new menu item card into our registration form
@@ -77,6 +80,8 @@ const RestaurantRegistration = () => {
 
   /**
    * Validates the form before submitting the data
+   * Submits to /api/registration/restaurantOwner
+   * and /api/registration/restaurantOwner/addMenuItems
    * @param {Event} event 
    */
   const handleSubmit = async (event) => {
@@ -89,9 +94,6 @@ const RestaurantRegistration = () => {
 
     setValidated(true);
 
-    let menuItems = getMenuItems(form); // temporarily here
-    console.log('menu items in handle submit:', menuItems)
-    // console.log('photo:', form.photo.files[0]);
     if (form.checkValidity() === true) {
       // if form is valid, submit data
       const regData = {
@@ -108,30 +110,42 @@ const RestaurantRegistration = () => {
         city: form.city.value,
         state: form.state.value,
         zipcode: form.zipcode.value,
-        menuItems
       };
-      // TODO: Figure out how to send a file along with the rest of the data
-      // let fd = new FormData();
-      // let postData = JSON.stringify(regData)
-      // fd.append('postData', postData);
-      // console.log('postData:', postData)
-      // console.log('fd:', fd);
+      // turn the regData object into a FormData object
+      let fd = new FormData();
+      Object.keys(regData).forEach(key => {
+        fd.append(key, regData[key]);
+      });
 
-      // let wrappedResponse = await fetch("/api/registration/restaurantOwner", {
-      //   method: "POST", // *GET, POST, PUT, DELETE, etc.
-      //   headers: { "Content-Type": "multipart/form-data" },
-      //   body: JSON.stringify(regData), // body data type must match "Content-Type" header
-      // });
-      // console.log("wrapped response:", wrappedResponse);
+      // Register the Account and Restaurant
+      let wrappedResponse = await fetch("/api/registration/restaurantOwner", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        body: fd, // body data type must match "Content-Type" header
+      });
 
-      // let response = await wrappedResponse.json();
-      // // console.log('Response from registering customer:', response);
-      // if (wrappedResponse.ok) {
-      //   alert("You've been registered! Login at the homepage.");
-      //   history.push("/");
-      // } else {
-      //   alert(`Registration failed. ${response.msg}`);
-      // }
+      let registrationResponse = await wrappedResponse.json();
+
+      if (!wrappedResponse.ok) {
+        alert(`Registration failed. ${registrationResponse.msg}`);
+        return
+      }
+
+      // Send menu items to DB
+      let menuItems = getMenuItems(form); // temporarily here
+      let reqBody = { menuId: registrationResponse.menuId, menuItems }
+      wrappedResponse = await fetch("/api/registration/restaurantOwner/addMenuItems", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reqBody),
+      });
+
+      let menuItemsResponse = await wrappedResponse.json();
+
+      if (!wrappedResponse.ok) {
+        alert(`Something went wrong when sending the menu items to the server: ${registrationResponse.msg}`);
+        return
+      }
+      history.push('/');
     }
   };
 
@@ -163,76 +177,7 @@ const RestaurantRegistration = () => {
         id="registrationForm"
       >
         <br />
-        <h3>Account Information</h3>
-        <p className="text-danger" >All fields are required unless noted as optional</p>
-        <br />
-        {/* Registration Form */}
-
-        <Form.Group as={Col} md="6" controlId="validationCustom01">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="First Name"
-            required
-            name="firstName"
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid first name
-            </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom02">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            type="lastname"
-            placeholder="Last Name"
-            required
-            name="lastName"
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid last name
-            </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom03">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            pattern=".+@.+.com|.+@.+.net"
-            required
-            name="email"
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid email
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom04">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            required
-            maxLength="20"
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-            name="password"
-          />
-          <Form.Text muted>Password must be 8-20 characters long and contain
-             at least 1 number, 1 uppercase, and 1 lowercase letter.</Form.Text>
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid password.
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom05">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control type="password" placeholder="Confirm Password" name="confirmPassword" />
-          <Form.Control.Feedback type="invalid">
-            Passwords must match
-          </Form.Control.Feedback>
-        </Form.Group>
-
+        <AccountInfoForm />
         <hr />
         <br></br>
         <h3>Restaurant Information</h3>
@@ -340,67 +285,7 @@ const RestaurantRegistration = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group as={Col} md="3" controlId="validationCustom12">
-          <Form.Label>State</Form.Label>
-          <Form.Control as="select" custom required name="state">
-            <option value="">Choose state</option>
-            <option value="AK">Alaska</option>
-            <option value="AL">Alabama</option>
-            <option value="AR">Arkansas</option>
-            <option value="AZ">Arizona</option>
-            <option value="CA">California</option>
-            <option value="CO">Colorado</option>
-            <option value="CT">Connecticut</option>
-            <option value="DC">District of Columbia</option>
-            <option value="DE">Delaware</option>
-            <option value="FL">Florida</option>
-            <option value="GA">Georgia</option>
-            <option value="HI">Hawaii</option>
-            <option value="IA">Iowa</option>
-            <option value="ID">Idaho</option>
-            <option value="IL">Illinois</option>
-            <option value="IN">Indiana</option>
-            <option value="KS">Kansas</option>
-            <option value="KY">Kentucky</option>
-            <option value="LA">Louisiana</option>
-            <option value="MA">Massachusetts</option>
-            <option value="MD">Maryland</option>
-            <option value="ME">Maine</option>
-            <option value="MI">Michigan</option>
-            <option value="MN">Minnesota</option>
-            <option value="MO">Missouri</option>
-            <option value="MS">Mississippi</option>
-            <option value="MT">Montana</option>
-            <option value="NC">North Carolina</option>
-            <option value="ND">North Dakota</option>
-            <option value="NE">Nebraska</option>
-            <option value="NH">New Hampshire</option>
-            <option value="NJ">New Jersey</option>
-            <option value="NM">New Mexico</option>
-            <option value="NV">Nevada</option>
-            <option value="NY">New York</option>
-            <option value="OH">Ohio</option>
-            <option value="OK">Oklahoma</option>
-            <option value="OR">Oregon</option>
-            <option value="PA">Pennsylvania</option>
-            <option value="PR">Puerto Rico</option>
-            <option value="RI">Rhode Island</option>
-            <option value="SC">South Carolina</option>
-            <option value="SD">South Dakota</option>
-            <option value="TN">Tennessee</option>
-            <option value="TX">Texas</option>
-            <option value="UT">Utah</option>
-            <option value="VA">Virginia</option>
-            <option value="VT">Vermont</option>
-            <option value="WA">Washington</option>
-            <option value="WI">Wisconsin</option>
-            <option value="WV">West Virginia</option>
-            <option value="WY">Wyoming</option>
-          </Form.Control>
-          <Form.Control.Feedback type="invalid">
-            Please select a state
-          </Form.Control.Feedback>
-        </Form.Group>
+        <StateDropdown />
 
         <Form.Group as={Col} md="2" controlId="validationCustom13">
           <Form.Label>Zipcode</Form.Label>
@@ -480,6 +365,7 @@ const RestaurantRegistration = () => {
         </Form.Group>
 
         <br></br>
+        <Form.Text muted>** You'll be able to log into your account after your registration is approved **</Form.Text>
         <Form.Row>
           <Button style={{ width: "15rem" }} variant="primary" type="submit" className="ml-3">
             Submit

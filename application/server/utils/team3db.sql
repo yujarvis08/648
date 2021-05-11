@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `team3db`.`restaurant` (
   `cuisine` VARCHAR(45) NULL,
   `priceRating` VARCHAR(3) NULL,
   `addressId` INT NULL,
-  `imagePath` VARCHAR(45) NULL,
+  `imagePath` VARCHAR(255) NULL,
   INDEX `ownerIdFK_idx` (`ownerId` ASC) VISIBLE,
   PRIMARY KEY (`restaurantId`),
   INDEX `businessScheduleId_idx` (`businessScheduleId` ASC) VISIBLE,

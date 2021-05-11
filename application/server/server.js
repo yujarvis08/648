@@ -18,6 +18,8 @@ app.use(cookieParser());
 app.use(fileUpload({ // enable uploading photos
     createParentPath: true
 }));
+/* static folder */
+app.use(express.static(path.join(__dirname, 'public')));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'build')));
