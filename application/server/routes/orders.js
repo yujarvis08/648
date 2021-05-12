@@ -16,11 +16,14 @@ router.post('/create', (req, res) => {
     res.status(200).json({ msg: 'created an order' });
 });
 
-//Get order: GET /order/orderId
+//Get order: GET /order/orderId takes in accountId
 router.get('/getOrders', (req, res) => {
-    let { restaurantId } = req.body;
-    getOrders(restaurantId);
-    res.status(200).json({ msg: 'got the orders' });
+    let { account_id: accountId } = req.cookies;
+    let orders = getOrders(accountId);
+    res.status(200).json({ 
+        msg: 'got the orders' ,
+        orders: orders
+    });
 });
 
 //Update order comment PUT /order/updateComment/:orderId
