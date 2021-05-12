@@ -18,17 +18,35 @@ exports.insertOrder = (customerId, restaurantId) => {
     });
 }
 
-exports.getOrders = restaurantId => {
-	return new Promise((resolve, reject) => {
+/* need to get orders that are not delivered*/
+exports.getOrders = accountId => {
+	return new Promise( async (resolve, reject) => {
+
+        let  { restaurantId } = await getRestaurantIdFromAccountId(accountId);
+        console.log('restaurantId', restaurantId);
 
         let sql = `SELECT * FROM restaurantOrder
-				WHERE restaurantId = ${restaurantId}`;
+				WHERE restaurantId = ${restaurantId} AND
+                orderStatus != 'delivered'`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			 //console.log('getting orders:', result);
 			resolve(result);
 		})
+    });
+}
+
+let getRestaurantIdFromAccountId = accountId => {
+	return new Promise((resolve, reject) => {
+        let sql = `SELECT restaurantId FROM deliveryDriver
+            WHERE accountId = ${accountId}`;
+
+        db.query(sql, (err, result) => {
+			if (err) return reject(err);
+			 //console.log('getting orders:', result);
+			resolve(result);
+		});
     });
 }
 
