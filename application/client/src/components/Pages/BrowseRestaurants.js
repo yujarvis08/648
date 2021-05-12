@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Dropdown from "react-bootstrap/Dropdown";
+import Image from 'react-bootstrap/Image';
 
 /**
  * This component displays a list of restaurants available to order from.

@@ -73,7 +73,7 @@ router.post('/restaurantOwner', async (req, res) => {
         restaurantData.priceRating = priceRating;
         restaurantData.cuisine = cuisine;
         restaurantData.addressId = addressId;
-        restaurantData.imagePath = imagePath;
+        restaurantData.imagePath = imagePath.replace('./public', '');
         restaurantData.ownerId = ownerId;
         /* Insert into Restaurant and returns restaurantId */
         let { insertId: restaurantId } = await restaurant.insertRestaurant(restaurantData);
