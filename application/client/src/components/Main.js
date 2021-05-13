@@ -15,8 +15,7 @@ import CampusMap from "./CampusMap";
 import OrderConfirmation from "./OrderConfirmation";
 import TestModal from './TestModal';
 import AccountInfo from './AccountInfo';
-// import { insertRestaurant } from '../../server/models/Restaurant';
-import ResturantMenu from './RestaurantMenu';
+import ResturantMenu from './Pages/RestaurantMenu';
 import AccountChangePassword from "./AccountChangePassword";
 
 const Main = () => {

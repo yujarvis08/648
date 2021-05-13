@@ -1,13 +1,13 @@
 import React from "react";
 import { useLocation } from 'react-router-dom';
-import SearchAPI from '../api/search.js';
+import SearchAPI from '../../api/search.js';
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 // components
-import MenuItemModal from "./MenuItemModal";
+import MenuItemModal from "../MenuItemModal";
 
 /**
  * TODO: Fetch restaurant menu items from DB
@@ -84,6 +84,15 @@ const Resturantmenu = () => {
     }
   ]
 
+  async function handleAddItem(e) {
+    // prevent default?
+    fetch('/api/shoppingCart/addItem', {
+      method: 'POST',
+      headers: { 'Content-Type': 'aplication/json' },
+      body: { menuId }
+    })
+  }
+
   /**
    * On mount, this hook gets the selected restaurant's name from the URI,
    * then it uses the Search API to fetch the restaurant's data and saves
@@ -139,6 +148,14 @@ const Resturantmenu = () => {
                 <Card.Title>{`${item.name}`}</Card.Title>
                 <p>{`${item.description}`}</p>
                 <p>{`$${item.price}`}</p>
+                <Row>
+                  <Col>
+                    <Button onClick={handleAddItem}>Add</Button>
+                  </Col>
+                  <Col>
+                    <Button onClick={handleRemoveItem}>Add</Button>
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
           )
