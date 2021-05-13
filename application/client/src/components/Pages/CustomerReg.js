@@ -58,7 +58,7 @@ const UserRegistration = () => {
       <hr />
       <Form noValidate validated={validated} onSubmit={handleSubmit} >
         <br></br>
-        <AccountInfoForm />
+        <AccountInfoForm accountType="customer" />
         <br />
         <Form.Group>
           <input type="checkbox" className="ml-3" required />{" "}

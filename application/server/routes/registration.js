@@ -132,11 +132,11 @@ router.post('/customer', async (req, res) => {
 /* driver registration */
 router.post('/driver', async (req, res) => {
     let { email, password } = req.body;
-    let registrationDetails = { email, password };
     let { firstName, lastName } = req.body;
     let name = firstName + ' ' + lastName;
     let salt = bcrypt.genSaltSync();
-    password = bcrypt.hashSync(password, salt)
+    password = bcrypt.hashSync(password, salt);
+    let registrationDetails = { email, password };
     registrationDetails.userType = 'deliveryDriver';
 
     try {
