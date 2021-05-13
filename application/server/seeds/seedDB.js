@@ -13,38 +13,48 @@ let salt = bcrypt.genSaltSync();
 const accounts = [
     [
         "customer",
-        "customer@mail.com",
+        "customer1@mail.com",
+        bcrypt.hashSync('testpass', salt)
+    ],
+    [
+        "customer",
+        "customer2@mail.com",
+        bcrypt.hashSync('testpass', salt)
+    ],
+    [
+        "customer",
+        "customer3@mail.com",
         bcrypt.hashSync('testpass', salt)
     ],
     [
         "restaurantOwner",
         "owner1@restaurant.com",
-        "testpass",
+        bcrypt.hashSync('testpass', salt)
     ],
     [
         "restaurantOwner",
         "owner2@restaurant.com",
-        "testpass",
+        bcrypt.hashSync('testpass', salt)
     ],
     [
         "restaurantOwner",
         "owner3@restaurant.com",
-        "testpass",
+        bcrypt.hashSync('testpass', salt)
     ],
     [
         "restaurantOwner",
         "owner4@restaurant.com",
-        "testpass",
+        bcrypt.hashSync('testpass', salt)
     ],
     [
         "restaurantOwner",
         "owner5@restaurant.com",
-        "testpass",
+        bcrypt.hashSync('testpass', salt)
     ],
     [
         "deliveryDriver",
         "driver@mail.com",
-        "testpass",
+        bcrypt.hashSync('testpass', salt)
     ],
 ]
 
@@ -337,6 +347,41 @@ const cuisineTypes = [
     'Cafe'
 ]
 
+/**
+comment
+orderStatus
+addressId
+restaurantId
+customerId
+total
+ */
+const orderTestData = [
+    [
+        "Room 123 at the end of the hallway",
+        'ordered',
+        1,
+        1,
+        1,
+        13.24
+    ],
+    [
+        "Soccer field across the gym. I'll be by the bleachers",
+        'ordered',
+        2,
+        1,
+        2,
+        25.16
+    ],
+    [
+        "At the Sol Patch community garden near Mary Park Hall",
+        'delivered',
+        3,
+        1,
+        3,
+        17.99
+    ]
+]
+
 function insertCuisine(cuisineTypes) {
     return new Promise((resolve, reject) => {
         for (let cuisine of cuisineTypes) {
@@ -454,9 +499,24 @@ function insertCustomers() {
     return new Promise((resolve, reject) => {
 
         let sql = `INSERT INTO customer(name, accountId) VALUES ?`;
-        db.query(sql, [[['Yanela', 1]]], (err, result) => {
+        db.query(sql, [[['Yanela', 1], ['Timbo', 2], ['Lauren', 3]]], (err, result) => {
             if (err) return reject(err);
             // console.log('Inserted customer...');
+            return resolve(result);
+        });
+
+    });
+}
+
+
+function insertOrders(orderTestData) {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO restaurantOrder(comment, orderStatus, addressId, restaurantId, customerId, total)
+                    VALUES ?`;
+
+        db.query(sql, [orderTestData], (err, result) => {
+            if (err) return reject(err);
             return resolve(result);
         });
 
@@ -476,6 +536,7 @@ insertAccounts(accounts)
     .then(insertMenuItems(cafeMenuItems))
     .then(insertDeliveryDrivers())
     .then(insertCustomers())
+    .then(insertOrders(orderTestData))
     .then(db.end((err, result) => {
         if (err) throw err;
         console.log('>>> Database seeding complete.');

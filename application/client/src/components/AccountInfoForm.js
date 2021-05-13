@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 
 
-const AccountInfoForm = () => {
+const AccountInfoForm = ({ accountType }) => {
     return (
         <React.Fragment>
             <h3>Account Information</h3>
@@ -39,13 +39,19 @@ const AccountInfoForm = () => {
 
             <Form.Group as={Col} md="6" controlId="validationCustom03">
                 <Form.Label>Email</Form.Label>
-                <Form.Control
-                    type="email"
-                    placeholder="Enter email"
-                    pattern=".+@.+.com|.+@.+.net"
-                    required
-                    name="email"
-                />
+                {accountType === "customer"
+                    ? (<Form.Control type="email"
+                        name="email"
+                        placeholder="Email"
+                        pattern=".+@sfsu.edu|.+@.+sfsu.edu"
+                        required
+                    />)
+                    : (<Form.Control
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        required
+                    />)}
                 <Form.Control.Feedback type="invalid">
                     Please provide a valid email
           </Form.Control.Feedback>

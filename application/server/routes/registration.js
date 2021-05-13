@@ -17,9 +17,7 @@ const bcrypt = require('bcrypt-nodejs');
 //                          priceRating, photo }
 // address         input { line1, line2, city, state, zipcode }
 router.post('/restaurantOwner', async (req, res) => {
-    // console.log('req:', req)
     console.log('req body:', req.body)
-    // console.log('req headers:', req.headers);
     let { email, password } = req.body;
     let { firstName, lastName } = req.body;
     let name = firstName + ' ' + lastName;
@@ -75,7 +73,7 @@ router.post('/restaurantOwner', async (req, res) => {
         restaurantData.priceRating = priceRating;
         restaurantData.cuisine = cuisine;
         restaurantData.addressId = addressId;
-        restaurantData.imagePath = imagePath;
+        restaurantData.imagePath = imagePath.replace('./public', '');
         restaurantData.ownerId = ownerId;
         /* Insert into Restaurant and returns restaurantId */
         let { insertId: restaurantId } = await restaurant.insertRestaurant(restaurantData);
@@ -134,11 +132,11 @@ router.post('/customer', async (req, res) => {
 /* driver registration */
 router.post('/driver', async (req, res) => {
     let { email, password } = req.body;
-    let registrationDetails = { email, password };
     let { firstName, lastName } = req.body;
     let name = firstName + ' ' + lastName;
     let salt = bcrypt.genSaltSync();
-    password = bcrypt.hashSync(password, salt)
+    password = bcrypt.hashSync(password, salt);
+    let registrationDetails = { email, password };
     registrationDetails.userType = 'deliveryDriver';
 
     try {

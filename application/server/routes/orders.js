@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { 
-    insertOrder, 
-    getOrders, 
-    updateComment, 
+// TODO: Await-Async
+
+const {
+    insertOrder,
+    getOrders,
+    updateComment,
     cancelOrder,
     orderStatus
 } = require('../models/Order');
@@ -17,11 +19,12 @@ router.post('/create', (req, res) => {
 });
 
 //Get order: GET /order/orderId takes in accountId
-router.get('/getOrders', (req, res) => {
+router.get('/getOrders', async (req, res) => {
     let { account_id: accountId } = req.cookies;
-    let orders = getOrders(accountId);
-    res.status(200).json({ 
-        msg: 'got the orders' ,
+    let orders = await getOrders(accountId);
+    console.log('ORDERS IN ROUTE', orders);
+    res.status(200).json({
+        msg: 'got the orders',
         orders: orders
     });
 });
