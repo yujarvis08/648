@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
-
 // TODO: Await-Async
 
+const express = require('express');
+const router = express.Router();
+const { getCustomerId } = require('../models/Customer');
+const { insertAddress } = require('../models/Address');
 const {
     insertOrder,
     getOrders,
@@ -11,10 +12,19 @@ const {
     orderStatus
 } = require('../models/Order');
 
+
 //Create order: POST /order/create
-router.post('/create', (req, res) => {
+router.post('/create', async (req, res) => {
+    // TODO create address first
+    let { account_id: accountId } = req.cookies;
     let { restaurantId } = req.body;
-    insertOrder(restaurantId);
+    let { addressData } = req.body;
+
+    // first create address to get foreign key
+    let { insertId: addressId } = await insertAddress(addressData);
+    let customerId = await getCustomerId(accountId);
+    await insertOrder(restaurantId, customerId, addressId);
+
     res.status(200).json({ msg: 'created an order' });
 });
 

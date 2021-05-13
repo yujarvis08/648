@@ -1,14 +1,14 @@
 const db = require('../db');
 
-exports.insertOrder = (customerId, restaurantId) => {
+exports.insertOrder = (customerId, restaurantId, addressId) => {
 	return new Promise((resolve, reject) => {
 
 		let sql = `INSERT INTO 
             restaurantOrder(restaurantId, orderStatus, customerId, address)
 			VALUES(${restaurantId}, 
-            "restaurant is preparing", 
+            "ordered", 
             ${customerId},
-            '200 broadyway, san Francisco')`;
+            ${addressId})`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
