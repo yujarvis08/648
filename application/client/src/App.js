@@ -30,7 +30,7 @@ const App = () => {
     <BrowserRouter>
       <Sfsuswe />
       <Navigation handleLogout={handleLogout} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <Main />
+      <Main isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Footer />
     </BrowserRouter>
 
