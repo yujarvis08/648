@@ -1,30 +1,31 @@
 import React from "react";
 import { useLocation } from 'react-router-dom';
 import SearchAPI from '../../api/search.js';
+import MenuAPI from '../../api/menu.js';
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 // components
-import MenuItemModal from "../MenuItemModal";
+// import MenuItemModal from "../MenuItemModal";
+import LoginModal from "../LoginModal";
 
-/**
- * TODO: Fetch restaurant menu items from DB
- * TODO: Create function for handling adding items to shopping cart in DB
- */
 /**
  * This component displays the restaurant's menu items.
  * It is also in charge of displaying the MenuItemModal.
  * It renders when the url is: /restaurant-menu?name=<restaurant name>
- * Devs: Amit, Roberto
  */
-const Resturantmenu = () => {
+const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
   const [show, setShow] = React.useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   // const [menuItems, setMenuItems] = React.useState([]);
-  const [selectedMenuItem, setSelectedMenuItem] = React.useState({ name: "", price: 0.00 });
-  const [quantity, setQuantity] = React.useState(0);
-  const [total, setTotal] = React.useState(0.00);
+  // const [selectedMenuItem, setSelectedMenuItem] = React.useState({ name: "", price: 0.00 });
+  // const [quantity, setQuantity] = React.useState(0);
+  // const [total, setTotal] = React.useState(0.00);
+  const [menuItems, setMenuItems] = React.useState([]);
   const query = new URLSearchParams(useLocation().search);
   const [restaurant, setRestaurant] = React.useState({
     name: "",
@@ -40,11 +41,11 @@ const Resturantmenu = () => {
    * is triggered. This sets the quantity and total back to zero so that
    * the next item selected starts at zero as well.
    */
-  const handleClose = () => {
-    setQuantity(0);
-    setTotal(0.00);
-    setShow(false);
-  }
+  // const handleClose = () => {
+  //   setQuantity(0);
+  //   setTotal(0.00);
+  //   setShow(false);
+  // }
 
   /**
    * Triggered "on click". It gets the menu item name and price from the
@@ -52,45 +53,40 @@ const Resturantmenu = () => {
    * toggling the show state for the MenuItem modal so that it pops up.
    * @param {object} e 
    */
-  const handleShow = (e) => {
-    let itemName = e.currentTarget.getAttribute("item-name");
-    let itemPrice = e.currentTarget.getAttribute("item-price");
-    let newMenuItem = { name: itemName, price: itemPrice }
-    setSelectedMenuItem(newMenuItem)
-    setShow(true)
-  };
+  // const handleShow = (e) => {
+  //   let itemName = e.currentTarget.getAttribute("item-name");
+  //   let itemPrice = e.currentTarget.getAttribute("item-price");
+  //   let newMenuItem = { name: itemName, price: itemPrice }
+  //   setSelectedMenuItem(newMenuItem)
+  //   setShow(true)
+  // };
 
-  // Dummy data
-  const menuItemsTestData = [
-    {
-      name: "pork chop",
-      price: 2.00,
-      description: "delicious pork chops"
-    },
-    {
-      name: "apple pie",
-      price: 3.22,
-      description: "just like mom makes them"
-    },
-    {
-      name: "fried chicken",
-      price: 5.99,
-      description: "spicy fried chicken better than KFC"
-    },
-    {
-      name: "soda",
-      price: 1.00,
-      description: "coke, sprite, fanta"
+  async function handleAddRemove(e) {
+    if (!isLoggedIn) {
+      handleShow();
+      return
     }
-  ]
 
-  async function handleAddItem(e) {
-    // prevent default?
-    fetch('/api/shoppingCart/addItem', {
-      method: 'POST',
-      headers: { 'Content-Type': 'aplication/json' },
-      body: { menuId }
-    })
+    let option = e.target.value;
+    let menuItemId = e.currentTarget.getAttribute("item-id");
+
+    if (option === "add") {
+      fetch('/api/shoppingCart/addItem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ menuItemId })
+      })
+
+    } else if (option === "remove") {
+      fetch('/api/shoppingCart/deleteItem', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ menuItemId })
+      });
+
+    } else {
+      console.log('Error in button value');
+    }
   }
 
   /**
@@ -101,46 +97,53 @@ const Resturantmenu = () => {
   React.useEffect(async () => {
     let restaurantName = decodeURIComponent(query.get('name'));
     let response = await SearchAPI.searchRestaurantsByName(restaurantName);
+    let rest;
     if (response.restaurants) {
-      setRestaurant(response.restaurants[0]);
+      rest = response.restaurants[0];
+      setRestaurant(rest);
     }
+
+    let menuItemsResponse = await MenuAPI.getMenuItems(rest.restaurantId);
+    setMenuItems(menuItemsResponse);
   }, [])
 
   /**
    * When the quantity changes, this hook recalculates the new total
    */
-  React.useEffect(() => {
-    let newTotal = quantity * selectedMenuItem.price;
-    if (newTotal < 0) {
-      newTotal = 0;
-    }
-    setTotal(newTotal.toFixed(2));
-  }, [quantity]);
+  // React.useEffect(() => {
+  //   let newTotal = quantity * selectedMenuItem.price;
+  //   if (newTotal < 0) {
+  //     newTotal = 0;
+  //   }
+  //   setTotal(newTotal.toFixed(2));
+  // }, [quantity]);
 
   return (
-    <Container className="bg-white m-5">
-      <MenuItemModal
+    <Container className="bg-white p-5">
+      <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
+      {/* <MenuItemModal
         showState={show}
         handleClose={handleClose}
         quantity={quantity}
         setQuantity={setQuantity}
         total={total}
         setTotal={setTotal}
-        menuItem={selectedMenuItem} />
+        menuItem={selectedMenuItem} /> */}
       <Row>
         <Col><h1>{`${restaurant.name}`}</h1></Col>
       </Row>
       <Row>
         <Col><h2>{`${restaurant.description}`}</h2></Col>
       </Row>
-      <Row className="justify-content-center mt-5 mb-5">
-        {menuItemsTestData.map((item, i) => {
+      <hr />
+      <Row className="justify-content-center mt-3 mb-3">
+        {menuItems.map((item, i) => {
           return (
             <Card
-              className="m-5"
+              className="m-3"
               style={{ width: '18rem' }}
-              key={i}
-              onClick={handleShow}
+              key={item.menuItemId}
+              // onClick={handleShow}
               item-name={item.name}
               item-price={item.price}
             >
@@ -150,10 +153,21 @@ const Resturantmenu = () => {
                 <p>{`$${item.price}`}</p>
                 <Row>
                   <Col>
-                    <Button onClick={handleAddItem}>Add</Button>
+                    <Button
+                      value="add"
+                      item-id={item.menuItemId}
+                      onClick={handleAddRemove}>
+                      Add
+                    </Button>
                   </Col>
                   <Col>
-                    <Button onClick={handleRemoveItem}>Add</Button>
+                    <Button
+                      variant="danger"
+                      value="remove"
+                      item-id={item.menuItemId}
+                      onClick={handleAddRemove}>
+                      Remove
+                    </Button>
                   </Col>
                 </Row>
               </Card.Body>
@@ -161,15 +175,6 @@ const Resturantmenu = () => {
           )
         })}
       </Row>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <br />
       <br />
       <br />
