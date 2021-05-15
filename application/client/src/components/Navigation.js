@@ -38,11 +38,11 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
   const handleShowLoginModal = () => setShowLoginModal(true);
   const handleShowCartModal = async () => {
     let result = await (await fetch('/api/shoppingCart')).json();
-    console.log('result:', result);
+
     let total = result.cart.total;
     let items = result.cart;
     delete items["total"];
-    console.log('total:', total, 'items:', items);
+    console.log('items:', items)
     setCartItems(items);
     setCartTotal(total);
     setShowCartModal(true)

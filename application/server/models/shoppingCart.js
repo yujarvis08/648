@@ -37,7 +37,7 @@ exports.checkout = async (accountId, restaurantId) => {
     });
 }
 
-exports.clearShoppingCart = accountId => {
+exports.clear = accountId => {
     return new Promise((resolve, reject) => {
         let sql = `DELETE FROM shoppingCart
             WHERE accountId = ${accountId}`;

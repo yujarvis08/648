@@ -8,10 +8,23 @@ import Button from "react-bootstrap/Button";
 
 const ShoppingCart = ({ showState, handleClose, cartItems, cartTotal }) => {
     const history = useHistory();
+
     function handleCheckout() {
         history.push('/checkout');
         handleClose();
     }
+
+    async function handleClear() {
+        let response = await fetch('/api/shoppingCart/clear', {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" }
+        });
+        response = await response.json()
+        console.log(response.msg);
+        alert(response.msg);
+        handleClose();
+    }
+
     return (
         <Modal show={showState} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -47,10 +60,18 @@ const ShoppingCart = ({ showState, handleClose, cartItems, cartTotal }) => {
                 })}
                 <hr />
                 <Row className="justify-content-between">
-                    <Col>
+                    <Col sm={5}>
                         <b>Total:</b>  ${cartTotal}
                     </Col>
-                    <Col>
+                    <Col sm={3}>
+                        <Button
+                            variant="danger"
+                            onClick={handleClear}
+                        >
+                            Clear
+                        </Button>
+                    </Col>
+                    <Col sm={4}>
                         <Button
                             onClick={handleCheckout}
                             variant="success"

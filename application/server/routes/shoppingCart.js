@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const shoppingCart = require('../models/shoppingCart');
+const { route } = require('./orders');
 
 router.get('/', async (req, res) => {
     let { account_id: accountId } = req.cookies;
@@ -15,12 +16,13 @@ router.get('/', async (req, res) => {
             cart[name].total += menuItem.price;
         } else {
             cart[name] = {};
+            cart[name].menuItemId = menuItem.menuItemId;
             cart[name].quantity = 1;
             cart[name].name = menuItem.name;
             cart[name].total = menuItem.price;
         }
     })
-    cart.total = total;
+    cart.total = total.toFixed(2);
     console.log('cart:', cart);
     res.status(200).json({ cart });
 });
@@ -40,6 +42,12 @@ router.delete('/deleteItem', async (req, res) => {
     await shoppingCart.deleteItem(accountId, menuItemId);
     res.status(200).json({ msg: 'deleted item from shopping cart' });
 });
+
+router.delete('/clear', async (req, res) => {
+    let { account_id: accountId } = req.cookies;
+    await shoppingCart.clear(accountId);
+    res.status(200).json({ msg: 'cleared shopping cart' });
+})
 
 router.post('/checkout', async (req, res) => {
     let { account_id: accountId } = req.cookies;
