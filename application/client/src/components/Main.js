@@ -12,7 +12,6 @@ import TermsOfUse from "./Pages/TermsOfUse";
 import OrdersToDeliver from "./OrdersToDeliver";
 import CampusMap from "./CampusMap";
 import OrderConfirmation from "./OrderConfirmation";
-import TestModal from './TestModal';
 import AccountInfo from './AccountInfo';
 import RestaurantMenu from './Pages/RestaurantMenu';
 import AccountChangePassword from "./AccountChangePassword";
@@ -53,10 +52,6 @@ const Main = ({ isLoggedIn, setIsLoggedIn }) => {
 
                 <Route exact path="/terms-of-use">
                     <TermsOfUse />
-                </Route>
-
-                <Route exact path="/test-modal">
-                    <TestModal />
                 </Route>
 
                 <Route path="/account">
