@@ -107,17 +107,6 @@ const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
     setMenuItems(menuItemsResponse);
   }, [])
 
-  /**
-   * When the quantity changes, this hook recalculates the new total
-   */
-  // React.useEffect(() => {
-  //   let newTotal = quantity * selectedMenuItem.price;
-  //   if (newTotal < 0) {
-  //     newTotal = 0;
-  //   }
-  //   setTotal(newTotal.toFixed(2));
-  // }, [quantity]);
-
   return (
     <Container className="bg-white p-5">
       <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
@@ -175,6 +164,11 @@ const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
           )
         })}
       </Row>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <br />
       <br />
       <br />

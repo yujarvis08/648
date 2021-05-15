@@ -1,37 +1,25 @@
-// TODO: Await-Async
-
 const express = require('express');
 const router = express.Router();
-const { getCustomerId } = require('../models/Customer');
-const { insertAddress } = require('../models/Address');
-const {
-    insertOrder,
-    getOrders,
-    updateComment,
-    cancelOrder,
-    orderStatus
-} = require('../models/Order');
+const Order = require('../models/Order');
 
-
-//Create order: POST /order/create
-router.post('/create', async (req, res) => {
-    // TODO create address first
+//Create order: POST /orders/submit
+router.post('/submit', async (req, res) => {
+    console.log('in order submit')
+    let { cartItems, total } = req.body;
+    console.log('cart items and total in submit order:', cartItems, total);
     let { account_id: accountId } = req.cookies;
-    let { restaurantId } = req.body;
-    let { addressData } = req.body;
-
-    // first create address to get foreign key
-    let { insertId: addressId } = await insertAddress(addressData);
-    let customerId = await getCustomerId(accountId);
-    await insertOrder(restaurantId, customerId, addressId);
-
+    let key = Object.keys(cartItems)[0];
+    let result = await Order.getRestaurantIdFromMenuItemId(cartItems[key].menuItemId);
+    let restaurantId = result[0].restaurantId;
+    // TODO: CREATE A MODEL FUNCTION WHERE WE CAN PASS ALL ORDERS AND INSERT THEM ALL INTO RESTAURANTORDERS
+    await Order.insertOrder(accountId, restaurantId);
     res.status(200).json({ msg: 'created an order' });
 });
 
-//Get order: GET /order/orderId takes in accountId
+//Get order: GET /orders/orderId takes in accountId
 router.get('/getOrders', async (req, res) => {
     let { account_id: accountId } = req.cookies;
-    let orders = await getOrders(accountId);
+    let orders = await Order.getOrders(accountId);
     console.log('ORDERS IN ROUTE', orders);
     res.status(200).json({
         msg: 'got the orders',
@@ -39,33 +27,32 @@ router.get('/getOrders', async (req, res) => {
     });
 });
 
-//Update order comment PUT /order/updateComment/:orderId
-router.post('/updateComment', (req, res) => {
+//Update order comment PUT /orders/updateComment/:orderId
+router.post('/updateComment', async (req, res) => {
     let { restaurantOrderId, comment } = req.body;
-    updateComment(restaurantOrderId, comment);
+    await Order.updateComment(restaurantOrderId, comment);
     res.status(200).json({ msg: 'updated the order comment' });
 });
 
-//Cancel order (customer): DELETE /order/cancelOrder/:orderId
-router.post('/cancelOrder', (req, res) => {
+//Cancel order (customer): DELETE /orders/cancelOrder/:orderId
+router.post('/cancelOrder', async (req, res) => {
     let { restaurantOrderId } = req.body;
-    cancelOrder(restaurantOrderId);
+    await Order.cancelOrder(restaurantOrderId);
     res.status(200).json({ msg: 'Cancelled the order' });
 });
 
 // gets the order status
-router.get('/orderStatus', (req, res) => {
+router.get('/orderStatus', async (req, res) => {
     let { restaurantOrderId } = req.body;
-    orderStatus(restaurantOrderId);
+    await Order.orderStatus(restaurantOrderId);
     res.status(200).json({ msg: 'Retrieved the order status' });
 });
 
 // update the order status
-router.put('/setOrderStatus', (req, res) => {
+router.put('/setOrderStatus', async (req, res) => {
     let { restaurantOrderId } = req.body;
-    setOrderStatus(restaurantOrderId);
+    await Order.setOrderStatus(restaurantOrderId);
     res.status(200).json({ msg: 'Set the order status' });
 });
-
 
 module.exports = router;
