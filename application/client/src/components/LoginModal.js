@@ -23,6 +23,8 @@ const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
         if (response.ok) {
             setIsLoggedIn(true);
             handleClose();
+        } else {
+            alert(`Wrong username or password.`);
         }
     }
 
