@@ -193,7 +193,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
                   Menu
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item >Account</Dropdown.Item>
+                  <Dropdown.Item href="/account">Account</Dropdown.Item>
                   <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

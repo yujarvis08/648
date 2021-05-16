@@ -1,51 +1,96 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import EditEmailModal from "./EditEmailModal";
+import EditPasswordModal from "./EditPasswordModal";
 
 const AccountInfo = () => {
+  const [showEmail, setShowEmail] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const handleCloseEmail = () => setShowEmail(false);
+  const handleShowEmail = () => setShowEmail(true);
+  const handleClosePassword = () => setShowPassword(false);
+  const handleShowPassword = () => setShowPassword(true);
+
+  React.useEffect(async () => {
+    let response = await (await fetch('/api/accountInfo/email')).json();
+    setEmail(response.email);
+  }, []);
+
+
 
   return (
-    <Container>
-      <Row className="justify-content-around">
-      </Row>
-      <Row className="justify-content-around"><h1></h1></Row>
-      <Form style={{ textAlign: "left" }}>
-        <br></br>
-        <br></br>
-        <br></br>
-        <h3>Account Info</h3>
+    <Container style={{ height: "100%" }}>
+      <br></br>
+      <br></br>
+      <br></br>
+      <h1>Account Settings</h1>
+      <Form style={{ textAlign: "left" }} className="border" as={Col} md="6">
         <br></br>
 
-        <Form.Row>
-          <Form.Label>First Name</Form.Label>
-          <Form.Control type="firstname" placeholder="First Name" />
-          < Button>Edit</Button>
-        </Form.Row>
+        <Form.Group controlId="validationCustom04">
+          <h5>Email Address</h5>
+          <Form.Control
+            className="text-dark"
+            plaintext
+            readOnly
+            defaultValue={email}
+          />
+          <br></br>
+          <EditEmailModal
+            showState={showEmail}
+            handleClose={handleCloseEmail}
+          />
+          <Button variant="secondary" onClick={handleShowEmail}>
+            {" "}
+            Edit{" "}
+          </Button>
+        </Form.Group>
         <br></br>
-        <Form.Row>
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control type="lastname" placeholder="Last Name" />
-          <Button>Edit</Button>
-        </Form.Row>
+
+        <Form.Group controlId="validationCustom04">
+          <h5>Password</h5>
+          <Form.Control
+            type="password"
+            plaintext
+            readOnly
+            defaultValue="secretpassword"
+            name="password"
+          />
+          <Form.Text muted>
+            Password must be 8-20 characters long and contain at least 1 number,
+            1 uppercase, and 1 lowercase letter.
+          </Form.Text>
+          <br></br>
+          <EditPasswordModal
+            showState={showPassword}
+            handleClose={handleClosePassword}
+          />
+          <Button variant="secondary" onClick={handleShowPassword}>
+            {" "}
+            Edit{" "}
+          </Button>
+        </Form.Group>
         <br></br>
-        <Form.Row>
-          <Form.Label>Email</Form.Label>
-          <Form.Control type="Email" placeholder="Email" />
-          <Button>Edit</Button>
-        </Form.Row>
         <br></br>
-        <Form.Row>
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="Password" placeholder="Password" />
-          <Button>Edit</Button>
-        </Form.Row>
         <br></br>
+        <br></br>
+        <Button as={Col} md="6" variant="secondary">
+          Save
+        </Button>
       </Form>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
     </Container>
-  )
-}
+  );
+};
 
 export default AccountInfo;
