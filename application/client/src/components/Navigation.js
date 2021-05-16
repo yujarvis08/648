@@ -25,6 +25,7 @@ import hermesLogo from "./nav-hermesLogo.png";
 // components
 import LoginModal from './LoginModal';
 import ShoppingCart from './ShoppingCart';
+import CartIcon from "../images/cart.png";
 
 const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
   const [showLoginModal, setShowLoginModal] = React.useState(false);
@@ -186,6 +187,8 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
                 className="mr-3"
                 onClick={handleShowCartModal}
               >Cart
+              {" "}
+              <img src={CartIcon} alt="Cart Icon" height="20px" width="20px"/>
               </Button>
 
               <Dropdown>
@@ -193,7 +196,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
                   Menu
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item >Account</Dropdown.Item>
+                  <Dropdown.Item href="/account">Account</Dropdown.Item>
                   <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
