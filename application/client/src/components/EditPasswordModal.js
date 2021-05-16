@@ -23,7 +23,7 @@ const EditPasswordModal = ({ showState, handleClose }) => {
     let response = await wrappedResponse.json();
 
       if (wrappedResponse.ok) {
-        alert(`${response.msg}`);
+        alert(`Password successfully changed`);
       } else {
         alert(`Password change failed." ${response.msg}`);
       }
@@ -41,14 +41,15 @@ const EditPasswordModal = ({ showState, handleClose }) => {
               placeholder="Enter Current Email"
               pattern=".+@sfsu.edu|.+@.+sfsu.edu|.+@.+.com"
               name="email"
+              required
             />
             <br></br>
-          <Form.Control type="password" placeholder="Enter Current Password" name="password"/>
+          <Form.Control type="password" placeholder="Enter Current Password" name="password" required/>
             <Form.Control.Feedback type="invalid">
               Your Password is not correct.
             </Form.Control.Feedback>
             <br></br>
-            <Form.Control type="password" placeholder="Enter New Password" name="newPassword" />
+            <Form.Control type="password" placeholder="Enter New Password" name="newPassword" required/>
             <Form.Control.Feedback type="invalid">
               Please provide a valid password.
             </Form.Control.Feedback>

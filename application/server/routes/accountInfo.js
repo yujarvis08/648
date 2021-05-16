@@ -35,7 +35,7 @@ router.post('/changePassword', async (req, res) => {
 
     let sqlRes = await changePassword(email, newPassword);
     if (sqlRes) {
-        let newPassword = sqlRes[0].newPassword;
+        let newPassword = sqlRes.newPassword;
         res.status(200).json({ newPassword });
     }
 });
