@@ -93,3 +93,16 @@ exports.changePassword = (email, newPassword) => {
         });
     });
 }
+
+exports.getUserType = accountId => {
+
+    return new Promise( async (resolve, reject) => {
+        let sql = `SELECT userType FROM account
+            WHERE accountId = ${accountId};`
+    });
+
+    db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+}
