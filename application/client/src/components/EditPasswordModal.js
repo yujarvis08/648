@@ -3,15 +3,14 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-const EditPasswordModal = ({ showState, handleClose }) => {
+const EditPasswordModal = ({ showState, handleClose, userType }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const form = e.currentTarget;
     const passwordData = {
-      email: form.email.value,
-      password: form.password.value,
+      currentPassword: form.currentPassword.value,
       newPassword: form.newPassword.value
     };
     
@@ -36,15 +35,7 @@ const EditPasswordModal = ({ showState, handleClose }) => {
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group>
-          <Form.Control
-              type="email"
-              placeholder="Enter Current Email"
-              pattern=".+@sfsu.edu|.+@.+sfsu.edu|.+@.+.com"
-              name="email"
-              required
-            />
-            <br></br>
-          <Form.Control type="password" placeholder="Enter Current Password" name="password" required/>
+          <Form.Control type="password" placeholder="Enter Current Password" name="currentPassword" required/>
             <Form.Control.Feedback type="invalid">
               Your Password is not correct.
             </Form.Control.Feedback>
