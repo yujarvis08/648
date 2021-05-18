@@ -4,10 +4,18 @@ const {
     changeEmail,
     changePassword,
     deleteAccountByEmail,
-    getEmail,
+    getUserType,
+    getEmail
 } = require('../models/Account');
 const bcrypt = require('bcrypt-nodejs');
 const { response } = require('../server');
+
+/* get usertype */
+router.get('/getUserType', async (req, res) => {
+    let { account_id: accountId } = req.cookies;
+    let userType = await getUserType(accountId);
+    res.status(200).json({ userType: userType });
+});
 
 /* accepts email and new email in req.body */
 router.post('/changeEmail', async (req, res) => {
