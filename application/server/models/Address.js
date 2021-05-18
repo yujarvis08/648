@@ -1,6 +1,6 @@
 const db = require('../db');
 
-exports.insertAddress = (address) => {
+exports.insertAddress = address => {
     return new Promise((resolve, reject) => {
 
         let sql = `INSERT INTO address(line1, line2, city, state, zipcode) ` +

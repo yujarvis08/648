@@ -93,3 +93,13 @@ exports.changePassword = (email, newPassword) => {
         });
     });
 }
+
+exports.getEmail = (accountId) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT email FROM account WHERE accountId = ${accountId}`;
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}
