@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOwner` (
   `ownerId` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `accountId` INT NOT NULL,
+  `restaurantStatus` BOOL DEFAULT False,
   PRIMARY KEY (`ownerId`),
   INDEX `accountIdFk_idx` (`accountId` ASC) VISIBLE,
   CONSTRAINT `ownerAccountIdFK`
