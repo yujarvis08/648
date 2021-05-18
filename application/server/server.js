@@ -11,6 +11,8 @@ const registrationRoute = require('./routes/registration');
 const authRoute = require('./routes/auth');
 const ordersRoute = require('./routes/orders');
 const shoppingCartRoute = require('./routes/shoppingCart');
+const restaurantRoute = require('./routes/restaurant');
+const accountInfoRoute = require('./routes/accountInfo');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +33,8 @@ app.use('/api/registration', registrationRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/orders', ordersRoute);
 app.use('/api/shoppingCart', shoppingCartRoute);
+app.use('/api/restaurant', restaurantRoute);
+app.use('/api/accountInfo', accountInfoRoute);
 
 if (process.env.NODE_ENV === "production") {
     app.get('/*', function (req, res) {

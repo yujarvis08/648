@@ -10,9 +10,7 @@ const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-
         let loginData = { email, password }
-        console.log('Login data object:', loginData)
 
         let response = await fetch('/api/auth/login', {
             method: 'POST',
@@ -24,6 +22,9 @@ const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
         console.log("Response from login:", responseJSON);
         if (response.ok) {
             setIsLoggedIn(true);
+            handleClose();
+        } else {
+            alert(`Wrong username or password.`);
         }
     }
 
@@ -53,18 +54,17 @@ const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
 
                     <Button variant="secondary" onClick={handleClose}>
                         Close
-    </Button>
+                    </Button>
                     <Button
                         variant="primary"
                         type="submit"
                         style={{ marginLeft: "325px" }}
                     >
                         Submit
-    </Button>
+                    </Button>
                 </Form>
             </Modal.Body>
         </Modal>
-
     )
 }
 

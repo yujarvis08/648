@@ -3,7 +3,6 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Checkout from "./Checkout";
 import Homepage from "./Pages/Homepage";
-
 import BrowseRestaurants from "./Pages/BrowseRestaurants";
 import DriverReg from "./Pages/DriverReg";
 import RestaurantReg from "./Pages/RestaurantReg";
@@ -13,13 +12,11 @@ import TermsOfUse from "./Pages/TermsOfUse";
 import OrdersToDeliver from "./OrdersToDeliver";
 import CampusMap from "./CampusMap";
 import OrderConfirmation from "./OrderConfirmation";
-import TestModal from './TestModal';
 import AccountInfo from './AccountInfo';
-// import { insertRestaurant } from '../../server/models/Restaurant';
-import ResturantMenu from './RestaurantMenu';
+import RestaurantMenu from './Pages/RestaurantMenu';
 import AccountChangePassword from "./AccountChangePassword";
 
-const Main = () => {
+const Main = ({ isLoggedIn, setIsLoggedIn }) => {
 
     return (
         <React.Fragment>
@@ -44,10 +41,6 @@ const Main = () => {
                     <DriverReg />
                 </Route>
 
-                <Route exact path="/ping">
-                    <h1>Pong</h1>
-                </Route>
-
                 <Route exact path="/checkout">
                     <Checkout />
                 </Route>
@@ -61,13 +54,17 @@ const Main = () => {
                     <TermsOfUse />
                 </Route>
 
-                <Route exact path="/test-modal">
-                    <TestModal />
+                <Route path="/account">
+                    <AccountInfo />
+                </ Route >
+
+                <Route path="/restaurant-menu" >
+                    <RestaurantMenu isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
                 </Route>
 
-                <Route path="/account" component={AccountInfo} />
-                <Route path="/restaurant-menu" component={ResturantMenu} />
-                <Route path="/AccountChangePassword" component={AccountChangePassword} />
+                <Route path="/AccountChangePassword">
+                    <AccountChangePassword />
+                </Route >
 
                 <Route exact path="/orders-to-deliver">
                     <OrdersToDeliver />

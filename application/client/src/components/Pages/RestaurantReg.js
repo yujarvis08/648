@@ -105,7 +105,7 @@ const RestaurantRegistration = () => {
         priceRating: form.priceRating.value,
         photo: form.photo.files[0],
         line1: form.addressLine1.value,
-        line2: '',
+        line2: form.addressLine2.value,
         city: form.city.value,
         state: form.state.value,
         zipcode: form.zipcode.value,

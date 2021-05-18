@@ -42,14 +42,21 @@ const OrdersToDeliver = () => {
 
   async function handleComplete(e) {
     let orderNum = e.target.getAttribute("order-number");
-    console.log('orderNum:', orderNum)
-    let orderBody = { orderId: orderNum };
+    let orderBody = { orderId: orderNum, orderStatus: "delivered" };
 
-    let wrappedResponse = await fetch("/api/orders/deliver");
+    let wrappedResponse = await fetch("/api/orders/setStatus", {
+      method: "PUT",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderBody)
+    });
+
     let response = await wrappedResponse.json();
     console.log('Response get orders:', response);
     if (!wrappedResponse.ok) {
       alert(`Error occured while fetching orders.\n${response.msg}`);
+    } else {
+      let response = await (await fetch(`/api/orders/getOrders`)).json();
+      setOrders(response.orders);
     }
   }
 
@@ -83,7 +90,7 @@ const OrdersToDeliver = () => {
                   className="mr-3"
                   variant="outline-success"
                   onClick={handleComplete}
-                  order-number={order.orderNumber}
+                  order-number={order.orderId}
                 >Complete</Button>
               </Col>
             </Row>

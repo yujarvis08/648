@@ -7,7 +7,8 @@ import Footer from './components/Footer';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  async function handleLogout() {
+  async function handleLogout(e) {
+    e.preventDefault();
     let wrappedResponse = await fetch('/api/auth/logout');
     if (wrappedResponse.ok) {
       console.log('logging out');
@@ -17,10 +18,7 @@ const App = () => {
 
   // Check login status on App load
   React.useEffect(() => {
-    // console.log('cookie object:', document.cookie);
     let cookies = document.cookie.split('=');
-    // console.log('cookies split:', cookies);
-    // console.log('includes cookie', cookies.includes('account_id'));
     if (cookies.includes('account_id')) {
       setIsLoggedIn(true);
     }
@@ -30,7 +28,7 @@ const App = () => {
     <BrowserRouter>
       <Sfsuswe />
       <Navigation handleLogout={handleLogout} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <Main />
+      <Main isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Footer />
     </BrowserRouter>
 

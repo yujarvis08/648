@@ -1,19 +1,28 @@
 const db = require('../db');
 
-exports.insertOrder = (customerId, restaurantId) => {
+exports.insertOrder = (order) => {
 	return new Promise((resolve, reject) => {
 
 		let sql = `INSERT INTO 
-            restaurantOrder(restaurantId, orderStatus, customerId, address)
-			VALUES(${restaurantId}, 
-            "restaurant is preparing", 
-            ${customerId},
-            '200 broadyway, san Francisco')`;
+            restaurantOrder(
+				restaurantId,
+				orderStatus, 
+				customerId, 
+				addressId, 
+				comment, 
+				total)
+			VALUES(
+				${order.restaurantId}, 
+				"ordered", 
+				${order.customerId},
+				${order.addressId},
+				'${order.instructions}',
+				${order.total})`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			// console.log('Inserted menuItem into DB. itemId:', result.insertId);
-			resolve(result);
+			return resolve(result);
 		})
 	});
 }
@@ -46,12 +55,26 @@ exports.getOrders = (accountId) => {
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			//console.log('getting orders:', result);
-			resolve(result);
+			return resolve(result);
 		})
 	});
 }
 
-let getRestaurantIdFromAccountId = accountId => {
+exports.getRestaurantIdFromMenuItemId = menuItemId => {
+	return new Promise((resolve, reject) => {
+		let sql = `SELECT res.restaurantId
+		FROM menuItem mi
+		JOIN menu ON menu.menuId = mi.menuId
+		JOIN restaurant res ON res.restaurantId = menu.restaurantId
+		WHERE mi.menuItemId = ${menuItemId}`;
+		db.query(sql, (err, result) => {
+			if (err) return reject(err);
+			return resolve(result);
+		});
+	});
+}
+
+const getRestaurantIdFromAccountId = accountId => {
 	return new Promise((resolve, reject) => {
 		console.log('inside getrestaurantId model accountId:', accountId);
 		let sql = `SELECT restaurantId FROM deliveryDriver
@@ -60,23 +83,23 @@ let getRestaurantIdFromAccountId = accountId => {
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			//console.log('getting orders:', result);
-			resolve(result);
+			return resolve(result);
 		});
 	});
 }
 
 /*set order status of order */
-exports.setOrder = (restaurantId, orderStatus) => {
+exports.setStatus = (orderId, orderStatus) => {
 	return new Promise((resolve, reject) => {
 
 		let sql = `UPDATE restaurantOrder
-                SET orderStatus = ${orderStatus} 
-				WHERE restaurantId = ${restaurantId}`;
+                SET orderStatus = '${orderStatus}' 
+				WHERE orderId = ${orderId}`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			//console.log('getting orders:', result);
-			resolve(result);
+			return resolve(result);
 		})
 	});
 }
@@ -91,7 +114,7 @@ exports.updateComment = (restaurantOrderId, comment) => {
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			//console.log('getting orders:', result);
-			resolve(result);
+			return resolve(result);
 		})
 	});
 }
@@ -105,7 +128,7 @@ exports.cancelOrder = (restaurantOrderId) => {
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			//console.log('getting orders:', result);
-			resolve(result);
+			return resolve(result);
 		})
 	});
 }
@@ -119,7 +142,7 @@ exports.orderStatus = (restaurantOrderId) => {
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			//console.log('getting orders:', result);
-			resolve(result);
+			return resolve(result);
 		})
 	});
 }
