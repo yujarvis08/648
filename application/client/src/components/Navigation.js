@@ -83,15 +83,26 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
     // searchRestaurantsByCuisine(cuisine);
     history.push(`/search/restaurant?cuisine=${cuisine}`)
   }
-
+  console.log('isLoggedIn:', isLoggedIn);
   React.useEffect(async () => {
     // get list of unique quisines available from our DB
     let cuisinesArr = await fetchCuisines();
     setCuisines(cuisinesArr);
-    let cookies = document.cookie.split('=');
-    if (cookies.includes('account_id')) {
-      setIsLoggedIn(true);
+    console.log('cookies not split:', document.cookie);
+    let cookies = document.cookie.split('; ');
+    console.log('cookies', cookies);
+    for (let cookie of cookies) {
+      console.log('cookie:', cookie)
+      let key = cookie.split('=')[0];
+      console.log('key:', key);
+      if (key === 'account_id') {
+        setIsLoggedIn(true);
+      }
     }
+    // console.log('cookies:', cookies)
+    // if (cookies.includes('account_id')) {
+    //   setIsLoggedIn(true);
+    // }
   }, []);
 
   return (
@@ -188,7 +199,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
                 onClick={handleShowCartModal}
               >Cart
               {" "}
-              <img src={CartIcon} alt="Cart Icon" height="20px" width="20px"/>
+                <img src={CartIcon} alt="Cart Icon" height="20px" width="20px" />
               </Button>
 
               <Dropdown>
