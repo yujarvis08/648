@@ -27,8 +27,9 @@ const Checkout = () => {
         zipcode: form.zipcode.value,
         cartItems,
         total,
+        instructions: form.instructions.value,
       }
-      console.log('orderData:', orderData)
+
       let wrappedResponse = await fetch("/api/orders/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -37,20 +38,24 @@ const Checkout = () => {
 
       let response = await wrappedResponse.json();
       console.log('response checkout:', response);
-      // if (!wrappedResponse.ok) {
-      //   alert(`Registration failed. ${registrationResponse.msg}`);
-      //   return
-      // }
+      console.log('ok:', wrappedResponse.ok);
+      if (wrappedResponse.ok) {
+        alert(`Order has been placed. Your food is being prepared and shall be delivered soon!`);
+        history.push('/');
+      } else {
+        alert('Something went wrong while processing your order.');
+      }
     }
   }
 
   React.useEffect(async () => {
     let result = await (await fetch('/api/shoppingCart')).json();
-    let total = result.cart.total;
+    let totalTemp = result.cart.total;
     let items = result.cart;
     delete items["total"];
+    console.log('totalTemp:', totalTemp)
     setCartItems(items);
-    setTotal(total);
+    setTotal(totalTemp);
   }, []);
 
   return (

@@ -1,14 +1,23 @@
 const db = require('../db');
 
-exports.insertOrder = (customerId, restaurantId, addressId) => {
+exports.insertOrder = (order) => {
 	return new Promise((resolve, reject) => {
 
 		let sql = `INSERT INTO 
-            restaurantOrder(restaurantId, orderStatus, customerId, address)
-			VALUES(${restaurantId}, 
-            "ordered", 
-            ${customerId},
-            ${addressId})`;
+            restaurantOrder(
+				restaurantId,
+				orderStatus, 
+				customerId, 
+				addressId, 
+				comment, 
+				total)
+			VALUES(
+				${order.restaurantId}, 
+				"ordered", 
+				${order.customerId},
+				${order.addressId},
+				'${order.instructions}',
+				${order.total})`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
@@ -65,7 +74,7 @@ exports.getRestaurantIdFromMenuItemId = menuItemId => {
 	});
 }
 
-exports.getRestaurantIdFromAccountId = accountId => {
+const getRestaurantIdFromAccountId = accountId => {
 	return new Promise((resolve, reject) => {
 		console.log('inside getrestaurantId model accountId:', accountId);
 		let sql = `SELECT restaurantId FROM deliveryDriver
@@ -80,12 +89,12 @@ exports.getRestaurantIdFromAccountId = accountId => {
 }
 
 /*set order status of order */
-exports.setOrder = (restaurantId, orderStatus) => {
+exports.setStatus = (orderId, orderStatus) => {
 	return new Promise((resolve, reject) => {
 
 		let sql = `UPDATE restaurantOrder
-                SET orderStatus = ${orderStatus} 
-				WHERE restaurantId = ${restaurantId}`;
+                SET orderStatus = '${orderStatus}' 
+				WHERE orderId = ${orderId}`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
