@@ -14,6 +14,7 @@ import CampusMap from "./CampusMap";
 import OrderConfirmation from "./OrderConfirmation";
 import AccountInfo from './AccountInfo';
 import RestaurantMenu from './Pages/RestaurantMenu';
+import Restaurant from './Pages/Restaurant';
 import AccountChangePassword from "./AccountChangePassword";
 
 const Main = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -75,6 +76,10 @@ const Main = ({ isLoggedIn, setIsLoggedIn }) => {
 
                 <Route exact path="/campus-map">
                     <CampusMap />
+                </Route>
+
+                <Route exact path="/restaurant">
+                    <Restaurant />
                 </Route>
 
             </Switch>

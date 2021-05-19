@@ -13,10 +13,23 @@ exports.insertMenu = (restaurantId) => {
 	});
 }
 
+
 exports.deleteAll = () => {
 	return new Promise((resolve, reject) => {
 
 		let sql = `DELETE FROM menu WHERE menuId > -1`;
+
+		db.query(sql, (err, result) => {
+			if (err) return reject(err);
+			return resolve(result);
+		});
+	});
+}
+
+exports.getMenuIdFromRestaurantId = restaurantId => {
+	return new Promise((resolve, reject) => {
+
+		let sql = `SELECT menuId FROM menu WHERE restaurantId = ${restaurantId}`;
 
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);

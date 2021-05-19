@@ -85,3 +85,16 @@ exports.getCuisines = () => {
         });
     });
 }
+
+exports.getOwnerRestaurantId = accountId => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT res.restaurantId FROM restaurant res
+            JOIN restaurantOwner ro ON res.ownerId = ro.ownerId
+            WHERE accountId = ${accountId}`;
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}

@@ -101,6 +101,8 @@ router.post('/restaurantOwner/addMenuItems', async (req, res) => {
     res.status(200).json({ msg: 'Inserted menu items' });
 });
 
+
+
 /* ccustomer registration */
 router.post('/customer', async (req, res) => {
     let { email, password } = req.body;
