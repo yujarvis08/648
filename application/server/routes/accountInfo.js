@@ -5,46 +5,60 @@ const {
     changePassword,
     deleteAccountByEmail,
     getUserType,
-    getEmail
+    getEmail,
+    getPassword
 } = require('../models/Account');
 const bcrypt = require('bcrypt-nodejs');
-const { response } = require('../server');
 
 /* get usertype */
 router.get('/getUserType', async (req, res) => {
     let { account_id: accountId } = req.cookies;
-    let userType = await getUserType(accountId);
-    res.status(200).json({ userType: userType });
+    let response = await getUserType(accountId);
+    res.status(200).json({ userType: response[0].userType });
 });
 
 /* accepts email and new email in req.body */
 router.post('/changeEmail', async (req, res) => {
-    let { email, newEmail } = req.body;
-    let response = await changeEmail(email, newEmail);
-    console.log(response);
-    if (response instanceof Error) {
-        res.status(409).json({
-            msg: 'Error! is the email taken?'
-        });
-    } else {
+    let { oldEmail, newEmail } = req.body;
+    let { account_id: accountId } = req.cookies;
+    let result = await getEmail(accountId);
+    if(result && result[0].email === oldEmail){
+        let response = await changeEmail(oldEmail, newEmail);
         res.status(200).json({
             msg: 'Successfully changed Email'
+        });
+    } else {
+        res.status(409).json({
+            msg: 'Error! is the email taken?'
         });
     }
 });
 
 /* accepts email and new password in req.body */
 router.post('/changePassword', async (req, res) => {
-
-    let { email, newPassword } = req.body;
-
+    let { currentPassword, newPassword } = req.body;
+    let accountId = req.cookies.account_id;
+    let result = await getPassword(accountId);
+    let userPassword = result[0].password;
     let salt = bcrypt.genSaltSync();
-    newPassword = bcrypt.hashSync(newPassword, salt)
-
-    let sqlRes = await changePassword(email, newPassword);
-    if (sqlRes) {
-        let newPassword = sqlRes.newPassword;
-        res.status(200).json({ newPassword });
+    newPassword = bcrypt.hashSync(newPassword, salt);
+    try {
+        bcrypt.compare(currentPassword, userPassword,
+            async (err, passwordsMatch) => {
+                if (passwordsMatch) {
+                    await changePassword(accountId, newPassword);
+                    res.status(200).json({ msg: 'Password changed.' });
+                } else {
+                    console.log("wrong password!", err);
+                    res.status(403).json({ msg: 'Invalid credentials' });
+                }
+            });
+    } catch (error) {
+        //console.log('Something went wrong with the server');
+        console.log("You have an error!", error);
+        if (!res.headersSent) {
+            res.status(500).json({ msg: 'Internal error' });
+        }
     }
 });
 
@@ -61,7 +75,6 @@ router.put('/deleteAccount', async (req, res) => {
 router.get('/email', async (req, res) => {
     const accountId = req.cookies.account_id;
     let result = await getEmail(accountId);
-    console.log('result in /email route:', result);
     if (result) {
         let email = result[0].email;
         res.status(200).json({ email });

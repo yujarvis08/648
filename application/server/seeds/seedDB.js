@@ -13,17 +13,17 @@ let salt = bcrypt.genSaltSync();
 const accounts = [
     [
         "customer",
-        "customer1@mail.com",
+        "customer1@sfsu.edu",
         bcrypt.hashSync('testpass', salt)
     ],
     [
         "customer",
-        "customer2@mail.com",
+        "customer2@sfsu.edu",
         bcrypt.hashSync('testpass', salt)
     ],
     [
         "customer",
-        "customer3@mail.com",
+        "customer3@mail.sfsu.edu",
         bcrypt.hashSync('testpass', salt)
     ],
     [

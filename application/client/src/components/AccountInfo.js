@@ -10,6 +10,7 @@ const AccountInfo = () => {
   const [showEmail, setShowEmail] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [email, setEmail] = React.useState('');
+  const [userType, setUserType] = React.useState('');
   const handleCloseEmail = () => setShowEmail(false);
   const handleShowEmail = () => setShowEmail(true);
   const handleClosePassword = () => setShowPassword(false);
@@ -18,8 +19,11 @@ const AccountInfo = () => {
   React.useEffect(async () => {
     let response = await (await fetch('/api/accountInfo/email')).json();
     setEmail(response.email);
+    response = await fetch('/api/accountInfo/getUserType');
+    response = await response.json();
+    setUserType(response.userType);
   }, []);
-
+  
 
 
   return (
@@ -43,6 +47,7 @@ const AccountInfo = () => {
           <EditEmailModal
             showState={showEmail}
             handleClose={handleCloseEmail}
+            userType={userType}
           />
           <Button variant="secondary" onClick={handleShowEmail}>
             {" "}
@@ -78,9 +83,6 @@ const AccountInfo = () => {
         <br></br>
         <br></br>
         <br></br>
-        <Button as={Col} md="6" variant="secondary">
-          Save
-        </Button>
       </Form>
       <br></br>
       <br></br>

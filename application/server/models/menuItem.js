@@ -1,7 +1,7 @@
 const db = require('../db');
 
 exports.insertMenuItem = (menuId, menuItem) => {
-	//console.log('inserMenuItem menuItem:', menuId, menuItem);
+	console.log('inserMenuItem menuItem:', menuId, menuItem);
 
 	return new Promise((resolve, reject) => {
 
@@ -21,7 +21,7 @@ exports.insertMenuItem = (menuId, menuItem) => {
 
 exports.removeMenuItem = (itemId) => {
 	return new Promise((resolve, reject) => {
-		let sql = `DELETE FROM menuItem WHERE itemId = ${itemId}`;
+		let sql = `DELETE FROM menuItem WHERE menuItemId = ${itemId}`;
 		db.query(sql, (err, result) => {
 			if (err) return reject(err);
 			return resolve(result);
