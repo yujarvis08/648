@@ -97,6 +97,7 @@ const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
   React.useEffect(async () => {
     let restaurantName = decodeURIComponent(query.get('name'));
     let response = await SearchAPI.searchRestaurantsByName(restaurantName);
+    console.log('response in RestaurantMenu:', response)
     let rest;
     if (response.restaurants) {
       rest = response.restaurants[0];
@@ -106,7 +107,7 @@ const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
     let menuItemsResponse = await MenuAPI.getMenuItems(rest.restaurantId);
     setMenuItems(menuItemsResponse);
   }, [])
-
+  console.log('restaurant', restaurant)
   return (
     <Container className="bg-white p-5">
       <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
@@ -119,10 +120,15 @@ const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
         setTotal={setTotal}
         menuItem={selectedMenuItem} /> */}
       <Row>
-        <Col><h1>{`${restaurant.name}`}</h1></Col>
-      </Row>
-      <Row>
-        <Col><h2>{`${restaurant.description}`}</h2></Col>
+        <Col sm={6}>
+          <h1>{restaurant.name}</h1>
+          <h2>{restaurant.description}</h2>
+          <p>{restaurant.address.line1}, {restaurant.address.city}, {restaurant.address.state}, {restaurant.address.zipcode}</p>
+          <p>Price rating: {restaurant.priceRating}</p>
+        </Col>
+        <Col >
+          Google Map Goes Here
+        </Col>
       </Row>
       <hr />
       <Row className="justify-content-center mt-3 mb-3">
@@ -130,16 +136,16 @@ const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
           return (
             <Card
               className="m-3"
-              style={{ width: '18rem' }}
+              style={{ width: '18rem', boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}
               key={item.menuItemId}
               // onClick={handleShow}
               item-name={item.name}
               item-price={item.price}
             >
-              <Card.Body>
-                <Card.Title>{`${item.name}`}</Card.Title>
-                <p>{`${item.description}`}</p>
-                <p>{`$${item.price}`}</p>
+              <Card.Body >
+                <Card.Title>{item.name}</Card.Title>
+                <p>{item.description}</p>
+                <p>${item.price}</p>
                 <Row>
                   <Col>
                     <Button
@@ -176,7 +182,7 @@ const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
       <br />
       <br />
       <br />
-    </Container>
+    </Container >
   );
 };
 

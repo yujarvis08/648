@@ -13,8 +13,12 @@ const bcrypt = require('bcrypt-nodejs');
 /* get usertype */
 router.get('/getUserType', async (req, res) => {
     let { account_id: accountId } = req.cookies;
-    let response = await getUserType(accountId);
-    res.status(200).json({ userType: response[0].userType });
+    if (accountId) {
+        let response = await getUserType(accountId);
+        res.status(200).json({ userType: response[0].userType });
+    } else {
+        res.status(200).json({ userType: "" });
+    }
 });
 
 /* accepts email and new email in req.body */
@@ -22,7 +26,7 @@ router.post('/changeEmail', async (req, res) => {
     let { oldEmail, newEmail } = req.body;
     let { account_id: accountId } = req.cookies;
     let result = await getEmail(accountId);
-    if(result && result[0].email === oldEmail){
+    if (result && result[0].email === oldEmail) {
         let response = await changeEmail(oldEmail, newEmail);
         res.status(200).json({
             msg: 'Successfully changed Email'
