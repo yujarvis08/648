@@ -15,6 +15,7 @@ router.get('/getUserType', async (req, res) => {
     let { account_id: accountId } = req.cookies;
     if (accountId) {
         let response = await getUserType(accountId);
+        console.log('accountId:', accountId, 'user type:', response);
         res.status(200).json({ userType: response[0].userType });
     } else {
         res.status(200).json({ userType: "" });

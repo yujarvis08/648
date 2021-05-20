@@ -22,6 +22,7 @@ import Image from "react-bootstrap/Image";
 import Dropdown from "react-bootstrap/Dropdown";
 // images
 import hermesLogo from "./nav-hermesLogo.png";
+import MenuIcon from "./nav-menu-icon.png";
 // components
 import LoginModal from './LoginModal';
 import ShoppingCart from './ShoppingCart';
@@ -237,20 +238,13 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
           }
           {(isLoggedIn && userType === "restaurantOwner") &&
             <Row className="">
-              <Button
-                variant="light"
-                className="mr-3"
-                href="/restaurant"
-              >Your Restaurant
-              {" "}
-              </Button>
-
               <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-basic">
-                  Menu
+                  <Image src={MenuIcon} height="20px" width="20px" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item href="/account">Account</Dropdown.Item>
+                  <Dropdown.Item href="/restaurant">Restaurant</Dropdown.Item>
                   <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

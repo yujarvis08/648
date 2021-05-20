@@ -17,7 +17,7 @@ import LoginModal from "../LoginModal";
  * It is also in charge of displaying the MenuItemModal.
  * It renders when the url is: /restaurant-menu?name=<restaurant name>
  */
-const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
+const ResturantMenu = ({ isLoggedIn, setIsLoggedIn }) => {
   const [show, setShow] = React.useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -186,4 +186,4 @@ const Resturantmenu = ({ isLoggedIn, setIsLoggedIn }) => {
   );
 };
 
-export default Resturantmenu;
+export default ResturantMenu;

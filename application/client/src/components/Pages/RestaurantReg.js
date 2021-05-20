@@ -320,7 +320,7 @@ const RestaurantRegistration = () => {
             <Card.Body>
               <Form.Group>
                 <Form.Label>Item name:</Form.Label>
-                <Form.Control placeholder="Spaghetti Pomodoro" name="itemName" required />
+                <Form.Control name="itemName" required />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Description</Form.Label>
@@ -328,14 +328,14 @@ const RestaurantRegistration = () => {
                   as="textarea"
                   name="itemDescription"
                   required
-                  placeholder="Spaghetti pasta cooked al dente with tomatoes, fresh basil, garlic, and olive oil" />
+                />
               </Form.Group>
               <Form.Label>Price</Form.Label>
               <InputGroup className="p-0">
                 <InputGroup.Prepend>
                   <InputGroup.Text>$</InputGroup.Text>
                 </InputGroup.Prepend>
-                <Form.Control placeholder="0.00" name="itemPrice" required />
+                <Form.Control placeholder="0.00" name="itemPrice" required pattern="\d+(\.\d{1,2})?" />
                 <div name="spacer" className="col md-6"></div>
                 <Button variant="danger" onClick={(e) => removeMenuItem(e)}>Remove</Button>
               </InputGroup>
