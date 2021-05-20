@@ -17,7 +17,7 @@ import LoginModal from "../LoginModal";
  * It is also in charge of displaying the MenuItemModal.
  * It renders when the url is: /restaurant-menu?name=<restaurant name>
  */
-const ResturantMenu = ({ isLoggedIn, setIsLoggedIn }) => {
+const ResturantMenu = ({ isLoggedIn }) => {
   const [show, setShow] = React.useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -110,7 +110,6 @@ const ResturantMenu = ({ isLoggedIn, setIsLoggedIn }) => {
   console.log('restaurant', restaurant)
   return (
     <Container className="bg-white p-5">
-      <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
       {/* <MenuItemModal
         showState={show}
         handleClose={handleClose}

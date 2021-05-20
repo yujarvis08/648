@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 
-const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
+const LoginModal = ({ showState, handleClose, handleLogin }) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
@@ -21,7 +21,8 @@ const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
 
         console.log("Response from login:", responseJSON);
         if (response.ok) {
-            setIsLoggedIn(true);
+            // setIsLoggedIn(true);
+            handleLogin();
             handleClose();
         } else {
             alert(`Wrong username or password.`);

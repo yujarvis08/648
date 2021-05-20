@@ -33,8 +33,8 @@ exports.getOrders = (accountId) => {
 
 		let result = await getRestaurantIdFromAccountId(accountId);
 		let restaurantId = result[0].restaurantId;
-		console.log('getOrders => restaurantId:', restaurantId);
-		// TODO: Orders should have their own address...
+		console.log('getOrders => restaurantId:', restaurantId, 'Driver accountId:', accountId);
+
 		let sql = `SELECT 
 				ord.orderId,
 				ord.orderStatus,
@@ -76,7 +76,7 @@ exports.getRestaurantIdFromMenuItemId = menuItemId => {
 
 const getRestaurantIdFromAccountId = accountId => {
 	return new Promise((resolve, reject) => {
-		console.log('inside getrestaurantId model accountId:', accountId);
+		// console.log('inside getrestaurantId model accountId:', accountId);
 		let sql = `SELECT restaurantId FROM deliveryDriver
             WHERE accountId = ${accountId}`;
 
