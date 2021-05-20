@@ -6,10 +6,13 @@ const addressModel = require('../models/Address');
 
 // utility function to insert address into restaurant object
 async function insertRestaurantAddress(restaurants) {
+    console.log('restaurants:', restaurants);
     for (let restaurant of restaurants) {
         // console.log('passing in id:', restaurant.restaurantId);
         let addressRes = await addressModel.getAddressById(restaurant.restaurantId);
-        restaurant.address = addressRes;
+        console.log('restaurant:', restaurant);
+        console.log('addressRes:', addressRes);
+        restaurant.address = addressRes[0];
         delete restaurant.addressId;
     }
 }

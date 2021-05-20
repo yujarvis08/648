@@ -44,7 +44,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
     let total = result.cart.total;
     let items = result.cart;
     delete items["total"];
-    console.log('items:', items)
+
     setCartItems(items);
     setCartTotal(total);
     setShowCartModal(true)
@@ -70,21 +70,19 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
     }
   }
 
+  // reroutes to search restaurant by name URL
   function handleSubmitSearch(event) {
     event.preventDefault();
     let name = event.target.elements.restaurantSearchBar.value;
-    name = name.replaceAll("'", "''");
-    console.log('name string:', name);
-    // searchRestaurantsByName(name);
+    console.log('restaurant search name:', name);
     history.push(`/search/restaurant?name=${name}`)
   }
-
+  // reroutes to search restaurant by cuisine URL
   function handleSelectCuisine(event) {
     let cuisine = event.target.value;
-    // searchRestaurantsByCuisine(cuisine);
     history.push(`/search/restaurant?cuisine=${cuisine}`)
   }
-  console.log('isLoggedIn:', isLoggedIn);
+
   React.useEffect(async () => {
     // get list of unique quisines available from our DB
     let cuisinesArr = await fetchCuisines();
@@ -92,31 +90,29 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
 
     let response = await fetch('/api/accountInfo/getUserType');
     response = await response.json();
+    console.log('Response from getUserType:', response);
     setUserType(response.userType);
 
-    console.log('cookies not split:', document.cookie);
     let cookies = document.cookie.split('; ');
-    console.log('cookies', cookies);
+
     for (let cookie of cookies) {
-      console.log('cookie:', cookie)
       let key = cookie.split('=')[0];
-      console.log('key:', key);
       if (key === 'account_id') {
         setIsLoggedIn(true);
       }
 
     }
-    // console.log('cookies:', cookies)
-    // if (cookies.includes('account_id')) {
-    //   setIsLoggedIn(true);
-    // }
   }, []);
-
-
-  console.log('userType:', userType);
-
+  console.log('User Type in Navigation:', userType);
   return (
     <Container className="sticky-top" style={{ backgroundColor: "#2A9D8F" }} fluid>
+      {/* Shopping Cart Modal */}
+      <ShoppingCart
+        showState={showCartModal}
+        handleClose={handleCloseCartModal}
+        cartItems={cartItems}
+        cartTotal={cartTotal}
+      />
       <Row >
         <Col xs={2} sm={1} className="align-self-end">
           <Link to="/">
@@ -194,35 +190,31 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
             </React.Fragment>
           }
           {/* Menu dropdown - conditionally rendered */}
-          { (isLoggedIn && userType === "customer") &&
-            <Row className="">
-              <ShoppingCart
-                showState={showCartModal}
-                handleClose={handleCloseCartModal}
-                cartItems={cartItems}
-                cartTotal={cartTotal}
-              />
-              <Button
-                variant="light"
-                className="mr-3"
-                onClick={handleShowCartModal}
-              >Cart
-              {" "}
-                <img src={CartIcon} alt="Cart Icon" height="20px" width="20px" />
-              </Button>
-
-              <Dropdown>
-                <Dropdown.Toggle variant="light" id="dropdown-basic">
-                  Menu
+          {(isLoggedIn && userType === "customer") &&
+            <Row>
+              <Col>
+                <Button
+                  variant="light"
+                  className="mr-3"
+                  onClick={handleShowCartModal}
+                >
+                  <Image className src={CartIcon} alt="Cart Icon" height="20px" width="20px" />
+                </Button>
+              </Col>
+              <Col>
+                <Dropdown>
+                  <Dropdown.Toggle variant="light" id="dropdown-basic">
+                    Menu
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item href="/account">Account</Dropdown.Item>
-                  <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/account">Account</Dropdown.Item>
+                    <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
             </Row>
-}
-            {(isLoggedIn && userType === "deliveryDriver") &&
+          }
+          {(isLoggedIn && userType === "deliveryDriver") &&
             <Row className="">
               <Button
                 variant="light"
@@ -242,8 +234,8 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
                 </Dropdown.Menu>
               </Dropdown>
             </Row>
-}
-            {(isLoggedIn && userType === "restaurantOwner") &&
+          }
+          {(isLoggedIn && userType === "restaurantOwner") &&
             <Row className="">
               <Button
                 variant="light"
