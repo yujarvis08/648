@@ -8,7 +8,9 @@ import AboutUsImg from "./about-us.jpeg";
 const AboutUs = () => {
     return (
         <Container>
-            <h1 className="text-center p-5">About Us</h1>
+            <h1 className="text-center mt-5">About Us</h1>
+            <hr />
+            <br />
             <Row>
                 <Col md={6}>
                     <p>

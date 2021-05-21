@@ -6,10 +6,13 @@ const addressModel = require('../models/Address');
 
 // utility function to insert address into restaurant object
 async function insertRestaurantAddress(restaurants) {
+    console.log('restaurants:', restaurants);
     for (let restaurant of restaurants) {
         // console.log('passing in id:', restaurant.restaurantId);
         let addressRes = await addressModel.getAddressById(restaurant.restaurantId);
-        restaurant.address = addressRes;
+        console.log('restaurant:', restaurant);
+        console.log('addressRes:', addressRes);
+        restaurant.address = addressRes[0];
         delete restaurant.addressId;
     }
 }
@@ -38,8 +41,18 @@ router.get('/restaurant', async (req, res, next) => {
 
 // gets a list of all UNIQUE cuisines available in our app (DB). Useful for dropdown.
 router.get('/restaurant/cuisines', async (req, res, next) => {
-    let cuisines = await utilModel.getAllCuisines();
+    let response = await restaurantModel.getCuisines();
+    let cuisines = []
+    response.forEach(cuisine => {
+        cuisines.push(cuisine.cuisineType)
+    });
+
     res.status(200).json({ status: 'ok', cuisines });
+});
+
+router.get('/restaurant/restaurants', async (req, res, next) => {
+    let restaurants = await utilModel.getAllRestaurants();
+    res.status(200).json({ status: 'ok', restaurants });
 });
 
 module.exports = router;

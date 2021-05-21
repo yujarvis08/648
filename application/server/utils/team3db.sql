@@ -19,6 +19,15 @@ CREATE SCHEMA IF NOT EXISTS `team3db` DEFAULT CHARACTER SET utf8 ;
 USE `team3db` ;
 
 -- -----------------------------------------------------
+-- Table `team3db`.`cuisine`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `team3db`.`cuisine` (
+  `cuisineId` INT NOT NULL AUTO_INCREMENT,
+  `cuisineType` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`cuisineId`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `team3db`.`account`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `team3db`.`account` (
@@ -102,7 +111,11 @@ CREATE TABLE IF NOT EXISTS `team3db`.`restaurant` (
   `cuisine` VARCHAR(45) NULL,
   `priceRating` VARCHAR(3) NULL,
   `addressId` INT NULL,
-  `imagePath` VARCHAR(45) NULL,
+  `imagePath` VARCHAR(255) NULL,
+  `approved` INT DEFAULT 0,
+  `lat` DECIMAL(10,8),
+  `lng` DECIMAL(11,8),
+  `distance` DECIMAL(4,2),
   INDEX `ownerIdFK_idx` (`ownerId` ASC) VISIBLE,
   PRIMARY KEY (`restaurantId`),
   INDEX `businessScheduleId_idx` (`businessScheduleId` ASC) VISIBLE,
@@ -150,18 +163,34 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team3db`.`order`
+-- Table `team3db`.`restaurantOrder`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team3db`.`order` (
+CREATE TABLE IF NOT EXISTS `team3db`.`restaurantOrder` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
+  `comment` VARCHAR(255),
+  `orderStatus` VARCHAR(45) NOT NULL,
+  `addressId` INT NOT NULL,
   `restaurantId` INT NULL,
+  `customerId` INT NULL,
+  `total` DECIMAL(7,2),
   PRIMARY KEY (`orderId`),
   INDEX `restaurantIdFK_idx` (`restaurantId` ASC) VISIBLE,
+  CONSTRAINT `order_address_FK`
+    FOREIGN KEY (`addressId`)
+    REFERENCES `team3db`.`address` (`addressId`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `orderRestaurantIdFK`
     FOREIGN KEY (`restaurantId`)
     REFERENCES `team3db`.`restaurant` (`restaurantId`)
     ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `order_customer_FK`
+    FOREIGN KEY (`customerId`)
+    REFERENCES `team3db`.`customer` (`customerId`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
+
 ENGINE = InnoDB;
 
 
@@ -201,6 +230,27 @@ CREATE TABLE IF NOT EXISTS `team3db`.`menuItem` (
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `team3db`.`shoppingCart`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `team3db`.`shoppingCart` (
+  `shoppingCartId` INT NOT NULL AUTO_INCREMENT,
+  `accountId` INT NOT NULL,
+  `menuItemId` INT NOT NULL,
+  PRIMARY KEY (`shoppingCartId`),
+  CONSTRAINT `shoppingCartAccountFK`
+    FOREIGN KEY (`accountId`)
+    REFERENCES `team3db`.`account` (`accountId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `menuItemShoppingCartFK`
+    FOREIGN KEY (`menuItemId`)
+    REFERENCES `team3db`.`menuItem` (`menuItemId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

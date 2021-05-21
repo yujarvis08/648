@@ -6,7 +6,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 // images
-import banner from "./images/sfsubanner.png";
 import deliveryScooter from "./images/deliveryScooter.jpg";
 import gator from "./images/gator.jpg";
 // import restaurant from "./images/restaurant.jpg";

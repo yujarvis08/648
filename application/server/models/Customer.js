@@ -13,3 +13,17 @@ exports.insertCustomer = (customer) => {
         });
     });
 }
+
+exports.getCustomerId = accountId => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT customerId from customer
+            WHERE accountId = ${accountId}`
+
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}
+
+
