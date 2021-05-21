@@ -53,7 +53,3 @@ logs
 *.user
 *.userosscache
 *.sln.docstates
-
-# images
-uploads/
-
