@@ -95,12 +95,11 @@ const BrowseRestaurants = () => {
             response = await SearchAPI.searchRestaurantsByCuisine(cuisine);
         } else {
             let name = decodeURIComponent(query.get("name"));
-            console.log('name in browse restaurant from search:', name);
             response = await SearchAPI.searchRestaurantsByName(name);
         }
         setRestaurants(response.restaurants);
     }, [query.get('cuisine'), query.get('name')]);
-    console.log('restaurants:', restaurants)
+
     return (
         <Container>
             {/* Restaurant Cards */}
@@ -112,7 +111,7 @@ const BrowseRestaurants = () => {
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary" id="filter-btn">
                             Sort
-                </Dropdown.Toggle>
+                        </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item href="#/action1" onClick={sortCheapest}>Cheapest</Dropdown.Item>
                             <Dropdown.Item href="#/action2" onClick={sortExpensive}>Expensive</Dropdown.Item>

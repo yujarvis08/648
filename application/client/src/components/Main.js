@@ -11,7 +11,7 @@ import AboutUs from "./Pages/AboutUs";
 import TermsOfUse from "./Pages/TermsOfUse";
 import OrdersToDeliver from "./OrdersToDeliver";
 import CampusMap from "./CampusMap";
-import OrderConfirmation from "./OrderConfirmation";
+import PasswordRecovery from "./Pages/PasswordRecovery";
 import AccountInfo from './AccountInfo';
 import RestaurantMenu from './Pages/RestaurantMenu';
 import Restaurant from './Pages/Restaurant';
@@ -46,6 +46,9 @@ const Main = ({ isLoggedIn, userType, handleLogout, handleLogin }) => {
                         handleLogin={handleLogin}
                     />
                 </Route>
+                <Route exact path="/password-recovery">
+                    <PasswordRecovery />
+                </Route>
 
                 {/* Registrations */}
                 <Route exact path="/restaurant-registration">
@@ -63,9 +66,6 @@ const Main = ({ isLoggedIn, userType, handleLogout, handleLogin }) => {
                     <React.Fragment>
                         <Route exact path="/checkout">
                             <Checkout />
-                        </Route>
-                        <Route exact path="/order-confirmation">
-                            <OrderConfirmation />
                         </Route>
                     </React.Fragment>
                 }

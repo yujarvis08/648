@@ -5,13 +5,21 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import CampusMap from "./CampusMap";
 import Card from "react-bootstrap/Card";
+import Dropdown from "react-bootstrap/Dropdown";
+import Form from "react-bootstrap/Form";
+
+
 
 
 const OrdersToDeliver = () => {
   const [show, setShow] = React.useState(false);
   const [orders, setOrders] = React.useState([]);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = (e) => {
+    setQuadrant(e.target.value);
+    setShow(true);
+  }
+  const [quadrant, setQuadrant] = React.useState('');
 
   async function handleComplete(e) {
     let orderNum = e.target.getAttribute("order-number");
@@ -77,17 +85,33 @@ const OrdersToDeliver = () => {
    */
   React.useEffect(async () => {
     let response = await (await fetch(`/api/orders/getOrders`)).json();
-    console.log('new orders:', response.orders);
     setOrders(response.orders);
   }, [])
 
   return (
     <Container>
       {/* Campus Map conditionally rendered (it's a modal) */}
-      <CampusMap showState={show} handleClose={handleClose} />
-      <Row className="mt-3 justify-content-around">
+      <CampusMap showState={show} handleClose={handleClose} quadrant={quadrant} />
+      <Row className="mt-3 justify-content-between">
         <h1 className="">Orders to deliver</h1>
-        <Button variant="primary" onClick={handleShow}>Campus Map</Button>
+        <Col xs={4}>
+          <Form.Control
+            as="select"
+            custom
+            required
+            name="campus"
+            onChange={handleShow}
+          >
+            <option value="none" selected disabled hidden>Campus Map</option>
+            <option value="all">entire campus</option>
+            <option value="northwest">northwest</option>
+            <option value="southwest">southwest</option>
+            <option value="northeast">northeast</option>
+            <option value="southeast">southeast</option>
+          </Form.Control>
+        </Col>
+      </Row>
+      <Row>
       </Row>
       <hr />
       <Row>
