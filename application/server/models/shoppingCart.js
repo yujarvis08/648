@@ -56,7 +56,7 @@ exports.getCartItems = accountId => {
     return new Promise((resolve, reject) => {
         let sql = `SELECT sc.menuItemId, mi.name, mi.description, mi.price
         FROM shoppingCart sc
-        JOIN MenuItem mi ON mi.menuItemId = sc.menuItemId
+        JOIN menuItem mi ON mi.menuItemId = sc.menuItemId
         WHERE accountId = ${accountId}`;
         db.query(sql, (err, result) => {
             if (err) return reject(err);
