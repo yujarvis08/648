@@ -4,7 +4,11 @@ exports.insertAccount = (account) => {
     return new Promise((resolve, reject) => {
 
         let sql = `INSERT INTO account(userType, email, password) 
-                VALUES("${account.userType}", "${account.email}", "${account.password}")`;
+                VALUES(
+                    "${account.userType}", 
+                    "${account.email}",
+                    "${account.password}"
+                )`; 
 
         db.query(sql, (err, result) => {
             if (err) return reject(err);
@@ -75,14 +79,47 @@ exports.changeEmail = (email, newEmail) => {
     });
 }
 
-exports.changePassword = (email, newPassword) => {
+exports.changePassword = (accountId, newPassword) => {
     return new Promise( async (resolve, reject) => {
-        let response = await getIdFromEmail(email);
+        // let response = await getIdFromEmail(email);
         let sql = `UPDATE account
             SET password = '${newPassword}'
-            WHERE accountId = '${response[0].accountId}'`;
+            WHERE accountId = '${accountId}'`;
         console.log(sql);
 
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}
+
+exports.getUserType = accountId => {
+
+    return new Promise( async (resolve, reject) => {
+        let sql = `SELECT userType FROM account
+            WHERE accountId = ${accountId}`;
+            db.query(sql, (err, result) => {
+                    if (err) return reject(err);
+                    return resolve(result);
+                });
+    });
+
+}
+
+exports.getEmail = (accountId) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT email FROM account WHERE accountId = ${accountId}`;
+        db.query(sql, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result);
+        });
+    });
+}
+
+exports.getPassword = accountId => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT password FROM account WHERE accountId = ${accountId}`;
         db.query(sql, (err, result) => {
             if (err) return reject(err);
             return resolve(result);

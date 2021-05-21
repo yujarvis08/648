@@ -1,100 +1,87 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+// Bootstrap
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+// components
+import AccountInfoForm from "../AccountInfoForm";
 
 
 const UserRegistration = () => {
-
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
+  const [validated, setValidated] = React.useState(false);
   const history = useHistory();
 
   async function handleSubmit(e) {
     e.preventDefault();
+    e.stopPropagation();
+    const form = e.currentTarget;
 
-    const regData = {
-      firstName,
-      lastName,
-      email,
-      password
+    let match = form.confirmPassword.value === form.password.value ? "" : "Passwords must match!";
+    form.confirmPassword.setCustomValidity(match);
+
+    setValidated(true);
+    if (form.checkValidity() === false) {
+      // if form is not valid, don't do anything
+      return
     }
 
-    let wrappedResponse = await fetch('/api/registration/customer', {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(regData) // body data type must match "Content-Type" header
+    const regData = {
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      email: form.email.value,
+      password: form.password.value,
+    };
+
+    let wrappedResponse = await fetch("/api/registration/customer", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(regData), // body data type must match "Content-Type" header
     });
-    console.log('wrapped response:', wrappedResponse);
 
     let response = await wrappedResponse.json();
-    // console.log('Response from registering customer:', response);
+
     if (wrappedResponse.ok) {
-      alert("You've been registered! Login at the homepage.")
-      history.push('/');
+      alert("You've been registered! Login at the homepage.");
+      history.push("/");
     } else {
       alert(`Registration failed. ${response.msg}`);
     }
   }
 
-
   return (
     <Container>
-      <Row className="mt-5 justify-content-around"><h1>Customer Registration</h1></Row>
-      <Form style={{ textAlign: "left" }} onSubmit={(e) => handleSubmit(e)}>
+      <Row className="mt-5 justify-content-around">
+        <h1>Customer Registration</h1>
+      </Row>
+      <hr />
+      <Form noValidate validated={validated} onSubmit={handleSubmit} >
         <br></br>
+        <AccountInfoForm accountType="customer" />
+        <br />
+        <Form.Group>
+          <input type="checkbox" className="ml-3" required />{" "}
+          I agree to the <a href="/terms-of-use">Terms of Use</a>
+          <Form.Control.Feedback type="invalid">
+            You must agree before submitting
+          </Form.Control.Feedback>
+        </Form.Group>
+
         <br></br>
-        <br></br>
-        <h3>Account Info</h3>
         <br></br>
 
-        <Form.Row>
-          <Form.Label>First Name</Form.Label>
-          <Form.Control type="firstname" placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
+        <Form.Row >
+          <Button variant="primary" type="submit" className="ml-3">Submit</Button>
         </Form.Row>
-        <br></br>
-        <Form.Row>
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control type="lastname" placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} />
-        </Form.Row>
-        <br></br>
-        <Form.Row>
-          <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
-        </Form.Row>
-        <br></br>
-        <Form.Row>
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-        </Form.Row>
-        <br></br>
-        <Form.Row>
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control type="password" placeholder="Confirm Password" />
-        </Form.Row>
-        <br></br>
 
-        <Link to="/" className="btn btn-secondary">Back</Link>
-
-        <Button variant="primary" type="submit" style={{ marginLeft: '50px' }}>
-          Finish
-            </Button>
         <br></br>
       </Form>
-      <br />
-      <br />
+      <hr />
       <br />
       <br />
     </Container>
-
-
-  )
-}
+  );
+};
 
 export default UserRegistration;

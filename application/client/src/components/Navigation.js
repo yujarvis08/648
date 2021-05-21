@@ -20,18 +20,36 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import Dropdown from "react-bootstrap/Dropdown";
-
 // images
-import hermesLogo from "./nav-hermesLogo.png";
+import hermesLogo from "./hermes-logo.png";
+import MenuIcon from "./nav-menu-icon.png";
 // components
 import LoginModal from './LoginModal';
+import ShoppingCart from './ShoppingCart';
+import CartIcon from "../images/cart.png";
 
-const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
-  const [show, setShow] = React.useState(false);
+const Navigation = ({ handleLogout, isLoggedIn, userType, handleLogin }) => {
+  const [showLoginModal, setShowLoginModal] = React.useState(false);
+  const [showCartModal, setShowCartModal] = React.useState(false);
+  const [cartItems, setCartItems] = React.useState({});
+  const [cartTotal, setCartTotal] = React.useState(0.00);
   const [cuisines, setCuisines] = React.useState([]);
   const history = useHistory();
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleCloseLoginModal = () => setShowLoginModal(false);
+  const handleCloseCartModal = () => setShowCartModal(false);
+  const handleShowLoginModal = () => setShowLoginModal(true);
+
+  const handleShowCartModal = async () => {
+    let result = await (await fetch('/api/shoppingCart')).json();
+
+    let total = result.cart.total;
+    let items = result.cart;
+    delete items["total"];
+
+    setCartItems(items);
+    setCartTotal(total);
+    setShowCartModal(true)
+  };
 
   /**
    * Fetches a comprehensive list of unique cuisines from our DB 
@@ -44,51 +62,51 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
       ).json();
       let cuisinesArr = ["All cuisines"];
 
-      for (let cuisine of response.cuisines) cuisinesArr.push(cuisine.cuisine);
-
+      for (let cuisine of response.cuisines) {
+        cuisinesArr.push(cuisine);
+      }
       return cuisinesArr;
     } catch (err) {
       console.log(err);
     }
   }
 
+  // reroutes to search restaurant by name URL
   function handleSubmitSearch(event) {
     event.preventDefault();
     let name = event.target.elements.restaurantSearchBar.value;
-    name = name.replaceAll("'", "''");
-    console.log('name string:', name);
-    // searchRestaurantsByName(name);
+    console.log('restaurant search name:', name);
     history.push(`/search/restaurant?name=${name}`)
   }
-
+  // reroutes to search restaurant by cuisine URL
   function handleSelectCuisine(event) {
     let cuisine = event.target.value;
-    // searchRestaurantsByCuisine(cuisine);
     history.push(`/search/restaurant?cuisine=${cuisine}`)
   }
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
     // get list of unique quisines available from our DB
-    fetchCuisines().then(setCuisines).catch(console.log);
-
-    let cookies = document.cookie.split('=');
-    // console.log('cookies split:', cookies);
-    // console.log('includes cookie', cookies.includes('account_id'));
-    if (cookies.includes('account_id')) {
-      setIsLoggedIn(true);
-    }
+    let cuisinesArr = await fetchCuisines();
+    setCuisines(cuisinesArr);
   }, []);
 
   return (
     <Container className="sticky-top" style={{ backgroundColor: "#2A9D8F" }} fluid>
+      {/* Shopping Cart Modal */}
+      <ShoppingCart
+        showState={showCartModal}
+        handleClose={handleCloseCartModal}
+        cartItems={cartItems}
+        cartTotal={cartTotal}
+      />
       <Row >
-        <Col xs={2} md={1} className="align-self-end">
+        <Col xs={2} sm={1} className="align-self-end">
           <Link to="/">
             <Image src={hermesLogo} height="75px" width="75px" />
           </Link>
         </Col>
 
-        <Col xs={2} md={2} className="align-self-end">
+        <Col xs={2} sm={2} className="align-self-end">
           <Link to="/">
             <span
               style={{
@@ -101,7 +119,7 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
             >Hermes</span>
           </Link>
         </Col>
-        <Col md={8} className="align-self-center mt-2">
+        <Col sm={7} className="align-self-center mt-2">
           {/* Search bar */}
           <Form onSubmit={handleSubmitSearch}>
             <Form.Row className="align-items-center">
@@ -148,37 +166,81 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
             </Form.Row>
           </Form>
         </Col>
-        <Col md={1} className="align-self-center">
+        <Col sm={2} className="align-self-center">
           {/* Login button - conditionally rendered */}
           {
             !isLoggedIn &&
             <React.Fragment>
-              <LoginModal showState={show} handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
-              <Button variant="light" onClick={handleShow} > Login </Button>
+              <LoginModal
+                showState={showLoginModal}
+                handleClose={handleCloseLoginModal}
+                handleLogin={handleLogin}
+              />
+              <Button variant="light" onClick={handleShowLoginModal} > Login </Button>
             </React.Fragment>
           }
           {/* Menu dropdown - conditionally rendered */}
-          {
-            isLoggedIn &&
-            <Dropdown>
-              <Dropdown.Toggle variant="light" id="dropdown-basic">
-                Menu
-            </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Account</Dropdown.Item>
-                <Dropdown.Item href="#/action-2" onClick={handleLogout}>Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+          {(userType === "customer") &&
+            <Row>
+              <Col>
+                <Button
+                  variant="light"
+                  className="mr-3"
+                  onClick={handleShowCartModal}
+                >
+                  <Image className src={CartIcon} alt="Cart Icon" height="20px" width="20px" />
+                </Button>
+              </Col>
+              <Col>
+                <Dropdown>
+                  <Dropdown.Toggle variant="light" id="dropdown-basic">
+                    <Image src={MenuIcon} height="20px" width="20px" />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/account">Account</Dropdown.Item>
+                    <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
+            </Row>
+          }
+          {(userType === "deliveryDriver") &&
+            <Row className="">
+              <Dropdown>
+                <Dropdown.Toggle variant="light" id="dropdown-basic">
+                  <Image src={MenuIcon} height="20px" width="20px" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/account">Account</Dropdown.Item>
+                  <Dropdown.Item href="/orders-to-deliver">Orders</Dropdown.Item>
+                  <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Row>
+          }
+          {(userType === "restaurantOwner") &&
+            <Row className="">
+              <Dropdown>
+                <Dropdown.Toggle variant="light" id="dropdown-basic">
+                  <Image src={MenuIcon} height="20px" width="20px" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/account">Account</Dropdown.Item>
+                  <Dropdown.Item href="/restaurant">Restaurant</Dropdown.Item>
+                  <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Row>
           }
         </Col>
-      </Row>
+      </Row >
 
       {!isLoggedIn &&
         <Row className="text-center text-white">
           <Col><Link style={{ color: "inherit" }} to="/about-us">About Us</Link></Col>
           <Col><Link style={{ color: "inherit" }} to="/customer-registration">SFSU Customer</Link></Col>
-          <Col><Link style={{ color: "inherit" }} to="driver-registration">Driver</Link></Col>
-          <Col><Link style={{ color: "inherit" }} to="restaurant-registration">Restaurant Owner</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/driver-registration">Delivery Driver</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/restaurant-registration">Restaurant Owner</Link></Col>
         </Row>}
 
 
