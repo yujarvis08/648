@@ -10,6 +10,33 @@ const Customer = require('../models/Customer');
 const Driver = require('../models/DeliveryDriver');
 const bcrypt = require('bcrypt-nodejs');
 
+function rad(x) {
+    return x * Math.PI / 180;
+};
+
+/**
+ * Compute Haversine distance from p1 to p2
+ * @param {Object} p1 
+ * @param {Object} p2 
+ * @returns distance in miles
+ */
+function getDistance(p1, p2) {
+    console.log('p1:', p1, 'p2:', p2);
+    let R = 6378137; // Earth’s mean radius in meter
+    let dLat = rad(p2.lat - p1.lat);
+    console.log('dLat:', dLat);
+    let dLong = rad(p2.lng - p1.lng);
+    console.log('dLong:', dLong);
+    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) *
+        Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    console.log('a:', a);
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    console.log('c:', c);
+    let d = R * c;
+    console.log('d:', d);
+    return d / 1609.34; // returns the distance in miles (d is in meters)
+};
 /* restaurantOwner registration */
 // Account         input { email, password }
 // restaurantOwner input { name }
@@ -75,6 +102,13 @@ router.post('/restaurantOwner', async (req, res) => {
         restaurantData.addressId = addressId;
         restaurantData.imagePath = imagePath.replace('./public', '');
         restaurantData.ownerId = ownerId;
+        restaurantData.lat = req.body.lat;
+        restaurantData.lng = req.body.lng;
+        let sfsuCoordinates = { lat: 37.7241534, lng: -122.4821292 };
+        let distance = getDistance(restaurantData, sfsuCoordinates);
+        console.log('distance:', distance);
+        restaurantData.distance = distance;
+        console.log('restaurantData:', restaurantData);
         /* Insert into Restaurant and returns restaurantId */
         let { insertId: restaurantId } = await restaurant.insertRestaurant(restaurantData);
         /* Inserts into menu and returns menuId */

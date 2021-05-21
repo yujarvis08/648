@@ -55,6 +55,7 @@ const App = () => {
         setIsLoggedIn={setIsLoggedIn}
         userType={userType}
         handleLogout={handleLogout}
+        handleLogin={handleLogin}
       />
       <Footer />
     </BrowserRouter>

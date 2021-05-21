@@ -1,6 +1,6 @@
 /**
  * ! To seed properly, begin with an empty DB (npm run seed:db)
- * Seeds 7 different accounts: 1 customer, 5 owners, 1 driver
+ * Seeds 9 different accounts: 3 customer, 5 owners, 1 driver
  * Seeds 5 restaurants
  * Seeds 5 addresses (1 for each restaurant)
  * Seeds 5 menus (1 for each restaurant)
@@ -57,30 +57,41 @@ const accounts = [
         bcrypt.hashSync('testpass', salt)
     ],
 ]
-
+// name, accountId
 const restaurantOwners = [
     [
         "Tina",
-        2
+        4,
     ],
     [
         "Aleander",
-        3
+        5,
     ],
     [
         "Elizabeth",
-        4
+        6,
     ],
     [
         "Aaron",
-        5
+        7,
     ],
     [
         "Bruce",
-        6
+        8,
     ]
 ]
-
+/**
+ * restaurantId
+ * name
+ * cuisine
+ * priceRating
+ * restaurantOwner
+ * imagePath
+ * approved
+ * lat
+ * lng
+ * distance
+ */
 const restaurants = [
     [
         1,
@@ -89,7 +100,11 @@ const restaurants = [
         "American",
         '$$',
         1,
-        "/assets/images/restaurant/burger.jpeg"
+        "/assets/images/restaurant/burger.jpeg",
+        1,
+        37.719714,
+        -122.4743764,
+        1.09
     ],
     [
         2,
@@ -98,7 +113,11 @@ const restaurants = [
         "Mexican",
         '$',
         2,
-        "/assets/images/restaurant/tacos.jpeg"
+        "/assets/images/restaurant/tacos.jpeg",
+        1,
+        37.7264129,
+        -122.4785103,
+        0.48
     ],
     [
         3,
@@ -107,7 +126,11 @@ const restaurants = [
         "Italian",
         '$$$',
         3,
-        "/assets/images/restaurant/pizza.jpeg"
+        "/assets/images/restaurant/pizza.jpeg",
+        1,
+        37.7162382,
+        -122.4719116,
+        0.82
     ],
     [
         4,
@@ -116,7 +139,11 @@ const restaurants = [
         "Dessert",
         '$',
         4,
-        "/assets/images/restaurant/desserts.jpeg"
+        "/assets/images/restaurant/desserts.jpeg",
+        1,
+        37.7086735,
+        -122.4881102,
+        1.07
     ],
     [
         5,
@@ -125,7 +152,11 @@ const restaurants = [
         "Cafe",
         '$',
         5,
-        "/assets/images/restaurant/cafe.jpeg"
+        "/assets/images/restaurant/cafe.jpeg",
+        1,
+        37.7302584,
+        -122.4785401,
+        1.53
     ],
 ]
 
@@ -442,7 +473,10 @@ function insertAddresses(addresses) {
 function insertRestaurants(restaurants) {
     return new Promise((resolve, reject) => {
 
-        let sql = `INSERT INTO restaurant(ownerId, name, description, cuisine, priceRating, addressId, imagePath) VALUES ?`;
+        let sql = `INSERT INTO restaurant(
+            ownerId, name, description, cuisine, 
+            priceRating, addressId, imagePath, approved,
+            lat, lng, distance) VALUES ?`;
         db.query(sql, [restaurants], (err, result) => {
             if (err) return reject(err);
             // console.log('Inserted restaurants...');

@@ -11,13 +11,14 @@ import Button from "react-bootstrap/Button";
 // components
 // import MenuItemModal from "../MenuItemModal";
 import LoginModal from "../LoginModal";
+import GoogleMap from "../GoogleMap";
 
 /**
  * This component displays the restaurant's menu items.
  * It is also in charge of displaying the MenuItemModal.
  * It renders when the url is: /restaurant-menu?name=<restaurant name>
  */
-const ResturantMenu = ({ isLoggedIn }) => {
+const RestaurantMenu = ({ isLoggedIn, handleLogin }) => {
   const [show, setShow] = React.useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -60,6 +61,19 @@ const ResturantMenu = ({ isLoggedIn }) => {
   //   setSelectedMenuItem(newMenuItem)
   //   setShow(true)
   // };
+  function getGMapsHyperlink(lat, lng) {
+    // return `https://maps.google.com/?ll=${lat},${lng}`;
+  }
+
+  function getGMapsHyperlink(restaurant) {
+    let address = `
+      ${restaurant.address.line1}, 
+      ${restaurant.address.city}, 
+      ${restaurant.address.state}, 
+      ${restaurant.address.zipcode}`
+    let uri = encodeURIComponent(address);
+    return `https://www.google.com/maps/search/?api=1&query=${uri}`;
+  }
 
   async function handleAddRemove(e) {
     if (!isLoggedIn) {
@@ -107,9 +121,14 @@ const ResturantMenu = ({ isLoggedIn }) => {
     let menuItemsResponse = await MenuAPI.getMenuItems(rest.restaurantId);
     setMenuItems(menuItemsResponse);
   }, [])
-  console.log('restaurant', restaurant)
+
   return (
     <Container className="bg-white p-5">
+      <LoginModal
+        showState={show}
+        handleClose={handleClose}
+        handleLogin={handleLogin}
+      />
       {/* <MenuItemModal
         showState={show}
         handleClose={handleClose}
@@ -119,14 +138,17 @@ const ResturantMenu = ({ isLoggedIn }) => {
         setTotal={setTotal}
         menuItem={selectedMenuItem} /> */}
       <Row>
-        <Col sm={6}>
+        <Col sm={6} >
           <h1>{restaurant.name}</h1>
           <h2>{restaurant.description}</h2>
-          <p>{restaurant.address.line1}, {restaurant.address.city}, {restaurant.address.state}, {restaurant.address.zipcode}</p>
-          <p>Price rating: {restaurant.priceRating}</p>
+          <p><a href={getGMapsHyperlink(restaurant)}>
+            {restaurant.address.line1}, {restaurant.address.city}, {restaurant.address.state}, {restaurant.address.zipcode}
+          </a></p>
+          <p>Price rating: <b>{restaurant.priceRating}</b></p>
+          <p>Distance from SFSU: <b>{restaurant.distance}</b> miles</p>
         </Col>
-        <Col >
-          Google Map Goes Here
+        <Col sm={6} className="p-0">
+          <GoogleMap restaurant={restaurant} />
         </Col>
       </Row>
       <hr />
@@ -185,4 +207,4 @@ const ResturantMenu = ({ isLoggedIn }) => {
   );
 };
 
-export default ResturantMenu;
+export default RestaurantMenu;

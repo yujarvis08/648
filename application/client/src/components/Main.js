@@ -16,7 +16,7 @@ import AccountInfo from './AccountInfo';
 import RestaurantMenu from './Pages/RestaurantMenu';
 import Restaurant from './Pages/Restaurant';
 
-const Main = ({ isLoggedIn, userType, handleLogout }) => {
+const Main = ({ isLoggedIn, userType, handleLogout, handleLogin }) => {
 
     return (
         <React.Fragment>
@@ -43,6 +43,7 @@ const Main = ({ isLoggedIn, userType, handleLogout }) => {
                 <Route exact path="/restaurant-menu" >
                     <RestaurantMenu
                         isLoggedIn={isLoggedIn}
+                        handleLogin={handleLogin}
                     />
                 </Route>
 

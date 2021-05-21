@@ -103,6 +103,8 @@ CREATE TABLE IF NOT EXISTS `testdb`.`restaurant` (
   `priceRating` VARCHAR(3) NULL,
   `addressId` INT NULL,
   `imagePath` VARCHAR(45) NULL,
+  `lat` DECIMAL(4,7) NULL,
+  `lng` DECIMAL(4,7) NULL,
   INDEX `ownerIdFK_idx` (`ownerId` ASC) VISIBLE,
   PRIMARY KEY (`restaurantId`),
   INDEX `businessScheduleId_idx` (`businessScheduleId` ASC) VISIBLE,

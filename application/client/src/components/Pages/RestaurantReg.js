@@ -1,6 +1,7 @@
 import React from "react";
 import SearchAPI from "../../api/search";
 import { useHistory } from "react-router-dom";
+import Geocode from "react-geocode";
 // Bootstrap
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -35,7 +36,6 @@ const RestaurantRegistration = () => {
     newNode.childNodes[0].childNodes[0].childNodes[1].value = ''; // item name
     newNode.childNodes[0].childNodes[1].childNodes[1].value = ''; // item description
     newNode.childNodes[0].childNodes[3].childNodes[1].value = ''; // item price
-    console.log('wtf:', newNode.childNodes[0].childNodes[3].childNodes)
     // add event listener (cloneNode deep copy doesn't clone event listeners)
     newNode.childNodes[0].childNodes[3].childNodes[3].addEventListener('click', removeMenuItem);
     // remove disabled attribute from button for the case when we clone from an item with it disabled
@@ -109,7 +109,16 @@ const RestaurantRegistration = () => {
         city: form.city.value,
         state: form.state.value,
         zipcode: form.zipcode.value,
+        cuisine: form.restaurantCuisine.value
       };
+      let address = `${regData.line1} ${regData.line2} ${regData.city}`;
+      Geocode.setApiKey("AIzaSyDO7JFON_fZUbhuDA3tps2xQfTMMpR172U");
+      let res = await Geocode.fromAddress(address);
+      let { lat, lng } = res.results[0].geometry.location;
+      regData.lat = lat;
+      regData.lng = lng;
+
+      console.log('regData.lat:', regData.lat, 'regData.lng:', regData.lng);
       // turn the regData object into a FormData object
       let fd = new FormData();
       Object.keys(regData).forEach(key => {
@@ -211,7 +220,7 @@ const RestaurantRegistration = () => {
         </Form.Group>
 
 
-        <Form.Group as={Col} md="2" controlId="validationCustom08">
+        <Form.Group as={Col} md="3" controlId="validationCustom08">
           <Form.Label>Cuisine</Form.Label>
           <Form.Control
             required

@@ -21,7 +21,7 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import Dropdown from "react-bootstrap/Dropdown";
 // images
-import hermesLogo from "./nav-hermesLogo.png";
+import hermesLogo from "./hermes-logo.png";
 import MenuIcon from "./nav-menu-icon.png";
 // components
 import LoginModal from './LoginModal';
@@ -239,8 +239,8 @@ const Navigation = ({ handleLogout, isLoggedIn, userType, handleLogin }) => {
         <Row className="text-center text-white">
           <Col><Link style={{ color: "inherit" }} to="/about-us">About Us</Link></Col>
           <Col><Link style={{ color: "inherit" }} to="/customer-registration">SFSU Customer</Link></Col>
-          <Col><Link style={{ color: "inherit" }} to="driver-registration">Driver</Link></Col>
-          <Col><Link style={{ color: "inherit" }} to="restaurant-registration">Restaurant Owner</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/driver-registration">Delivery Driver</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/restaurant-registration">Restaurant Owner</Link></Col>
         </Row>}
 
 

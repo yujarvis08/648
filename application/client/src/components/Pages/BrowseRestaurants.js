@@ -20,6 +20,25 @@ const BrowseRestaurants = () => {
     const query = new URLSearchParams(useLocation().search);
     const history = useHistory();
 
+    function sortNear() {
+        console.log('Sorting near')
+        let filtered = restaurants.sort((a, b) => {
+            if (a.distance < b.distance) return -1
+            if (a.distance > b.distance) return 1
+            return 0
+        })
+        setRestaurants(filtered);
+    }
+    function sortFar() {
+        console.log('Sorting far')
+        let filtered = restaurants.sort((a, b) => {
+            if (a.distance > b.distance) return -1
+            if (a.distance < b.distance) return 1
+            return 0
+        })
+        setRestaurants(filtered);
+    }
+
     function sortCheapest() {
         console.log('Sorting cheapest')
         let filtered = restaurants.sort((a, b) => {
@@ -99,6 +118,8 @@ const BrowseRestaurants = () => {
                             <Dropdown.Item href="#/action2" onClick={sortExpensive}>Expensive</Dropdown.Item>
                             <Dropdown.Item href="#/action3" onClick={sortAZ}>A-Z</Dropdown.Item>
                             <Dropdown.Item href="#/action4" onClick={sortZA}>Z-A</Dropdown.Item>
+                            <Dropdown.Item href="#/action5" onClick={sortNear}>Near</Dropdown.Item>
+                            <Dropdown.Item href="#/action6" onClick={sortFar}>Far</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Col>
@@ -115,9 +136,11 @@ const BrowseRestaurants = () => {
                             <Card.Img variant="top" src={restaurant.imagePath} />
                             <Card.Body>
                                 <Card.Title>{restaurant.name}</Card.Title>
+                                <hr />
                                 <Card.Text>{restaurant.description}</Card.Text>
                                 <Card.Text>{restaurant.address.line1}</Card.Text>
                                 <Card.Text>{restaurant.priceRating}</Card.Text>
+                                <Card.Text>{restaurant.distance} miles from SFSU</Card.Text>
                             </Card.Body>
                         </Card>
                     );
