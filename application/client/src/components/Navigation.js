@@ -21,23 +21,24 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import Dropdown from "react-bootstrap/Dropdown";
 // images
-import hermesLogo from "./nav-hermesLogo.png";
+import hermesLogo from "./hermes-logo.png";
+import MenuIcon from "./nav-menu-icon.png";
 // components
 import LoginModal from './LoginModal';
 import ShoppingCart from './ShoppingCart';
 import CartIcon from "../images/cart.png";
 
-const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
+const Navigation = ({ handleLogout, isLoggedIn, userType, handleLogin }) => {
   const [showLoginModal, setShowLoginModal] = React.useState(false);
   const [showCartModal, setShowCartModal] = React.useState(false);
   const [cartItems, setCartItems] = React.useState({});
   const [cartTotal, setCartTotal] = React.useState(0.00);
   const [cuisines, setCuisines] = React.useState([]);
-  const [userType, setUserType] = React.useState('');
   const history = useHistory();
   const handleCloseLoginModal = () => setShowLoginModal(false);
   const handleCloseCartModal = () => setShowCartModal(false);
   const handleShowLoginModal = () => setShowLoginModal(true);
+
   const handleShowCartModal = async () => {
     let result = await (await fetch('/api/shoppingCart')).json();
 
@@ -87,23 +88,8 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
     // get list of unique quisines available from our DB
     let cuisinesArr = await fetchCuisines();
     setCuisines(cuisinesArr);
-
-    let response = await fetch('/api/accountInfo/getUserType');
-    response = await response.json();
-    console.log('Response from getUserType:', response);
-    setUserType(response.userType);
-
-    let cookies = document.cookie.split('; ');
-
-    for (let cookie of cookies) {
-      let key = cookie.split('=')[0];
-      if (key === 'account_id') {
-        setIsLoggedIn(true);
-      }
-
-    }
   }, []);
-  console.log('User Type in Navigation:', userType);
+
   return (
     <Container className="sticky-top" style={{ backgroundColor: "#2A9D8F" }} fluid>
       {/* Shopping Cart Modal */}
@@ -185,12 +171,16 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
           {
             !isLoggedIn &&
             <React.Fragment>
-              <LoginModal showState={showLoginModal} handleClose={handleCloseLoginModal} setIsLoggedIn={setIsLoggedIn} />
+              <LoginModal
+                showState={showLoginModal}
+                handleClose={handleCloseLoginModal}
+                handleLogin={handleLogin}
+              />
               <Button variant="light" onClick={handleShowLoginModal} > Login </Button>
             </React.Fragment>
           }
           {/* Menu dropdown - conditionally rendered */}
-          {(isLoggedIn && userType === "customer") &&
+          {(userType === "customer") &&
             <Row>
               <Col>
                 <Button
@@ -204,8 +194,8 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
               <Col>
                 <Dropdown>
                   <Dropdown.Toggle variant="light" id="dropdown-basic">
-                    Menu
-                </Dropdown.Toggle>
+                    <Image src={MenuIcon} height="20px" width="20px" />
+                  </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item href="/account">Account</Dropdown.Item>
                     <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
@@ -214,43 +204,29 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
               </Col>
             </Row>
           }
-          {(isLoggedIn && userType === "deliveryDriver") &&
+          {(userType === "deliveryDriver") &&
             <Row className="">
-              <Button
-                variant="light"
-                className="mr-3"
-                href="/orders-to-deliver"
-              >Orders to Deliver
-              {" "}
-              </Button>
-
               <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-basic">
-                  Menu
+                  <Image src={MenuIcon} height="20px" width="20px" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item href="/account">Account</Dropdown.Item>
+                  <Dropdown.Item href="/orders-to-deliver">Orders</Dropdown.Item>
                   <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Row>
           }
-          {(isLoggedIn && userType === "restaurantOwner") &&
+          {(userType === "restaurantOwner") &&
             <Row className="">
-              <Button
-                variant="light"
-                className="mr-3"
-                href="/restaurant"
-              >Your Restaurant
-              {" "}
-              </Button>
-
               <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-basic">
-                  Menu
+                  <Image src={MenuIcon} height="20px" width="20px" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item href="/account">Account</Dropdown.Item>
+                  <Dropdown.Item href="/restaurant">Restaurant</Dropdown.Item>
                   <Dropdown.Item onClick={(e) => handleLogout(e)}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -263,8 +239,8 @@ const Navigation = ({ handleLogout, isLoggedIn, setIsLoggedIn }) => {
         <Row className="text-center text-white">
           <Col><Link style={{ color: "inherit" }} to="/about-us">About Us</Link></Col>
           <Col><Link style={{ color: "inherit" }} to="/customer-registration">SFSU Customer</Link></Col>
-          <Col><Link style={{ color: "inherit" }} to="driver-registration">Driver</Link></Col>
-          <Col><Link style={{ color: "inherit" }} to="restaurant-registration">Restaurant Owner</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/driver-registration">Delivery Driver</Link></Col>
+          <Col><Link style={{ color: "inherit" }} to="/restaurant-registration">Restaurant Owner</Link></Col>
         </Row>}
 
 

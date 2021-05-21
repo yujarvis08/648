@@ -5,40 +5,21 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import CampusMap from "./CampusMap";
 import Card from "react-bootstrap/Card";
+import Dropdown from "react-bootstrap/Dropdown";
+import Form from "react-bootstrap/Form";
+
+
 
 
 const OrdersToDeliver = () => {
   const [show, setShow] = React.useState(false);
   const [orders, setOrders] = React.useState([]);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  // let orderTestData = [
-  //   {
-  //     orderNumber: 1,
-  //     customerName: "Johnny Depp",
-  //     addressLine1: "1600 Holloway Ave",
-  //     addressLine2: "Building 336",
-  //     instructions: "Room 123 at the end of the hallway",
-  //     total: 13.24
-  //   },
-  //   {
-  //     orderNumber: 2,
-  //     customerName: "Gary Newman",
-  //     addressLine1: "1650 Holloway Ave",
-  //     addressLine2: "",
-  //     instructions: "Soccer field across the gym. I'll be by the bleachers",
-  //     total: 25.16
-  //   },
-  //   {
-  //     orderNumber: 3,
-  //     customerName: "Josh Drake",
-  //     addressLine1: "802 Font Blvd",
-  //     addressLine2: "",
-  //     instructions: "At the Sol Patch community garden near Mary Park Hall",
-  //     total: 17.99
-  //   }
-  // ]
+  const handleShow = (e) => {
+    setQuadrant(e.target.value);
+    setShow(true);
+  }
+  const [quadrant, setQuadrant] = React.useState('');
 
   async function handleComplete(e) {
     let orderNum = e.target.getAttribute("order-number");
@@ -83,7 +64,7 @@ const OrdersToDeliver = () => {
             <hr />
             <Row>
               <Col xs={7}>
-                Total: {`${order.total}`}
+                Total: ${`${order.total}`}
               </Col>
               <Col xs={3}>
                 <Button
@@ -104,24 +85,45 @@ const OrdersToDeliver = () => {
    */
   React.useEffect(async () => {
     let response = await (await fetch(`/api/orders/getOrders`)).json();
-    console.log('new orders:', response.orders);
     setOrders(response.orders);
   }, [])
 
   return (
     <Container>
       {/* Campus Map conditionally rendered (it's a modal) */}
-      <CampusMap showState={show} handleClose={handleClose} />
-      <Row className="mt-5 justify-content-around">
-        <h1>Orders to Deliver</h1>
-        <hr />
+      <CampusMap showState={show} handleClose={handleClose} quadrant={quadrant} />
+      <Row className="mt-3 justify-content-between">
+        <h1 className="">Orders to deliver</h1>
+        <Col xs={4}>
+          <Form.Control
+            as="select"
+            custom
+            required
+            name="campus"
+            onChange={handleShow}
+          >
+            <option value="none" selected disabled hidden>Campus Map</option>
+            <option value="all">entire campus</option>
+            <option value="northwest">northwest</option>
+            <option value="southwest">southwest</option>
+            <option value="northeast">northeast</option>
+            <option value="southeast">southeast</option>
+          </Form.Control>
+        </Col>
       </Row>
-      <Button variant="light" onClick={handleShow}>
-        Campus Map
-      </Button>
+      <Row>
+      </Row>
+      <hr />
       <Row>
         {orderList}
       </Row>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </Container>
   );
 };

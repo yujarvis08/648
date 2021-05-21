@@ -13,6 +13,15 @@ const Checkout = () => {
   const [validated, setValidated] = React.useState(false);
   const history = useHistory();
 
+  async function clearCart() {
+    let response = await fetch('/api/shoppingCart/clear', {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" }
+    });
+    response = await response.json()
+    console.log(response.msg);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -41,6 +50,7 @@ const Checkout = () => {
       console.log('ok:', wrappedResponse.ok);
       if (wrappedResponse.ok) {
         alert(`Order has been placed. Your food is being prepared and shall be delivered soon!`);
+        clearCart();
         history.push('/');
       } else {
         alert('Something went wrong while processing your order.');

@@ -11,13 +11,12 @@ import AboutUs from "./Pages/AboutUs";
 import TermsOfUse from "./Pages/TermsOfUse";
 import OrdersToDeliver from "./OrdersToDeliver";
 import CampusMap from "./CampusMap";
-import OrderConfirmation from "./OrderConfirmation";
+import PasswordRecovery from "./Pages/PasswordRecovery";
 import AccountInfo from './AccountInfo';
 import RestaurantMenu from './Pages/RestaurantMenu';
 import Restaurant from './Pages/Restaurant';
-import AccountChangePassword from "./AccountChangePassword";
 
-const Main = ({ isLoggedIn, setIsLoggedIn }) => {
+const Main = ({ isLoggedIn, userType, handleLogout, handleLogin }) => {
 
     return (
         <React.Fragment>
@@ -26,9 +25,29 @@ const Main = ({ isLoggedIn, setIsLoggedIn }) => {
                 <Route exact path="/">
                     <Homepage />
                 </Route>
-
                 <Route exact path="/about-us">
                     <AboutUs />
+                </Route>
+                <Route exact path="/terms-of-use">
+                    <TermsOfUse />
+                </Route>
+                <Route exact path="/account">
+                    <AccountInfo
+                        handleLogout={handleLogout}
+                    />
+                </ Route >
+                <Route exact path="/search/restaurant">
+                    <BrowseRestaurants />
+                </Route>
+                {/* Restaurant Profile */}
+                <Route exact path="/restaurant-menu" >
+                    <RestaurantMenu
+                        isLoggedIn={isLoggedIn}
+                        handleLogin={handleLogin}
+                    />
+                </Route>
+                <Route exact path="/password-recovery">
+                    <PasswordRecovery />
                 </Route>
 
                 {/* Registrations */}
@@ -42,48 +61,37 @@ const Main = ({ isLoggedIn, setIsLoggedIn }) => {
                     <DriverReg />
                 </Route>
 
-                <Route exact path="/checkout">
-                    <Checkout />
-                </Route>
+                {/* Customer specific routes */}
+                {userType === "customer" &&
+                    <React.Fragment>
+                        <Route exact path="/checkout">
+                            <Checkout />
+                        </Route>
+                    </React.Fragment>
+                }
+                {/* Restaurant Owner specific routes */}
+                {userType === "restaurantOwner" &&
+                    <React.Fragment>
 
-                {/* Browse Restaurants */}
-                <Route exact path="/search/restaurant">
-                    <BrowseRestaurants />
-                </Route>
+                        <Route exact path="/restaurant">
+                            <Restaurant />
+                        </Route>
+                    </ React.Fragment>
 
-                <Route exact path="/terms-of-use">
-                    <TermsOfUse />
-                </Route>
-
-                <Route path="/account">
-                    <AccountInfo />
-                </ Route >
-
-                <Route path="/restaurant-menu" >
-                    <RestaurantMenu isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-                </Route>
-
-                <Route path="/AccountChangePassword">
-                    <AccountChangePassword />
-                </Route >
-
-                <Route exact path="/orders-to-deliver">
-                    <OrdersToDeliver />
-                </Route>
-                <Route exact path="/order-confirmation">
-                    <OrderConfirmation />
-                </Route>
-
-                <Route exact path="/campus-map">
-                    <CampusMap />
-                </Route>
-
-                <Route exact path="/restaurant">
-                    <Restaurant />
-                </Route>
-
+                }
+                {/* Delivery Driver specific routes */}
+                {userType === "deliveryDriver" &&
+                    < React.Fragment >
+                        <Route exact path="/orders-to-deliver">
+                            <OrdersToDeliver />
+                        </Route>
+                        <Route exact path="/campus-map">
+                            <CampusMap />
+                        </Route>
+                    </React.Fragment>
+                }
             </Switch>
-        </React.Fragment>
+        </React.Fragment >
     );
 }
 

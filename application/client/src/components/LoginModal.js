@@ -1,12 +1,15 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
+// Bootstrap
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 
-const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
+const LoginModal = ({ showState, handleClose, handleLogin }) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const history = useHistory();
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
@@ -21,8 +24,12 @@ const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
 
         console.log("Response from login:", responseJSON);
         if (response.ok) {
-            setIsLoggedIn(true);
+            handleLogin();
             handleClose();
+            let url = window.location.href;
+            if (!url.includes("restaurant-menu")) {
+                history.push('/');
+            }
         } else {
             alert(`Wrong username or password.`);
         }
@@ -44,12 +51,15 @@ const LoginModal = ({ showState, handleClose, setIsLoggedIn }) => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                         <Form.Text>
-                            Forgot Password? <a href="/">Click Here</a>
+                            Forgot Password? <a href="/password-recovery">Click Here</a>
                         </Form.Text>
-                        {/*<Form.Text>
-        Don't Have an Account?{" "}
-        <a href="/userRegistration">Click Here</a>
-      </Form.Text>*/}
+                        <Form.Text>
+                            Don't have an account?
+                            <p><a href="/customer-registration">Customer</a>
+                            &nbsp;| <a href="/driver-registration">Delivery Driver</a>
+                            &nbsp;| <a href="/restaurant-registration">Restaurant Owner</a>
+                            </p>
+                        </Form.Text>
                     </Form.Group>
 
                     <Button variant="secondary" onClick={handleClose}>
