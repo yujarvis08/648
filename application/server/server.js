@@ -21,11 +21,11 @@ app.use(fileUpload({ // enable uploading photos
     createParentPath: true
 }));
 /* static folder */
+// if (process.env.NODE_ENV === "production") {
+//     app.use(express.static(path.join(__dirname, 'build')));
+// }
 app.use(express.static(path.join(__dirname, 'public')));
 
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, 'build')));
-}
 
 /* ===== Middleware ====== */
 app.use('/api/search', searchRoutes);
@@ -38,8 +38,8 @@ app.use('/api/accountInfo', accountInfoRoute);
 
 if (process.env.NODE_ENV === "production") {
     app.get('/*', function (req, res) {
-        console.log('TRYING TO SERVE AT:', path.join(__dirname, 'build', 'index.html'));
-        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+        console.log('TRYING TO SERVE AT:', path.join(__dirname, 'public', 'index.html'));
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
     });
 }
 
