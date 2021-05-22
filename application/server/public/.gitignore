@@ -1,6 +1,0 @@
-# This file helps keep track of this public/uploads folders.
-# Without it, it won't upload them to GH because they'll be empty.
-# Ignore everything in this directory
-*
-# Except this file
-!.gitignore
