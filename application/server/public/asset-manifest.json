@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/static/css/main.10724a44.chunk.css",
+    "main.js": "/static/js/main.12caf9b6.chunk.js",
+    "main.js.map": "/static/js/main.12caf9b6.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.9c289d4c.js",
+    "runtime-main.js.map": "/static/js/runtime-main.9c289d4c.js.map",
+    "static/js/2.42db48cc.chunk.js": "/static/js/2.42db48cc.chunk.js",
+    "static/js/2.42db48cc.chunk.js.map": "/static/js/2.42db48cc.chunk.js.map",
+    "static/js/3.c241e045.chunk.js": "/static/js/3.c241e045.chunk.js",
+    "static/js/3.c241e045.chunk.js.map": "/static/js/3.c241e045.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.10724a44.chunk.css.map": "/static/css/main.10724a44.chunk.css.map",
+    "static/js/2.42db48cc.chunk.js.LICENSE.txt": "/static/js/2.42db48cc.chunk.js.LICENSE.txt",
+    "static/media/about-us.97bddee4.jpeg": "/static/media/about-us.97bddee4.jpeg",
+    "static/media/cart.cccaf49e.png": "/static/media/cart.cccaf49e.png",
+    "static/media/gator.8147854b.jpg": "/static/media/gator.8147854b.jpg",
+    "static/media/hermes-logo.cbfe777c.png": "/static/media/hermes-logo.cbfe777c.png",
+    "static/media/northeast.1e46db71.jpg": "/static/media/northeast.1e46db71.jpg",
+    "static/media/northwest.9ee65fbc.jpg": "/static/media/northwest.9ee65fbc.jpg",
+    "static/media/restaurant.1c591c18.jpg": "/static/media/restaurant.1c591c18.jpg",
+    "static/media/sfsu_map.135ad442.jpg": "/static/media/sfsu_map.135ad442.jpg",
+    "static/media/southeast.cc6604fd.jpg": "/static/media/southeast.cc6604fd.jpg",
+    "static/media/southwest.f54db463.jpg": "/static/media/southwest.f54db463.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9c289d4c.js",
+    "static/js/2.42db48cc.chunk.js",
+    "static/css/main.10724a44.chunk.css",
+    "static/js/main.12caf9b6.chunk.js"
+  ]
+}
